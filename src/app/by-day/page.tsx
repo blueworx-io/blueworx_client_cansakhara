@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "Can Sakhara | By Day",
@@ -53,28 +55,7 @@ export default function ByDay() {
     <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-white text-white">
       {/* Hero — flat By Day taupe, transparent navbar over it */}
       <section className="relative h-[900px] w-full bg-[#ac9a8c]">
-        <nav className="absolute inset-x-0 top-0 z-10 h-[131px] backdrop-blur-[3px]">
-          <div className="mx-auto grid h-full w-[1280px] grid-cols-[1fr_auto_1fr] items-center">
-            <a
-              href="#"
-              className="flex items-center gap-6 justify-self-start font-display text-[14px] font-normal uppercase tracking-[5.6px] text-white"
-            >
-              <span aria-hidden="true" className="flex w-12 flex-col gap-2">
-                <span className="h-[2px] w-full bg-white" />
-                <span className="h-[2px] w-full bg-white" />
-              </span>
-              <span>Menu</span>
-            </a>
-            <a href="/" aria-label="Can Sakhara home" className="justify-self-center">
-              <Image src="/images/logo-white.svg" alt="Can Sakhara" width={52} height={52} />
-            </a>
-            <div className="justify-self-end">
-              <SecondaryButton href="mailto:reservations@cansakhara.com">
-                Enquire
-              </SecondaryButton>
-            </div>
-          </div>
-        </nav>
+        <SiteHeader theme="day" />
 
         <span
           aria-hidden="true"
@@ -204,12 +185,12 @@ export default function ByDay() {
               height={86}
               className="absolute left-[510px] top-[20px]"
             />
-            <a
-              href="#"
+            <Link
+              href="/"
               className="absolute left-[321px] top-[187.71px] block h-[75px] w-[223px]"
             >
               <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
-            </a>
+            </Link>
             <a
               href="#"
               className="absolute left-[735.77px] top-[187.71px] block h-[75px] w-[223px]"

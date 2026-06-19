@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import ExperienceCarousel from "@/components/ExperienceCarousel";
 import SiteHeader from "@/components/SiteHeader";
 
@@ -35,13 +36,25 @@ function OutlineButton({
   icon?: boolean;
   className?: string;
 }) {
-  return (
-    <a
-      href={href}
-      className={`outline-button inline-flex h-[54px] items-center justify-center gap-4 whitespace-nowrap border border-current px-8 font-display text-[14px] uppercase tracking-[0.4em] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${className}`}
-    >
+  const classes = `outline-button inline-flex h-[54px] items-center justify-center gap-4 whitespace-nowrap border border-current px-8 font-display text-[14px] uppercase tracking-[0.4em] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${className}`;
+  const content = (
+    <>
       {icon && <PhoneIcon />}
       <span>{children}</span>
+    </>
+  );
+  // Internal routes use next/link for client-side navigation; mailto/external
+  // stay as a plain anchor.
+  if (href.startsWith("/")) {
+    return (
+      <Link href={href} className={classes}>
+        {content}
+      </Link>
+    );
+  }
+  return (
+    <a href={href} className={classes}>
+      {content}
     </a>
   );
 }
@@ -149,7 +162,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-black/20" />
 
-        <SiteHeader />
+        <SiteHeader theme="home" />
 
         <div className="hero-content absolute inset-x-5 top-[43%] z-10 -translate-y-1/2 text-center text-white">
           <h1 className="sr-only">Can Sakhara</h1>
@@ -161,18 +174,18 @@ export default function Home() {
             className="hero-wordmark mx-auto h-auto w-[300px] sm:w-[520px] md:w-[655px]"
           />
           <div className="hero-actions mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#discover"
+            <Link
+              href="/by-day"
               className="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#ac9a8c] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               By day
-            </a>
-            <a
-              href="#discover"
+            </Link>
+            <Link
+              href="/by-night"
               className="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#001c2b] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#001c2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               By night
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -266,7 +279,7 @@ export default function Home() {
                 By day
               </h3>
               <OutlineButton
-                href="#experience"
+                href="/by-day"
                 className="mt-[50px] border-white hover:bg-white hover:text-[#ac9a8c]"
               >
                 Explore
@@ -278,7 +291,7 @@ export default function Home() {
                 By night
               </h3>
               <OutlineButton
-                href="#experience"
+                href="/by-night"
                 className="mt-[50px] border-white bg-[#286b7e] hover:bg-white hover:text-[#001c2b]"
               >
                 Explore
@@ -316,9 +329,9 @@ export default function Home() {
         </div>
 
         <div className="footer-brands mx-auto mt-20 grid w-full max-w-3xl gap-16 text-center sm:grid-cols-2 md:mt-0">
-          <a href="#" className="relative mx-auto block h-[75px] w-[223px]">
+          <Link href="/" className="relative mx-auto block h-[75px] w-[223px]">
             <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
-          </a>
+          </Link>
           <a href="#" className="relative mx-auto block h-[75px] w-[223px]">
             <Image src="/images/can-ergah.svg" alt="Can Ergâh" fill />
           </a>
