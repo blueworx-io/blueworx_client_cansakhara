@@ -102,6 +102,46 @@ function SectionHeading({
   );
 }
 
+// Splits a line into per-character cells laid out with `justify-between`, so the
+// letters spread to fill the line's fixed width with even gaps — first and last
+// glyph flush to the edges. This makes two lines of differing natural width
+// render at an identical width, matching the Figma lockup regardless of the
+// font in use (the design's per-line letter-spacing only equalises in Neulis
+// Sans; it does not transfer to the Montserrat substitute).
+function JustifiedLine({
+  text,
+  className = "",
+}: {
+  text: string;
+  className?: string;
+}) {
+  return (
+    <span className={`flex w-full justify-between ${className}`}>
+      {Array.from(text).map((char, i) => (
+        <span key={`${char}-${i}`}>{char === " " ? " " : char}</span>
+      ))}
+    </span>
+  );
+}
+
+// The "Introducing / Can Sakhara" lockup: two equal-width lines filling the
+// fixed Figma title box (272px mobile / 435px desktop). "Introducing" is set a
+// weight lighter (Neulis Sans Thin → Montserrat extra-light) than "Can Sakhara".
+function WelcomeTitleLockup() {
+  return (
+    <>
+      <span className="sr-only">Introducing Can Sakhara</span>
+      <span aria-hidden="true" className="welcome-lockup mx-auto flex flex-col">
+        <JustifiedLine
+          text="INTRODUCING"
+          className="welcome-lockup-line font-extralight"
+        />
+        <JustifiedLine text="CAN SAKHARA" className="welcome-lockup-line" />
+      </span>
+    </>
+  );
+}
+
 function SunIcon() {
   return (
     <Image src="/images/sun.svg" alt="" width={180} height={180} />
@@ -181,12 +221,7 @@ export default function Home() {
           <SectionHeading
             className="welcome-heading"
             eyebrow="Welcome"
-            title={
-              <>
-                <span className="block tracking-[0.066em]">Introducing</span>
-                <span className="block">Can Sakhara</span>
-              </>
-            }
+            title={<WelcomeTitleLockup />}
             subtitle="Ibiza beckons. An iconic home, reimagined. A view like no other"
           />
 

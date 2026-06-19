@@ -9,7 +9,7 @@ import "./globals.css";
 const display = Montserrat({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["200", "300", "400", "500"],
 });
 
 const body = Source_Sans_3({
