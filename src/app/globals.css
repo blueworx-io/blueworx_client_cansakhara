@@ -339,11 +339,17 @@ button:active {
   }
 
   /* Slides advance by the Figma 1140px pitch (1064px heading + surrounding
-     gap) inside the 1440px frame, leaving ~100px of the neighbouring slides
-     visible on each side. The active slide is centred in the viewport. */
+     gap) inside the 1440px frame. The active slide is centred in the viewport,
+     leaving a peek of the next slide on the right. */
   .experience-slide {
     flex: 0 0 1140px;
     width: 1140px;
+  }
+
+  /* Clip the left gutter so only the next slide peeks on the right; the
+     previous slide stays hidden behind the section background. */
+  .experience-viewport {
+    clip-path: inset(0 0 0 calc((100vw - 1140px) / 2));
   }
 
   .experience-track {
