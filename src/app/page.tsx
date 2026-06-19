@@ -302,7 +302,7 @@ export default function Home() {
         <SectionLine className="discover-line-bottom" />
       </section>
 
-      <section className="video-section relative h-[430px] md:h-[600px]">
+      <section className="video-section relative flex h-[430px] items-center justify-center md:h-[600px]">
         <Image
           src="/images/video-cover.png"
           alt="Panoramic view from Can Sakhara over Ibiza"
@@ -314,7 +314,7 @@ export default function Home() {
         <button
           type="button"
           aria-label="Play Can Sakhara film"
-          className="absolute left-1/2 top-1/2 size-24 -translate-x-1/2 -translate-y-1/2 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:size-[170px]"
+          className="relative size-24 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:size-[170px]"
         >
           <Image src="/images/play.svg" alt="" fill sizes="170px" />
         </button>

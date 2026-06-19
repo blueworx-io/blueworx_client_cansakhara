@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, type RefObject } from "react";
 
-// Drawer links — exact Figma order/labels. Tops are 356 / 423 / 490 (67px
-// pitch); rendered as flow with a 37.6px gap (67 − 29.4px line box).
+// Drawer links — exact Figma order/labels. Desktop tops 356/423/490 (67px
+// pitch); mobile tops 261/318/375 (57px pitch). Rendered as a flow column with
+// the gap that reproduces each pitch from the line box.
 const menuLinks = [
   { label: "Experience", href: "/#experience" },
   { label: "By Day", href: "/by-day" },
@@ -70,12 +71,13 @@ export default function MenuDrawer({
 
   return (
     <>
-      {/* Scrim — rgba(0,0,0,0.35); dims the hero but sits below the navbar so
-          the wordmark stays crisp while the menu is open. */}
+      {/* Scrim — rgba(0,0,0,0.35) (Figma 1:977). Sits above the navbar so the
+          whole page including the header dims while the menu is open; only the
+          drawer (z-50) stays above it. */}
       <div
         aria-hidden="true"
         onClick={onClose}
-        className={`fixed inset-0 z-30 bg-black/35 transition-opacity duration-500 ease-out ${
+        className={`fixed inset-0 z-40 bg-black/35 transition-opacity duration-500 ease-out ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       />
@@ -88,32 +90,37 @@ export default function MenuDrawer({
         aria-label="Menu"
         aria-hidden={!open}
         style={{ backgroundColor: panelColor }}
-        className={`fixed inset-y-0 left-0 z-50 w-[450px] max-w-full text-white transition-[translate] duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`fixed inset-y-0 left-0 z-50 w-full text-white transition-[translate] duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] md:w-[450px] ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="relative h-full">
-          <button
-            ref={closeButtonRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Close menu"
-            tabIndex={open ? 0 : -1}
-            className={`absolute right-[50px] top-[46px] grid size-[52px] place-items-center border border-white transition-[opacity,translate,background-color,color] duration-500 ease-out hover:bg-white hover:text-[#422833] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${
-              open ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"
-            }`}
-            style={{ transitionDelay: open ? "120ms" : "0ms" }}
-          >
-            <CloseIcon />
-          </button>
+        {/* Close button — floating corner control (Figma 1:415 mobile / 1:983
+            desktop): right-20/top-19 size-33 on mobile, right-50/top-46 size-52
+            on desktop. Absolute is justified as fixed corner UI. */}
+        <button
+          ref={closeButtonRef}
+          type="button"
+          onClick={onClose}
+          aria-label="Close menu"
+          tabIndex={open ? 0 : -1}
+          className={`absolute right-[20px] top-[19px] grid size-[33px] place-items-center border border-white transition-[opacity,translate,background-color,color] duration-500 ease-out hover:bg-white hover:text-[#422833] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:right-[50px] md:top-[46px] md:size-[52px] ${
+            open ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"
+          }`}
+          style={{ transitionDelay: open ? "120ms" : "0ms" }}
+        >
+          <CloseIcon />
+        </button>
 
+        {/* Content stack — flow column. Mobile centres the logo and right-aligns
+            the links; desktop left-aligns everything at the 50px gutter. */}
+        <div className="flex h-full flex-col items-center pt-[64px] md:items-start md:pl-[50px] md:pt-[131px]">
           <span
             aria-hidden="true"
-            className="absolute left-[50px] top-[131px] h-px w-[350px] bg-white"
+            className="h-px w-[362px] bg-white md:w-[350px]"
           />
 
           <span
-            className={`absolute left-[50px] top-[201px] block h-[85px] w-[251px] transition-[opacity,translate] duration-500 ease-out ${
+            className={`relative mt-[51px] block h-[76px] w-[200px] transition-[opacity,translate] duration-500 ease-out md:mt-[70px] md:h-[85px] md:w-[251px] ${
               open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
             }`}
             style={{ transitionDelay: open ? "160ms" : "0ms" }}
@@ -122,18 +129,18 @@ export default function MenuDrawer({
               src="/images/logo-stacked-white.svg"
               alt="Can Sakhara"
               fill
-              sizes="251px"
+              sizes="(max-width: 767px) 200px, 251px"
             />
           </span>
 
-          <ul className="absolute left-[50px] top-[356px] flex flex-col gap-[37.6px]">
+          <ul className="mt-[70px] flex w-[200px] flex-col items-end gap-[34.6px] text-right md:w-auto md:items-start md:gap-[37.6px] md:text-left">
             {menuLinks.map((link, i) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   onClick={onClose}
                   tabIndex={open ? 0 : -1}
-                  className={`block font-display text-[21px] font-light uppercase leading-[1.4] tracking-[4.2px] text-white transition-[opacity,translate,color] duration-500 ease-out hover:text-white/70 ${
+                  className={`block font-display text-[16px] font-light uppercase leading-[1.4] tracking-[3.2px] text-white transition-[opacity,translate,color] duration-500 ease-out hover:text-white/70 md:text-[21px] md:tracking-[4.2px] ${
                     open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
                   }`}
                   style={{ transitionDelay: open ? `${220 + i * 70}ms` : "0ms" }}

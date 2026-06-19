@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MenuDrawer from "@/components/MenuDrawer";
 
 const ENQUIRE_HREF = "mailto:reservations@cansakhara.com";
@@ -16,25 +16,60 @@ const DRAWER_COLORS: Record<SiteTheme, string> = {
   night: "#031927",
 };
 
-// Two stacked 2px bars, 48px wide, 8px gap — the Figma navbar hamburger.
+// Two stacked 2px bars, 8px gap — the Figma navbar hamburger (28px wide on
+// mobile / 48px on desktop).
 function MenuBars() {
   return (
-    <span aria-hidden="true" className="flex w-12 flex-col gap-2">
-      <span className="h-px w-full bg-current md:h-[2px]" />
-      <span className="h-px w-full bg-current md:h-[2px]" />
+    <span aria-hidden="true" className="flex w-7 flex-col gap-2 md:w-12">
+      <span className="h-[2px] w-full bg-current" />
+      <span className="h-[2px] w-full bg-current" />
     </span>
   );
 }
 
 export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const close = useCallback(() => setOpen(false), []);
 
+  // The home hero is a photo, so the header stays transparent over it until you
+  // scroll. The day/night heroes are solid colours, so the header takes that
+  // page colour by default to blend with the hero.
+  const solid = scrolled || theme !== "home";
+
+  // Hide the header when scrolling down, slide it back in when scrolling up.
+  // The page scrolls inside the `.site-shell` element, not the window.
+  useEffect(() => {
+    const scroller = document.querySelector<HTMLElement>(".site-shell");
+    if (!scroller) return;
+
+    let lastY = scroller.scrollTop;
+    const onScroll = () => {
+      const y = scroller.scrollTop;
+      // Past the hero the bar gets a solid page-colour background so its white
+      // content stays legible over the light sections.
+      setScrolled(y > 100);
+      // Ignore tiny jitter; keep the bar pinned near the very top.
+      if (Math.abs(y - lastY) > 4) {
+        setHidden(y > lastY && y > 100);
+        lastY = y;
+      }
+    };
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    return () => scroller.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
-      <nav className="absolute inset-x-0 top-0 z-40 flex h-28 items-center bg-white/5 px-6 text-white backdrop-blur-[3px] md:h-[131px] md:px-20">
+      <nav
+        style={solid ? { backgroundColor: DRAWER_COLORS[theme] } : undefined}
+        className={`fixed inset-x-0 top-0 z-30 flex h-28 items-center px-5 text-white transition-[translate,background-color] duration-500 ease-out md:h-[131px] md:px-20 ${
+          solid ? "" : "bg-white/5 backdrop-blur-[3px]"
+        } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
+      >
         <div className="mx-auto grid w-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center">
           <button
             ref={menuButtonRef}
@@ -43,46 +78,33 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
             aria-haspopup="dialog"
             aria-expanded={open}
             aria-controls="site-menu"
-            className="flex items-center gap-5 justify-self-start font-display text-[11px] uppercase tracking-[0.42em] md:gap-6 md:text-[14px] md:tracking-[5.6px]"
+            className="flex items-center gap-6 justify-self-start font-display text-[10px] uppercase tracking-[4px] md:text-[14px] md:tracking-[5.6px]"
           >
             <MenuBars />
-            <span className="hidden sm:inline">Menu</span>
+            <span>Menu</span>
           </button>
 
-          {/* Centre mark: square logo in flow defines the cell; wordmark overlays
-              absolutely so the crossfade never shifts layout. */}
+          {/* Centre mark: the square logo (Figma navbar 1:962 desktop 52px /
+              1:389 mobile ~31px). Stays put when the menu opens — the drawer's
+              scrim dims it along with the rest of the header. */}
           <Link
             href="/"
             aria-label="Can Sakhara home"
-            className="relative grid place-items-center justify-self-center"
+            className="grid place-items-center justify-self-center"
           >
-            <span
-              className={`transition-[opacity,scale] duration-500 ease-out ${
-                open ? "scale-90 opacity-0" : "scale-100 opacity-100"
-              }`}
-            >
-              <Image src="/images/logo-white.svg" alt="" width={52} height={52} />
-            </span>
-            <span
-              aria-hidden={!open}
-              className={`pointer-events-none absolute left-1/2 top-1/2 w-[180px] -translate-x-1/2 -translate-y-1/2 transition-[opacity,scale] duration-500 ease-out md:w-[262px] ${
-                open ? "scale-100 opacity-100" : "scale-95 opacity-0"
-              }`}
-            >
-              <Image
-                src="/images/hero-wordmark.svg"
-                alt=""
-                width={262}
-                height={20}
-                className="w-full"
-              />
-            </span>
+            <Image
+              src="/images/logo-white.svg"
+              alt=""
+              width={52}
+              height={52}
+              className="h-[31px] w-[31px] md:h-[52px] md:w-[52px]"
+            />
           </Link>
 
-          <div className="hidden justify-self-end sm:block">
+          <div className="justify-self-end">
             <a
               href={ENQUIRE_HREF}
-              className="inline-flex items-center justify-center whitespace-nowrap border border-current px-8 py-4 font-display text-[14px] uppercase tracking-[5.6px] transition-colors duration-200 hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+              className="inline-flex items-center justify-center whitespace-nowrap border border-current px-4 py-[10px] font-display text-[10px] uppercase tracking-[4px] transition-colors duration-200 hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px]"
             >
               Enquire
             </a>
