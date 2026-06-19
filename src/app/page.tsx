@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ExperienceCarousel from "@/components/ExperienceCarousel";
+import SiteHeader from "@/components/SiteHeader";
 
 const features = [
   { value: "6061", unit: "m²", label: "Plot" },
@@ -9,15 +10,6 @@ const features = [
   { value: "7", label: "Bathrooms" },
   { value: "1", label: "Guest WC" },
 ];
-
-function MenuIcon() {
-  return (
-    <span aria-hidden="true" className="flex w-12 flex-col gap-2">
-      <span className="h-px w-full bg-current" />
-      <span className="h-px w-full bg-current" />
-    </span>
-  );
-}
 
 function PhoneIcon() {
   return (
@@ -29,17 +21,6 @@ function PhoneIcon() {
     >
       <path d="M7.2 3.8 9.4 8 7.8 9.7c1.3 2.7 3.7 5.1 6.4 6.5l1.8-1.6 4.1 2.2-.8 3.2c-.2.8-.9 1.3-1.7 1.3C9.4 20.7 3.3 14.6 2.7 6.4c0-.8.5-1.5 1.3-1.7l3.2-.9Z" />
     </svg>
-  );
-}
-
-function BrandMark() {
-  return (
-    <Image
-      src="/images/logo-white.svg"
-      alt="Can Sakhara"
-      width={52}
-      height={52}
-    />
   );
 }
 
@@ -168,26 +149,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-black/20" />
 
-        <nav className="hero-nav absolute inset-x-0 top-0 z-10 grid h-28 grid-cols-[1fr_auto_1fr] items-center px-6 text-white md:h-[131px] md:px-20">
-          <a
-            href="#welcome"
-            className="flex items-center gap-5 justify-self-start font-display text-[11px] uppercase tracking-[0.42em] md:gap-6 md:text-sm"
-          >
-            <MenuIcon />
-            <span className="hidden sm:inline">Menu</span>
-          </a>
-          <a href="#" aria-label="Can Sakhara home" className="justify-self-center">
-            <BrandMark />
-          </a>
-          <div className="hidden justify-self-end sm:block">
-            <OutlineButton
-              href="mailto:reservations@cansakhara.com"
-              className="hover:text-[#500d20]"
-            >
-              Enquire
-            </OutlineButton>
-          </div>
-        </nav>
+        <SiteHeader />
 
         <div className="hero-content absolute inset-x-5 top-[43%] z-10 -translate-y-1/2 text-center text-white">
           <h1 className="sr-only">Can Sakhara</h1>
