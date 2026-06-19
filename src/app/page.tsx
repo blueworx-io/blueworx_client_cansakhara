@@ -151,7 +151,7 @@ function MoonIcon() {
 export default function Home() {
   return (
     <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-white text-[#42081a]">
-      <section className="hero-section relative h-[700px] md:h-[900px]">
+      <section className="hero-section relative grid h-screen place-items-center">
         <Image
           src="/images/hero.png"
           alt="Can Sakhara villa in the hills of Ibiza"
@@ -164,7 +164,7 @@ export default function Home() {
 
         <SiteHeader theme="home" />
 
-        <div className="hero-content absolute inset-x-5 top-[43%] z-10 -translate-y-1/2 text-center text-white">
+        <div className="hero-content relative z-10 px-5 text-center text-white">
           <h1 className="sr-only">Can Sakhara</h1>
           <Image
             src="/images/hero-wordmark.svg"

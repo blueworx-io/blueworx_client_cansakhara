@@ -54,15 +54,15 @@ export default function ByDay() {
   return (
     <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-white text-white">
       {/* Hero — flat By Day taupe, transparent navbar over it */}
-      <section className="relative h-[900px] w-full bg-[#ac9a8c]">
+      <section className="relative flex h-screen w-full flex-col items-center bg-[#ac9a8c]">
         <SiteHeader theme="day" />
 
         <span
           aria-hidden="true"
-          className="absolute left-1/2 top-[131px] h-px w-[1280px] -translate-x-1/2 bg-white"
+          className="mt-[131px] h-px w-[1280px] bg-white"
         />
 
-        <div className="absolute left-1/2 top-[304px] flex w-[1064px] -translate-x-1/2 flex-col items-center gap-[60px]">
+        <div className="mt-[172px] flex w-[1064px] flex-col items-center gap-[60px]">
           <Image src="/images/sun.svg" alt="" width={110} height={110} />
           <h1
             className="font-display text-[56px] font-light uppercase leading-[1.4] text-white"
@@ -177,26 +177,22 @@ export default function ByDay() {
       {/* Footer */}
       <footer className="mt-[2px] w-full bg-[#918074] px-20 pb-[50px] pt-[144px] text-white">
         <div className="mx-auto flex w-[1280px] flex-col gap-20">
-          <div className="relative h-[486px] w-full">
-            <Image
-              src="/images/mel-de-magranetes.svg"
-              alt="Mel de Magranetes"
-              width={259}
-              height={86}
-              className="absolute left-[510px] top-[20px]"
-            />
-            <Link
-              href="/"
-              className="absolute left-[321px] top-[187.71px] block h-[75px] w-[223px]"
-            >
-              <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
-            </Link>
-            <a
-              href="#"
-              className="absolute left-[735.77px] top-[187.71px] block h-[75px] w-[223px]"
-            >
-              <Image src="/images/can-ergah.svg" alt="Can Ergâh" fill />
-            </a>
+          <div className="flex h-[486px] w-full flex-col items-center">
+            <div className="relative mt-[20px] h-[86px] w-[259px]">
+              <Image
+                src="/images/mel-de-magranetes.svg"
+                alt="Mel de Magranetes"
+                fill
+              />
+            </div>
+            <div className="mt-[81.71px] flex gap-[191.77px]">
+              <Link href="/" className="relative block h-[75px] w-[223px]">
+                <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
+              </Link>
+              <a href="#" className="relative block h-[75px] w-[223px]">
+                <Image src="/images/can-ergah.svg" alt="Can Ergâh" fill />
+              </a>
+            </div>
           </div>
 
           <span aria-hidden="true" className="h-px w-full bg-white" />
