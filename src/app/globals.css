@@ -67,6 +67,15 @@ button:active {
   color: white;
 }
 
+/* Vertical section dividers are always horizontally centred on their section at
+   every breakpoint. margin-inline:auto self-centres the line in both the flow
+   (block) and flex contexts the sections use, so the centring can never drift
+   regardless of the parent's display mode or alignment. */
+.section-line {
+  margin-inline: auto;
+  align-self: center;
+}
+
 /* "Introducing / Can Sakhara" lockup. The two lines fill the exact Figma title
    box width so they render at an identical width (272px @ 30px on mobile,
    435px @ 48px from the tablet breakpoint up). letter-spacing is neutralised so
@@ -119,6 +128,34 @@ button:active {
 .experience-slide {
   flex: 0 0 100%;
   width: 100%;
+}
+
+/* By Day / By Night gallery carousel (desktop). Fixed 1440px frame holding the
+   460×663 slides at a 30px gap; the track steps by one slide pitch (490px). The
+   transform lives on the `transform` property (not Tailwind's `translate`) so
+   the inline `transition: transform` actually animates it. */
+.gallery-viewport {
+  width: 1440px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.gallery-track {
+  display: flex;
+  gap: 30px;
+  width: max-content;
+  will-change: transform;
+  transform: translateX(
+    calc(var(--gallery-i, 0) * -490px + var(--gallery-drag, 0px))
+  );
+}
+
+.gallery-slide {
+  position: relative;
+  flex: 0 0 460px;
+  width: 460px;
+  height: 663px;
 }
 
 @media (min-width: 768px) and (max-width: 1439px) {

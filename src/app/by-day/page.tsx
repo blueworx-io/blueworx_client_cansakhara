@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import GalleryCarousel from "@/components/GalleryCarousel";
 
 export const metadata: Metadata = {
   title: "Can Sakhara | By Day",
@@ -15,21 +16,7 @@ const galleryImages = [
   { src: "/images/byday-gallery-3.png", alt: "A light-filled interior at Can Sakhara" },
 ];
 
-// Exact phone glyph from the Figma "call" component; uses currentColor so the
-// button can recolour it on hover.
-function PhoneIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 20 20"
-      className="size-4 fill-current md:size-5"
-    >
-      <path d="M5.45 4.16667C5.5 4.90833 5.625 5.63333 5.825 6.325L4.825 7.325C4.48333 6.325 4.26667 5.26667 4.19167 4.16667H5.45ZM13.6667 14.1833C14.375 14.3833 15.1 14.5083 15.8333 14.5583V15.8C14.7333 15.725 13.675 15.5083 12.6667 15.175L13.6667 14.1833ZM6.25 2.5H3.33333C2.875 2.5 2.5 2.875 2.5 3.33333C2.5 11.1583 8.84167 17.5 16.6667 17.5C17.125 17.5 17.5 17.125 17.5 16.6667V13.7583C17.5 13.3 17.125 12.925 16.6667 12.925C15.6333 12.925 14.625 12.7583 13.6917 12.45C13.6083 12.4167 13.5167 12.4083 13.4333 12.4083C13.2167 12.4083 13.0083 12.4917 12.8417 12.65L11.0083 14.4833C8.65 13.275 6.71667 11.35 5.51667 8.99167L7.35 7.15833C7.58333 6.925 7.65 6.6 7.55833 6.30833C7.25 5.375 7.08333 4.375 7.08333 3.33333C7.08333 2.875 6.70833 2.5 6.25 2.5Z" />
-    </svg>
-  );
-}
-
-// The bordered "Secondary Button" (phone icon + label) from the design system.
+// The bordered "Secondary Button" (label only) from the design system.
 // Mobile 10px/4px tracking, desktop 14px/5.6px.
 function SecondaryButton({
   children,
@@ -43,9 +30,8 @@ function SecondaryButton({
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center gap-2 whitespace-nowrap border border-white px-4 py-[10px] font-display text-[10px] font-normal uppercase leading-[1.4] tracking-[4px] text-white transition-colors hover:bg-white hover:text-[#ac9a8c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:gap-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px] ${className}`}
+      className={`inline-flex items-center justify-center whitespace-nowrap border border-white px-4 py-[10px] font-display text-[10px] font-normal uppercase leading-[1.4] tracking-[4px] text-white transition-colors hover:bg-white hover:text-[#ac9a8c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px] ${className}`}
     >
-      <PhoneIcon />
       <span>{children}</span>
     </a>
   );
@@ -95,11 +81,12 @@ export default function ByDay() {
         />
       </section>
 
-      {/* Sun-drenched serenity */}
-      <section className="flex h-[588px] w-full flex-col items-center bg-[#918074] px-5 pt-[60px] md:h-[736px] md:px-0 md:pt-[116px]">
+      {/* Sun-drenched serenity — desktop is framed top and bottom by a 2px
+          white divider; mobile keeps the original layout, unchanged. */}
+      <section className="flex h-[588px] w-full flex-col items-center bg-[#918074] px-5 pt-[60px] md:h-[736px] md:border-y-2 md:border-white md:px-0 md:pt-[116px]">
         <div className="flex w-full flex-col items-center gap-[25px] md:w-[1064px] md:gap-[50px]">
           <div className="text-center font-display text-[30px] uppercase leading-none text-white md:text-[48px]">
-            <p className="font-extralight tracking-[6px] indent-[3px] md:tracking-[3.2px] md:indent-[1.6px]">
+            <p className="font-thin tracking-[6px] indent-[3px] md:tracking-[3.2px] md:indent-[1.6px]">
               Sun-Drenched
             </p>
             <p className="font-light tracking-[6px] indent-[3px] md:tracking-[9.6px] md:indent-[4.8px]">
@@ -132,25 +119,10 @@ export default function ByDay() {
         </div>
       </section>
 
-      {/* Gallery — three images. Desktop: a fixed 1440 row. Mobile: a
-          snap-scrolling peek carousel (278px slides, centred). */}
-      <section className="w-full bg-white py-[20px] md:flex md:justify-center md:py-[30px]">
-        <div className="flex snap-x snap-mandatory gap-[19px] overflow-x-auto px-[calc((100vw-278px)/2)] [-ms-overflow-style:none] [scrollbar-width:none] md:w-[1440px] md:shrink-0 md:snap-none md:justify-between md:gap-0 md:overflow-x-visible md:px-0 [&::-webkit-scrollbar]:hidden">
-          {galleryImages.map((image) => (
-            <div
-              key={image.src}
-              className="relative h-[400px] w-[278px] shrink-0 snap-center md:h-[663px] md:w-[460px]"
-            >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="(max-width: 767px) 278px, 460px"
-                className="object-cover"
-              />
-            </div>
-          ))}
-        </div>
+      {/* Gallery — three images. Desktop: a looping draggable carousel. Mobile:
+          the original snap-scrolling peek strip (278px slides, centred). */}
+      <section className="w-full bg-white py-[20px] md:py-[30px]">
+        <GalleryCarousel images={galleryImages} />
       </section>
 
       {/* Balearic bliss */}

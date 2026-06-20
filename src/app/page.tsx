@@ -12,34 +12,18 @@ const features = [
   { value: "1", label: "Guest WC" },
 ];
 
-function PhoneIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="size-4 fill-none stroke-current"
-      strokeWidth="1.5"
-    >
-      <path d="M7.2 3.8 9.4 8 7.8 9.7c1.3 2.7 3.7 5.1 6.4 6.5l1.8-1.6 4.1 2.2-.8 3.2c-.2.8-.9 1.3-1.7 1.3C9.4 20.7 3.3 14.6 2.7 6.4c0-.8.5-1.5 1.3-1.7l3.2-.9Z" />
-    </svg>
-  );
-}
-
 function OutlineButton({
   children,
   href,
-  icon = false,
   className = "",
 }: {
   children: React.ReactNode;
   href: string;
-  icon?: boolean;
   className?: string;
 }) {
   const classes = `outline-button inline-flex h-[54px] items-center justify-center gap-4 whitespace-nowrap border border-current px-8 font-display text-[14px] uppercase tracking-[0.4em] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${className}`;
   const content = (
     <>
-      {icon && <PhoneIcon />}
       <span>{children}</span>
     </>
   );
