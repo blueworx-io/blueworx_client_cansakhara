@@ -25,9 +25,10 @@
 *.pem
 
 # local design-audit scratch (screenshots / capture script)
+# Root-level PNGs are local screenshots; real image assets live in public/.
 /.audit
 /.playwright-mcp
-/*-desktop.png
+/*.png
 
 # debug
 npm-debug.log*
