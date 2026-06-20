@@ -26,6 +26,8 @@
 
 # local design-audit scratch (screenshots / capture script)
 /.audit
+/.playwright-mcp
+/*-desktop.png
 
 # debug
 npm-debug.log*
