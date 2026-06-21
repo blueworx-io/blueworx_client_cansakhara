@@ -231,7 +231,7 @@ export default function Home() {
             <h3 className="features-title text-center font-display text-lg uppercase tracking-[0.32em]">
               Featuring
             </h3>
-            <div className="features-grid mt-12 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 md:grid-cols-6">
+            <div className="features-grid mt-12 grid grid-cols-3 gap-x-5 gap-y-10 md:grid-cols-6">
               {features.map((feature) => (
                 <div key={feature.label} className="text-center">
                   <div className="feature-circle mx-auto flex size-16 flex-col items-center justify-center rounded-full bg-[#f2ebe2]">
