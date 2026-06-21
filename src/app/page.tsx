@@ -160,7 +160,7 @@ export default function Home() {
             data-hero-hide
             className="hero-wordmark mx-auto h-auto w-[300px] sm:w-[520px] md:w-[655px]"
           />
-          <div className="hero-actions mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="hero-actions mt-12 flex flex-col items-center justify-center gap-4 min-[376px]:flex-row min-[376px]:justify-between sm:justify-center">
             <Link
               href="/by-day"
               data-hero-hide
@@ -257,31 +257,31 @@ export default function Home() {
 
       <section id="discover" className="discover-section relative bg-white">
         <SectionLine className="discover-line-top relative z-10 -mt-14 md:-mt-20" />
-        <div className="discover-inner px-6 pb-28 pt-24 md:px-16 md:pb-0">
+        <div className="discover-inner px-6 pb-[49px] pt-10 md:px-16 md:pb-0 md:pt-24">
           <h2 className="discover-title text-center font-display text-lg uppercase tracking-[0.34em]">
             Discover
           </h2>
-          <div className="discover-grid mx-auto mt-20 grid max-w-[1170px] gap-8 min-[1440px]:grid-cols-[550px_550px] min-[1440px]:gap-[70px]">
+          <div className="discover-grid mx-auto mt-[38px] grid max-w-[1170px] justify-items-center gap-8 md:mt-20 md:justify-items-stretch min-[1440px]:grid-cols-[550px_550px] min-[1440px]:gap-[70px]">
             <article className="discover-card flex aspect-square flex-col items-center justify-center bg-[#ac9a8c] px-6 text-center text-white">
               <SunIcon />
-              <h3 className="discover-card-title mt-[50px] font-display text-4xl font-light uppercase tracking-[0.4em] md:text-5xl">
+              <h3 className="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-5xl md:tracking-[0.4em]">
                 By day
               </h3>
               <OutlineButton
                 href="/by-day"
-                className="mt-[50px] border-white hover:bg-white hover:text-[#ac9a8c]"
+                className="mt-10 border-white hover:bg-white hover:text-[#ac9a8c] md:mt-[50px]"
               >
                 Explore
               </OutlineButton>
             </article>
             <article className="discover-card flex aspect-square flex-col items-center justify-center bg-[#031927] px-6 text-center text-white">
               <MoonIcon />
-              <h3 className="discover-card-title mt-[50px] font-display text-4xl font-light uppercase tracking-[0.4em] md:text-5xl">
+              <h3 className="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-5xl md:tracking-[0.4em]">
                 By night
               </h3>
               <OutlineButton
                 href="/by-night"
-                className="mt-[50px] border-white bg-[#286b7e] hover:bg-white hover:text-[#001c2b]"
+                className="mt-10 border-white bg-[#286b7e] hover:bg-white hover:text-[#001c2b] md:mt-[50px]"
               >
                 Explore
               </OutlineButton>

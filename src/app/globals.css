@@ -607,16 +607,24 @@ html.motion-ready [data-hero-scale] {
 
   .discover-grid {
     width: 340px;
+    gap: 30px;
   }
 
   .discover-card {
-    width: 340px;
-    height: 340px;
+    width: 270px;
+    height: 298px;
   }
 
   .discover-card img {
-    width: 112px;
-    height: 112px;
+    width: 80px;
+    height: 80px;
+  }
+
+  .discover-card .outline-button {
+    width: 113px;
+    height: 35px;
+    padding-inline: 0;
+    font-size: 10px;
   }
 
   .site-footer a:hover {
@@ -631,8 +639,7 @@ html.motion-ready [data-hero-scale] {
   .map-frame,
   .experience-image,
   .experience-copy,
-  .discover-grid,
-  .discover-card {
+  .discover-grid {
     width: 320px;
   }
 }
