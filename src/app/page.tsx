@@ -175,7 +175,7 @@ export default function Home() {
       </section>
 
       <section id="welcome" className="welcome-section relative bg-white">
-        <SectionLine className="welcome-line-top relative z-10 -mt-6" />
+        <SectionLine className="welcome-line-top relative z-10 -mt-14 md:-mt-20" />
         <div className="welcome-inner px-6 pb-24 pt-16 md:px-16 md:pb-40">
           <SectionHeading
             className="welcome-heading"
@@ -245,13 +245,13 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <SectionLine className="welcome-line-bottom" />
+        <SectionLine className="welcome-line-bottom relative z-10 -mb-14 md:-mb-20" />
       </section>
 
       <ExperienceCarousel />
 
       <section id="discover" className="discover-section relative bg-white">
-        <SectionLine className="discover-line-top" />
+        <SectionLine className="discover-line-top relative z-10 -mt-14 md:-mt-20" />
         <div className="discover-inner px-6 pb-28 pt-24 md:px-16 md:pb-0">
           <h2 className="discover-title text-center font-display text-lg uppercase tracking-[0.34em]">
             Discover
@@ -283,7 +283,7 @@ export default function Home() {
             </article>
           </div>
         </div>
-        <SectionLine className="discover-line-bottom" />
+        <SectionLine className="discover-line-bottom relative z-10 -mb-14 md:-mb-20" />
       </section>
 
       <section className="video-section relative flex h-[430px] items-center justify-center md:h-[600px]">

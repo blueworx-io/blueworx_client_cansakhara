@@ -18,6 +18,9 @@ export type GalleryImage = { src: string; alt: string };
 // one design language.
 const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
 const DURATION_MS = 650;
+// Dwell between automatic advances. The carousel auto-loops endlessly; manual
+// input simply resets this timer.
+const AUTOPLAY_MS = 4000;
 
 // The gallery is the fixed Figma row: three 460×663 slides with a 30px gap that
 // fill the 1440px frame edge-to-edge. The slide width sets the drag threshold;
@@ -52,6 +55,9 @@ export default function GalleryCarousel({
   const [dragPx, setDragPx] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  // Bumped on manual input so the autoplay timer restarts from a fresh dwell.
+  const [autoplayNonce, setAutoplayNonce] = useState(0);
   const indexRef = useRef(index);
   // True while a no-animation wrap is settling, so a fast second input can't
   // fire mid-jump and overshoot the rendered range.
@@ -64,6 +70,16 @@ export default function GalleryCarousel({
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setReduced(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  // The carousel only renders (and so only needs to autoplay) at the desktop
+  // breakpoint; mobile uses the native snap strip.
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsDesktop(query.matches);
     update();
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
@@ -101,6 +117,15 @@ export default function GalleryCarousel({
     }
   }, [animate, index]);
 
+  // Endless auto-loop: advance one slide every dwell, forever. Paused while the
+  // user drags and disabled under reduced-motion; any manual input resets the
+  // dwell via `autoplayNonce` so it never double-steps right after a swipe.
+  useEffect(() => {
+    if (reduced || !isDesktop || isDragging) return;
+    const id = window.setInterval(() => step(1), AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [reduced, isDesktop, isDragging, autoplayNonce, step]);
+
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 && event.pointerType === "mouse") return;
     if (settlingRef.current) return;
@@ -131,15 +156,18 @@ export default function GalleryCarousel({
     if (dragged <= -SLIDE_W / 2) delta = 1;
     else if (dragged >= SLIDE_W / 2) delta = -1;
     step(delta);
+    setAutoplayNonce((k) => k + 1);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "ArrowRight") {
       event.preventDefault();
       step(1);
+      setAutoplayNonce((k) => k + 1);
     } else if (event.key === "ArrowLeft") {
       event.preventDefault();
       step(-1);
+      setAutoplayNonce((k) => k + 1);
     }
   };
 

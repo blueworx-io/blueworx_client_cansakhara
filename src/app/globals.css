@@ -41,7 +41,11 @@ body {
   display: none;
 }
 
-.welcome-section {
+/* flow-root establishes a block formatting context so the dividers' negative
+   margins bleed the line across the section boundary (straddling it 50/50)
+   instead of collapsing through and shifting the whole section. */
+.welcome-section,
+.discover-section {
   display: flow-root;
 }
 

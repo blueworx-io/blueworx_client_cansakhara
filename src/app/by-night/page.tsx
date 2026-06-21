@@ -119,9 +119,9 @@ export default function ByNight() {
         </div>
       </section>
 
-      {/* Gallery — desktop gains a white band + looping draggable carousel;
-          mobile keeps the original dark snap-scrolling peek strip, unchanged. */}
-      <section className="w-full bg-[#000e16] py-[20px] md:bg-white md:py-[30px]">
+      {/* Gallery — always a white band. Desktop: a looping draggable carousel.
+          Mobile: the original snap-scrolling peek strip (278px slides). */}
+      <section className="w-full bg-white py-[20px] md:py-[30px]">
         <GalleryCarousel images={galleryImages} />
       </section>
 
