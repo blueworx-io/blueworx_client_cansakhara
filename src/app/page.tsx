@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ExperienceCarousel from "@/components/ExperienceCarousel";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 const features = [
   { value: "6061", unit: "m²", label: "Plot" },
@@ -304,34 +305,7 @@ export default function Home() {
         </button>
       </section>
 
-      <footer
-        id="contact"
-        className="site-footer relative flex min-h-[760px] flex-col bg-[#492735] px-6 py-24 text-white md:h-[932px] md:min-h-0 md:px-20 md:py-0"
-      >
-        <div className="footer-parent-logo relative mx-auto h-[86px] w-[259px]">
-          <Image src="/images/mel-de-magranetes.svg" alt="Mel de Magranetes" fill />
-        </div>
-
-        <div className="footer-brands mx-auto mt-20 grid w-full max-w-3xl gap-16 text-center sm:grid-cols-2 md:mt-0">
-          <Link href="/" className="relative mx-auto block h-[75px] w-[223px]">
-            <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
-          </Link>
-          <a href="#" className="relative mx-auto block h-[75px] w-[223px]">
-            <Image src="/images/can-ergah.svg" alt="Can Ergâh" fill />
-          </a>
-        </div>
-
-        <div className="footer-bottom mt-auto border-t border-white/70 pt-10 font-body text-[11px] uppercase tracking-[0.22em]">
-          <div className="flex flex-col gap-7 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
-            <p>© 2026 Mel de Magranetes SL</p>
-            <nav className="flex justify-center gap-7 sm:justify-end">
-              <a href="#">Terms</a>
-              <a href="#">Cookies</a>
-              <a href="#">Privacy</a>
-            </nav>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter theme="home" />
     </main>
   );
 }

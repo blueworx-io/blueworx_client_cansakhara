@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import GalleryCarousel from "@/components/GalleryCarousel";
 
 export const metadata: Metadata = {
@@ -154,38 +154,7 @@ export default function ByNight() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-[2px] w-full bg-[#000e16] px-5 pb-[50px] pt-[80px] text-white md:px-20 md:pt-[144px]">
-        <div className="mx-auto flex w-full flex-col gap-[30px] md:w-[1280px] md:gap-20">
-          <div className="flex w-full flex-col items-center md:h-[486px]">
-            <div className="relative mt-[28px] h-[59px] w-[177px] md:mt-[20px] md:h-[86px] md:w-[259px]">
-              <Image
-                src="/images/mel-de-magranetes.svg"
-                alt="Mel de Magranetes"
-                fill
-              />
-            </div>
-            <div className="mt-[40px] flex w-full max-w-[340px] justify-between md:mt-[81.71px] md:w-auto md:max-w-none md:justify-normal md:gap-[191.77px]">
-              <Link href="/" className="relative block h-[47px] w-[140px] md:h-[75px] md:w-[223px]">
-                <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
-              </Link>
-              <a href="#" className="relative block h-[47px] w-[140px] md:h-[75px] md:w-[223px]">
-                <Image src="/images/can-ergah.svg" alt="Can Ergâh" fill />
-              </a>
-            </div>
-          </div>
-
-          <span aria-hidden="true" className="h-px w-full bg-white" />
-
-          <div className="flex flex-col items-center gap-4 font-display text-[8px] font-light uppercase leading-[1.2] tracking-[1.6px] text-white md:flex-row md:items-center md:gap-0 md:text-[14px] md:tracking-[2.8px]">
-            <p className="md:flex-1">© 2026 Mel de Magranetes SL</p>
-            <nav className="flex items-center gap-6 md:gap-10">
-              <a href="#">Terms</a>
-              <a href="#">Cookies</a>
-              <a href="#">Privacy</a>
-            </nav>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter theme="night" className="mt-[2px]" />
     </main>
   );
 }
