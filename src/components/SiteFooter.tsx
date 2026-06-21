@@ -31,14 +31,20 @@ export default function SiteFooter({
             house brands in a centred row beneath. The block keeps the Figma
             fixed height (the marks sit in its upper portion). */}
         <div className="flex h-[293px] w-full flex-col items-center md:h-[486px]">
-          <div className="relative mt-[28px] h-[59px] w-[177px] md:mt-[20px] md:h-[86px] md:w-[259px]">
+          <div
+            data-anim="footer-item"
+            className="relative mt-[28px] h-[59px] w-[177px] md:mt-[20px] md:h-[86px] md:w-[259px]"
+          >
             <Image
               src="/images/mel-de-magranetes.svg"
               alt="Mel de Magranetes"
               fill
             />
           </div>
-          <div className="mt-[40px] flex justify-center gap-[51px] md:mt-[81.71px] md:gap-[191.77px]">
+          <div
+            data-anim="footer-item"
+            className="mt-[40px] flex justify-center gap-[51px] md:mt-[81.71px] md:gap-[191.77px]"
+          >
             <Link
               href="/"
               className="relative block h-[47px] w-[140px] md:h-[75px] md:w-[223px]"
@@ -59,7 +65,10 @@ export default function SiteFooter({
         {/* Bottom row — desktop: copyright left, links right on one line.
             Mobile: links above the copyright, both centred (Figma 1:849 desktop
             / 1:366 mobile). */}
-        <div className="flex flex-col-reverse items-center gap-5 font-display text-[8px] font-light uppercase leading-[1.2] tracking-[1.6px] md:flex-row md:items-center md:gap-0 md:text-[14px] md:tracking-[2.8px]">
+        <div
+          data-anim="footer-item"
+          className="flex flex-col-reverse items-center gap-5 font-display text-[8px] font-light uppercase leading-[1.2] tracking-[1.6px] md:flex-row md:items-center md:gap-0 md:text-[14px] md:tracking-[2.8px]"
+        >
           <p className="text-center md:flex-1 md:text-left">
             © 2026 Mel de Magranetes SL
           </p>
