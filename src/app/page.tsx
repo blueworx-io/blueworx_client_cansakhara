@@ -135,8 +135,8 @@ function MoonIcon() {
 
 export default function Home() {
   return (
-    <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-white text-[#42081a]">
-      <section className="hero-section relative flex h-screen flex-col items-center justify-center">
+    <main className="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-white text-[#42081a]">
+      <section className="hero-section relative flex h-[100dvh] flex-col items-center justify-center">
         <Image
           src="/images/hero.png"
           alt="Can Sakhara villa in the hills of Ibiza"
@@ -269,7 +269,7 @@ export default function Home() {
               </h3>
               <OutlineButton
                 href="/by-day"
-                className="mt-10 border-white hover:bg-white hover:text-[#ac9a8c] md:mt-[50px]"
+                className="mt-10 border-white bg-[#918074] hover:bg-white hover:text-[#ac9a8c] md:mt-[50px]"
               >
                 Explore
               </OutlineButton>
@@ -281,7 +281,7 @@ export default function Home() {
               </h3>
               <OutlineButton
                 href="/by-night"
-                className="mt-10 border-white bg-[#286b7e] hover:bg-white hover:text-[#001c2b] md:mt-[50px]"
+                className="mt-10 border-white bg-[#255a6b] hover:bg-white hover:text-[#001c2b] md:mt-[50px]"
               >
                 Explore
               </OutlineButton>

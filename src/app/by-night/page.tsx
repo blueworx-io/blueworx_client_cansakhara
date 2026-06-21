@@ -42,9 +42,9 @@ function SecondaryButton({
 
 export default function ByNight() {
   return (
-    <main className="site-shell h-screen overflow-x-hidden overflow-y-auto bg-[#000e16] text-white">
+    <main className="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-[#000e16] text-white">
       {/* Hero — flat By Night navy, transparent navbar over it */}
-      <section className="relative flex h-screen w-full flex-col items-center justify-center bg-[#031927]">
+      <section className="relative flex h-[100dvh] w-full flex-col items-center justify-center bg-[#031927]">
         <SiteHeader theme="night" />
 
         <span
@@ -83,11 +83,11 @@ export default function ByNight() {
         </div>
       </section>
 
-      {/* Full-width estate view — desktop is framed top and bottom by a 2px
-          white divider; mobile keeps the original dark theme, unchanged. */}
+      {/* Full-width estate view — framed top and bottom by a 2px white divider
+          at every breakpoint (the white borders must always remain). */}
       <section
         data-anim="clip-image"
-        className="relative mt-[2px] h-[300px] w-full md:mt-0 md:h-[531px] md:border-y-2 md:border-white"
+        className="relative mt-[2px] h-[300px] w-full border-y-2 border-white md:mt-0 md:h-[531px]"
       >
         <Image
           src="/images/bynight-1.png"
@@ -173,10 +173,11 @@ export default function ByNight() {
         </div>
       </section>
 
-      {/* Full-width pool view */}
+      {/* Full-width pool view — framed top and bottom by a 2px white divider at
+          every breakpoint (the white borders must always remain). */}
       <section
         data-anim="clip-image"
-        className="relative mt-[2px] h-[266px] w-full md:h-[663px]"
+        className="relative mt-[2px] h-[266px] w-full border-y-2 border-white md:h-[663px]"
       >
         <Image
           src="/images/bynight-2.png"

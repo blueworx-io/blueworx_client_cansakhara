@@ -27,9 +27,18 @@ const experiences: Experience[] = [
     title: "An island original",
     subtitle: (
       <>
-        Can Sakhara is a magnet for non-conformists.
-        <br />
-        Innovators. Individuals. Much like the island herself
+        {/* Mobile: auto-balanced into three even lines with no widow (the fixed
+            340px card can't fit the longest sentence on one line at 17px, so
+            hard breaks would widow). Desktop keeps its existing two-line layout. */}
+        <span className="block [text-wrap:balance] md:hidden">
+          Can Sakhara is a magnet for non-conformists. Innovators.
+          Individuals. Much like the island herself
+        </span>
+        <span className="hidden md:inline">
+          Can Sakhara is a magnet for non-conformists.
+          <br />
+          Innovators. Individuals. Much like the island herself
+        </span>
       </>
     ),
     image: "/images/experience-1.png",
@@ -44,9 +53,17 @@ const experiences: Experience[] = [
     title: "Boldly beautiful",
     subtitle: (
       <>
-        So much more than a conventional luxury villa rental.
-        <br />
-        Tune-in to your personal Ibiza experience, unique in every way
+        {/* Mobile: auto-balanced into three even lines with no widow. Desktop
+            keeps its existing two-line layout. */}
+        <span className="block [text-wrap:balance] md:hidden">
+          So much more than a conventional luxury villa rental. Tune-in to
+          your personal Ibiza experience, unique in every way
+        </span>
+        <span className="hidden md:inline">
+          So much more than a conventional luxury villa rental.
+          <br />
+          Tune-in to your personal Ibiza experience, unique in every way
+        </span>
       </>
     ),
     image: "/images/experience-2.png",
@@ -61,9 +78,17 @@ const experiences: Experience[] = [
     title: "Heart of a home",
     subtitle: (
       <>
-        Just as our changing moods shape how we use a space,
-        <br />
-        so Can Sakhara shifts alongside us to match the tempo
+        {/* Mobile: auto-balanced into three even lines with no widow. Desktop
+            keeps its existing two-line layout. */}
+        <span className="block [text-wrap:balance] md:hidden">
+          Just as our changing moods shape how we use a space, so Can
+          Sakhara shifts alongside us to match the tempo
+        </span>
+        <span className="hidden md:inline">
+          Just as our changing moods shape how we use a space,
+          <br />
+          so Can Sakhara shifts alongside us to match the tempo
+        </span>
       </>
     ),
     image: "/images/experience-3.png",

@@ -24,7 +24,7 @@ export default function SiteFooter({
     <footer
       id="contact"
       style={{ backgroundColor: FOOTER_COLORS[theme] }}
-      className={`site-footer w-full px-5 pb-[50px] pt-[80px] text-white md:px-20 md:pt-[144px] ${className}`}
+      className={`site-footer w-full px-5 pb-[calc(50px+env(safe-area-inset-bottom))] pt-[80px] text-white md:px-20 md:pb-[50px] md:pt-[144px] ${className}`}
     >
       <div className="mx-auto flex w-full flex-col gap-[30px] md:w-[1280px] md:gap-20">
         {/* Logo block — the Mel de Magranetes mark centred at the top, the two

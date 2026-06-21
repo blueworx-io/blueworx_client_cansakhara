@@ -23,19 +23,19 @@ const DURATION_MS = 650;
 // input simply resets this timer.
 const AUTOPLAY_MS = 4000;
 
-// The gallery is the fixed Figma row: three 460×663 slides with a 30px gap that
-// fill the 1440px frame edge-to-edge. The slide width sets the drag threshold;
-// the 490px pitch and 30px gap live in the CSS track transform.
+// Desktop slide width — the fixed Figma row is three 460×663 slides with a 30px
+// gap filling the 1440px frame edge-to-edge. Used only as the drag-threshold
+// fallback; the live threshold is measured from the rendered slide so it adapts
+// to the 278px mobile slide. The pitch and gap live in the CSS track transform.
 const SLIDE_W = 460;
 
-// The By Day / By Night image gallery.
-//
-// Mobile keeps the original native scroll-snap strip untouched (the brief: the
-// mobile design must stay unaffected). Desktop upgrades the static row into a
-// draggable, endlessly-looping carousel that keeps the exact 460×663 slide size
-// and 1440px frame. Three copies of the set are rendered so the loop can wrap in
-// either direction without ever revealing a gap; once a step lands outside the
-// middle copy we silently jump back into it.
+// The By Day / By Night image gallery — a draggable, endlessly-looping carousel
+// that auto-rotates on every breakpoint. Mobile shows a centred 278px slide with
+// a peek of the previous slide on the left and the next on the right (always
+// left/centre/right visible); desktop shows the fixed 460×663 row in the 1440px
+// frame. Three copies of the set are rendered so the loop can wrap in either
+// direction without ever revealing a gap; once a step lands outside the middle
+// copy we silently jump back into it.
 export default function GalleryCarousel({
   images,
 }: {
@@ -44,7 +44,7 @@ export default function GalleryCarousel({
   const n = images.length;
   const slides = [...images, ...images, ...images];
 
-  const desktopRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragStartX = useRef(0);
   const dragPxRef = useRef(0);
@@ -119,14 +119,15 @@ export default function GalleryCarousel({
     }
   }, [animate, index]);
 
-  // Endless auto-loop: advance one slide every dwell, forever. Paused while the
-  // user drags and disabled under reduced-motion; any manual input resets the
-  // dwell via `autoplayNonce` so it never double-steps right after a swipe.
+  // Endless auto-loop on every breakpoint: advance one slide every dwell,
+  // forever. Paused while the user drags and disabled under reduced-motion; any
+  // manual input resets the dwell via `autoplayNonce` so it never double-steps
+  // right after a swipe.
   useEffect(() => {
-    if (reduced || !isDesktop || isDragging) return;
+    if (reduced || isDragging) return;
     const id = window.setInterval(() => step(1), AUTOPLAY_MS);
     return () => window.clearInterval(id);
-  }, [reduced, isDesktop, isDragging, autoplayNonce, step]);
+  }, [reduced, isDragging, autoplayNonce, step]);
 
   // Desktop-only one-time entrance: stagger a clip reveal across the three
   // initially-visible (middle-copy) slides when the gallery scrolls into view.
@@ -134,7 +135,7 @@ export default function GalleryCarousel({
   useGSAP(
     () => {
       if (!isDesktop) return;
-      const root = desktopRef.current;
+      const root = rootRef.current;
       if (!root) return;
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -154,7 +155,7 @@ export default function GalleryCarousel({
       });
       return () => mm.revert();
     },
-    { scope: desktopRef, dependencies: [isDesktop] },
+    { scope: rootRef, dependencies: [isDesktop] },
   );
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -181,11 +182,15 @@ export default function GalleryCarousel({
     if (viewport?.hasPointerCapture(event.pointerId)) {
       viewport.releasePointerCapture(event.pointerId);
     }
+    // Threshold off the rendered slide width so the swipe feels right at the
+    // 278px mobile size as well as the 460px desktop size.
+    const slide = viewport?.querySelector<HTMLElement>(".gallery-slide");
+    const width = slide?.offsetWidth ?? SLIDE_W;
     const dragged = dragPxRef.current;
     // Advance only once dragged past half a slide.
     let delta = 0;
-    if (dragged <= -SLIDE_W / 2) delta = 1;
-    else if (dragged >= SLIDE_W / 2) delta = -1;
+    if (dragged <= -width / 2) delta = 1;
+    else if (dragged >= width / 2) delta = -1;
     step(delta);
     setAutoplayNonce((k) => k + 1);
   };
@@ -215,68 +220,47 @@ export default function GalleryCarousel({
   } as CSSProperties;
 
   return (
-    <>
-      {/* Mobile: original native snap-scroll strip — kept exactly as designed. */}
+    // Looping, draggable, auto-rotating carousel at every breakpoint (centred
+    // 278px peek strip on mobile, fixed 1440px frame on desktop).
+    <div ref={rootRef} className="flex justify-center">
       <div
-        className="flex snap-x snap-mandatory gap-[19px] overflow-x-auto px-[calc((100vw-278px)/2)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:hidden"
+        ref={viewportRef}
+        role="group"
+        tabIndex={0}
+        aria-roledescription="carousel"
+        aria-label={`Gallery image ${logical + 1} of ${n}`}
+        onKeyDown={handleKeyDown}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        className={`gallery-viewport cursor-grab focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current ${
+          isDragging ? "cursor-grabbing select-none" : ""
+        }`}
       >
-        {images.map((image) => (
-          <div
-            key={image.src}
-            className="relative h-[400px] w-[278px] shrink-0 snap-center"
-          >
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              sizes="278px"
-              className="object-cover"
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Desktop: looping, draggable carousel at the fixed 1440px frame. */}
-      <div ref={desktopRef} className="hidden md:flex md:justify-center">
         <div
-          ref={viewportRef}
-          role="group"
-          tabIndex={0}
-          aria-roledescription="carousel"
-          aria-label={`Gallery image ${logical + 1} of ${n}`}
-          onKeyDown={handleKeyDown}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={endDrag}
-          onPointerCancel={endDrag}
-          className={`gallery-viewport cursor-grab focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current ${
-            isDragging ? "cursor-grabbing select-none" : ""
-          }`}
+          className="gallery-track"
+          style={trackStyle}
+          onTransitionEnd={handleTransitionEnd}
         >
-          <div
-            className="gallery-track"
-            style={trackStyle}
-            onTransitionEnd={handleTransitionEnd}
-          >
-            {slides.map((image, slideIndex) => (
-              <div
-                key={`${image.src}-${slideIndex}`}
-                aria-roledescription="slide"
-                className="gallery-slide"
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  draggable={false}
-                  sizes="460px"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
+          {slides.map((image, slideIndex) => (
+            <div
+              key={`${image.src}-${slideIndex}`}
+              aria-roledescription="slide"
+              className="gallery-slide"
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                draggable={false}
+                sizes="(max-width: 767px) 278px, 460px"
+                className="object-cover"
+              />
+            </div>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
