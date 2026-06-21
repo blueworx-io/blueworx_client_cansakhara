@@ -8,8 +8,12 @@ import {
   scrollTriggerVars,
 } from "./gsap";
 
-// Fade + subtle rise, triggered when the element scrolls into view.
-export function fadeUp(target: Element, opts: { delay?: number } = {}): void {
+// Fade + subtle rise, triggered when the element (or an explicit trigger)
+// scrolls into view.
+export function fadeUp(
+  target: Element,
+  opts: { delay?: number; trigger?: Element } = {},
+): void {
   gsap.set(target, { autoAlpha: 0, y: DIST.y() });
   gsap.to(target, {
     autoAlpha: 1,
@@ -17,7 +21,7 @@ export function fadeUp(target: Element, opts: { delay?: number } = {}): void {
     duration: DUR.reveal,
     ease: EASE,
     delay: opts.delay ?? 0,
-    scrollTrigger: scrollTriggerVars(target),
+    scrollTrigger: scrollTriggerVars(opts.trigger ?? target),
   });
 }
 
@@ -100,13 +104,13 @@ export function revealExistingChars(
 
 // Elegant curtain unveil via clip-path. The element/section must visually clip
 // (images use object-cover; sections reveal their own box).
-export function clipImageReveal(el: Element): void {
+export function clipImageReveal(el: Element, opts: { trigger?: Element } = {}): void {
   gsap.set(el, { clipPath: "inset(0% 0% 100% 0%)" });
   gsap.to(el, {
     clipPath: "inset(0% 0% 0% 0%)",
     duration: DUR.image,
     ease: EASE,
-    scrollTrigger: scrollTriggerVars(el),
+    scrollTrigger: scrollTriggerVars(opts.trigger ?? el),
   });
 }
 

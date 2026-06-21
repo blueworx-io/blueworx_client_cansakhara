@@ -11,6 +11,8 @@ import {
   type PointerEvent as ReactPointerEvent,
   type TransitionEvent as ReactTransitionEvent,
 } from "react";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
+import { clipImageReveal, fadeUp } from "@/lib/motion/animations";
 
 type Experience = {
   title: string;
@@ -87,6 +89,7 @@ const slides: Experience[] = [
 ];
 
 export default function ExperienceCarousel() {
+  const sectionRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragStartX = useRef(0);
   const dragPxRef = useRef(0);
@@ -111,6 +114,32 @@ export default function ExperienceCarousel() {
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
   }, []);
+
+  // One-time entrance reveal of the initially-visible slide's heading + image
+  // when the section scrolls into view. Targets the active (non-clone) slide via
+  // its aria-hidden state so it never depends on `index` (runs once on mount),
+  // and never touches the track transform or drag logic.
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      if (!section) return;
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const active = section.querySelector<HTMLElement>(
+          '.experience-slide[aria-hidden="false"]',
+        );
+        if (!active) return;
+        const heading = active.querySelector(".experience-heading");
+        const image = active.querySelector(".experience-image");
+        // Trigger both off the section entering, so the (lower) image can't be
+        // left clipped if the carousel is advanced before it scrolls into view.
+        if (heading) fadeUp(heading, { trigger: section });
+        if (image) clipImageReveal(image, { trigger: section });
+      });
+      return () => mm.revert();
+    },
+    { scope: sectionRef },
+  );
 
   const logical = ((index - 1) % n + n) % n;
 
@@ -200,6 +229,7 @@ export default function ExperienceCarousel() {
 
   return (
     <section
+      ref={sectionRef}
       id="experience"
       className="experience-section relative overflow-hidden bg-[#f2ebe2] py-28 md:py-0"
       aria-roledescription="carousel"
