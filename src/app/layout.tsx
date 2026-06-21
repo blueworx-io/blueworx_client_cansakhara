@@ -4,6 +4,7 @@ import {
   Source_Sans_3,
   Source_Serif_4,
 } from "next/font/google";
+import MotionRoot from "@/components/MotionRoot";
 import "./globals.css";
 
 const display = Montserrat({
@@ -41,7 +42,10 @@ export default function RootLayout({
       lang="en"
       className={`${display.variable} ${body.variable} ${serif.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <MotionRoot />
+      </body>
     </html>
   );
 }
