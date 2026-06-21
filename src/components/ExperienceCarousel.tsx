@@ -284,7 +284,7 @@ export default function ExperienceCarousel() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="experience-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words font-body text-[15px] font-light leading-[1.6] tracking-[0.05em] min-[1440px]:max-w-none min-[1440px]:text-[16px]">
+                  <div className="experience-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words text-center font-body text-[15px] font-light leading-[1.6] tracking-[0.05em] md:text-left min-[1440px]:max-w-none min-[1440px]:text-[16px]">
                     {experience.paragraphs.map((paragraph) => (
                       <p key={paragraph} className="mt-6 first:mt-0">
                         {paragraph}

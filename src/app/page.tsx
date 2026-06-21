@@ -201,7 +201,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="welcome-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words font-body text-[15px] font-light leading-[1.75] tracking-[0.04em] min-[1440px]:max-w-none min-[1440px]:text-base">
+            <div className="welcome-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words text-center font-body text-[15px] font-light leading-[1.75] tracking-[0.04em] md:text-left min-[1440px]:max-w-none min-[1440px]:text-base">
               <p>
                 Every so often the White Isle opens up to reveal one of her
                 hidden gems, instantly challenging clichéd notions of the
