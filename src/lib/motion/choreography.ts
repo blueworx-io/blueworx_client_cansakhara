@@ -140,7 +140,6 @@ export function buildHomeScroll(shell: HTMLElement): void {
 export function buildDayNightHero(shell: HTMLElement): void {
   const rule = one(shell, "[data-anim='hero-rule']");
   const icon = one(shell, "[data-anim='hero-icon']");
-  const title = one(shell, "[data-anim='hero-title']");
   const wordmark = one(shell, "[data-anim='hero-wordmark']");
 
   const tl = gsap.timeline({ defaults: { ease: EASE } });
@@ -152,12 +151,24 @@ export function buildDayNightHero(shell: HTMLElement): void {
     gsap.set(icon, { autoAlpha: 0, y: 16 });
     tl.to(icon, { autoAlpha: 1, y: 0, duration: DUR.reveal }, 0.15);
   }
-  // Character reveal on the headline; short + immediate (LCP-safe).
-  if (title) charsReveal(title, { immediate: true, stagger: 0.04 });
+  // NB: the headline char reveal is deliberately NOT built here. It uses
+  // SplitText, which must measure against the loaded webfont — running it in the
+  // pre-font hero phase splits on fallback metrics, so the wide letter-spacing
+  // shows oversized gaps until the font swaps in and reflows ("snaps back").
+  // It is built in buildDayNightHeroTitle from the fonts-ready phase instead.
   if (wordmark) {
     gsap.set(wordmark, { autoAlpha: 0, y: 14 });
     tl.to(wordmark, { autoAlpha: 1, y: 0, duration: DUR.reveal }, 0.5);
   }
+}
+
+// Hero headline char reveal. Split here, after webfonts settle, so SplitText
+// measures the real font and the tracked-out letters never reflow mid-reveal.
+// Still plays immediately (it is above the fold), the host stays hidden via the
+// `data-hero-hide` no-FOUC guard until then.
+export function buildDayNightHeroTitle(shell: HTMLElement): void {
+  const title = one(shell, "[data-anim='hero-title']");
+  if (title) charsReveal(title, { immediate: true, stagger: 0.04 });
 }
 
 export function buildDayNightScroll(shell: HTMLElement): void {

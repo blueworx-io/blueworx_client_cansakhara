@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 import MenuDrawer from "@/components/MenuDrawer";
 
 const ENQUIRE_HREF = "mailto:reservations@cansakhara.com";
@@ -32,8 +32,35 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  // The centre logo mark draws itself (DrawSVG) on load and on a loop; the
+  // running timeline is held here so a scroll-up reveal can replay it.
+  const logoPathRef = useRef<SVGPathElement>(null);
+  const drawTlRef = useRef<gsap.core.Timeline | null>(null);
 
   const close = useCallback(() => setOpen(false), []);
+
+  // Logo self-draw: the stroke draws on (fill faded out), then the fill fades
+  // in, repeating every ~3s. Gated to no-reduced-motion via matchMedia, so
+  // reduced-motion users keep the static filled mark. useGSAP sets the hidden
+  // "from" state pre-paint, so the solid logo never flashes before drawing.
+  useGSAP(() => {
+    const path = logoPathRef.current;
+    if (!path) return;
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.4 });
+      tl.fromTo(
+        path,
+        { drawSVG: "0%", fillOpacity: 0 },
+        { drawSVG: "100%", duration: 1.4, ease: "power1.inOut" },
+      ).to(path, { fillOpacity: 1, duration: 0.4, ease: "power1.out" }, "-=0.25");
+      drawTlRef.current = tl;
+    });
+    return () => {
+      drawTlRef.current = null;
+      mm.revert();
+    };
+  });
 
   // The home hero is a photo, so the header stays transparent over it until you
   // scroll. The day/night heroes are solid colours, so the header takes that
@@ -47,6 +74,7 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
     if (!scroller) return;
 
     let lastY = scroller.scrollTop;
+    let wasHidden = false;
     const onScroll = () => {
       const y = scroller.scrollTop;
       // Past the hero the bar gets a solid page-colour background so its white
@@ -54,7 +82,11 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
       setScrolled(y > 100);
       // Ignore tiny jitter; keep the bar pinned near the very top.
       if (Math.abs(y - lastY) > 4) {
-        setHidden(y > lastY && y > 100);
+        const nowHidden = y > lastY && y > 100;
+        // Header re-appearing on scroll-up: replay the logo draw from the top.
+        if (wasHidden && !nowHidden) drawTlRef.current?.restart(true);
+        wasHidden = nowHidden;
+        setHidden(nowHidden);
         lastY = y;
       }
     };
@@ -86,19 +118,29 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
 
           {/* Centre mark: the square logo (Figma navbar 1:962 desktop 52px /
               1:389 mobile ~31px). Stays put when the menu opens — the drawer's
-              scrim dims it along with the rest of the header. */}
+              scrim dims it along with the rest of the header. Inlined (vs the
+              logo-white.svg asset) so DrawSVG can animate the path stroke. */}
           <Link
             href="/"
             aria-label="Can Sakhara home"
             className="grid place-items-center justify-self-center"
           >
-            <Image
-              src="/images/logo-white.svg"
-              alt=""
-              width={52}
-              height={52}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 52 52"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
               className="h-[31px] w-[31px] md:h-[52px] md:w-[52px]"
-            />
+            >
+              <path
+                ref={logoPathRef}
+                d="M0 52H39.0067L0 13.0067V52.0135V52ZM0.728594 14.7608L37.2392 51.2714H0.728594V14.7608ZM52 0H38.9933L52 13.0067V0ZM12.4805 0L52 39.5195V38.494L13.5195 0H12.494H12.4805Z"
+                fill="white"
+                stroke="white"
+                strokeWidth={1}
+                strokeLinejoin="round"
+              />
+            </svg>
           </Link>
 
           <div className="justify-self-end">
