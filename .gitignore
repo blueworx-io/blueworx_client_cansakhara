@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# domscribe (local dev daemon workspace)
+.domscribe
+
 # production
 /build
 
