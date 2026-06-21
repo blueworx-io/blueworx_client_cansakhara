@@ -7,6 +7,7 @@ import {
   buildHomeHero,
   buildHomeScroll,
   buildDayNightHero,
+  buildDayNightHeroTitle,
   buildDayNightScroll,
 } from "@/lib/motion/choreography";
 
@@ -39,7 +40,12 @@ export default function MotionRoot() {
         mm.add("(prefers-reduced-motion: no-preference)", () => {
           buildCommonChoreography(shell);
           if (pathname === "/") buildHomeScroll(shell);
-          else if (isDayNight) buildDayNightScroll(shell);
+          else if (isDayNight) {
+            // Hero headline splits here (fonts settled) so its tracked-out
+            // letters don't reflow mid-reveal; then the scroll reveals.
+            buildDayNightHeroTitle(shell);
+            buildDayNightScroll(shell);
+          }
         });
         ScrollTrigger.refresh();
       };

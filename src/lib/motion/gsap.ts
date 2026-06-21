@@ -6,12 +6,13 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { useGSAP } from "@gsap/react";
 
 // Register plugins once. Safe to call repeatedly (GSAP de-dupes).
-gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
+gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, useGSAP);
 
-export { gsap, ScrollTrigger, SplitText, useGSAP };
+export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, useGSAP };
 
 // One house style for the whole site.
 export const EASE = "power3.out";

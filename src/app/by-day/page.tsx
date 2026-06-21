@@ -44,7 +44,7 @@ export default function ByDay() {
   return (
     <main className="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-white text-white">
       {/* Hero — flat By Day taupe, transparent navbar over it */}
-      <section className="relative flex h-[100dvh] w-full flex-col items-center justify-center bg-[#ac9a8c]">
+      <section className="relative flex h-[100svh] w-full flex-col items-center justify-center bg-[#ac9a8c]">
         <SiteHeader theme="day" />
 
         <span

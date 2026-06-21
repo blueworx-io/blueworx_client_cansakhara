@@ -136,7 +136,7 @@ function MoonIcon() {
 export default function Home() {
   return (
     <main className="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-white text-[#42081a]">
-      <section className="hero-section relative flex h-[100dvh] flex-col items-center justify-center">
+      <section className="hero-section relative flex h-[100svh] flex-col items-center justify-center overflow-hidden">
         <Image
           src="/images/hero.png"
           alt="Can Sakhara villa in the hills of Ibiza"
