@@ -344,6 +344,10 @@ html.motion-ready [data-anim="draw-icon"] path {
     /* line-top bottom sits 79px below section top; +75 lands the heading at the
        Figma top of 154px. */
     padding-top: 75px;
+    /* The gap below the features block to the divider is supplied entirely by
+       the line's margin-top (106px, the Figma gap). Reset the Tailwind
+       `md:pb-40` so that gap isn't double-counted. */
+    padding-bottom: 0;
   }
 
   .section-heading {
