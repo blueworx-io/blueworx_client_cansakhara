@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 export type FooterTheme = "home" | "day" | "night";
 
@@ -35,24 +34,35 @@ export default function SiteFooter({
             data-anim="footer-item"
             className="relative mt-[28px] h-[59px] w-[177px] md:mt-[20px] md:h-[86px] md:w-[259px]"
           >
-            <Image
-              src="/images/mel-de-magranetes.svg"
-              alt="Mel de Magranetes"
-              fill
-            />
+            <a
+              href="https://mdmsl.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative block h-full w-full"
+            >
+              <Image
+                src="/images/mel-de-magranetes.svg"
+                alt="Mel de Magranetes"
+                fill
+              />
+            </a>
           </div>
           <div
             data-anim="footer-item"
             className="mt-[40px] flex justify-center gap-[51px] md:mt-[81.71px] md:gap-[191.77px]"
           >
-            <Link
-              href="/"
+            <a
+              href="https://cansakhara.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="relative block h-[47px] w-[140px] md:h-[75px] md:w-[223px]"
             >
               <Image src="/images/can-sakhara-footer.svg" alt="Can Sakhara" fill />
-            </Link>
+            </a>
             <a
-              href="#"
+              href="https://canergah.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="relative block h-[47px] w-[140px] md:h-[75px] md:w-[223px]"
             >
               <Image src="/images/can-ergah.svg" alt="Can Ergâh" fill />

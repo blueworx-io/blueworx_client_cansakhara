@@ -53,7 +53,7 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
       tl.fromTo(
         path,
         { drawSVG: "0%", fillOpacity: 0 },
-        { drawSVG: "100%", duration: 4.8, ease: "power1.inOut" },
+        { drawSVG: "100%", duration: 3.0, ease: "power1.inOut" },
       ).to(path, { fillOpacity: 1, duration: 0.8, ease: "power1.out" }, "-=0.5");
       drawTlRef.current = tl;
     });

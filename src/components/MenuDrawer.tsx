@@ -8,7 +8,7 @@ import { useEffect, useRef, type RefObject } from "react";
 // pitch); mobile tops 261/318/375 (57px pitch). Rendered as a flow column with
 // the gap that reproduces each pitch from the line box.
 const menuLinks = [
-  { label: "Experience", href: "/#experience" },
+  { label: "Experience", href: "/" },
   { label: "By Day", href: "/by-day" },
   { label: "By Night", href: "/by-night" },
 ];
