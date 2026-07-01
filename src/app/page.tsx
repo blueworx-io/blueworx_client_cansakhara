@@ -253,7 +253,7 @@ export default function Home() {
           <div className="discover-grid mx-auto mt-[38px] grid max-w-[1170px] justify-items-center gap-8 md:mt-20 md:justify-items-stretch min-[1440px]:grid-cols-[550px_550px] min-[1440px]:gap-[70px]">
             <article className="discover-card flex aspect-square flex-col items-center justify-center bg-[#ac9a8c] px-6 text-center text-white">
               <SunIcon className="size-20 md:size-[180px]" />
-              <h3 className="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-5xl md:tracking-[0.4em]">
+              <h3 className="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-[44px] md:tracking-[0.4em]">
                 By day
               </h3>
               <OutlineButton
@@ -265,7 +265,7 @@ export default function Home() {
             </article>
             <article className="discover-card flex aspect-square flex-col items-center justify-center bg-[#031927] px-6 text-center text-white">
               <MoonIcon className="size-20 md:size-[180px]" />
-              <h3 className="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-5xl md:tracking-[0.4em]">
+              <h3 className="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-[44px] md:tracking-[0.4em]">
                 By night
               </h3>
               <OutlineButton
