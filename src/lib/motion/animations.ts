@@ -133,7 +133,7 @@ export function charsReveal(
 // so the justify-between layout is never re-wrapped. Opacity + tiny y only.
 export function revealExistingChars(
   spans: Element[],
-  opts: { trigger?: Element; stagger?: number } = {},
+  opts: { trigger?: Element; stagger?: number; delay?: number } = {},
 ): void {
   if (spans.length === 0) return;
   gsap.set(spans, { autoAlpha: 0, y: DIST.y() * 0.4 });
@@ -143,6 +143,7 @@ export function revealExistingChars(
     duration: DUR.reveal,
     ease: EASE,
     stagger: opts.stagger ?? 0.04,
+    delay: opts.delay ?? 0,
     scrollTrigger: scrollTriggerVars(opts.trigger ?? spans[0]),
   });
 }

@@ -252,10 +252,12 @@ export default function ExperienceCarousel() {
     const slide = viewport?.querySelector<HTMLElement>(".experience-slide");
     const width = slide?.offsetWidth ?? viewport?.clientWidth ?? 1;
     const dragged = dragPxRef.current;
-    // Snap to the next/previous slide only once dragged past the halfway mark.
+    // Snap to the next/previous slide once dragged past a quarter of the slide
+    // width — half the previous half-width threshold, so it takes half the swipe
+    // distance to move between items (mobile and desktop).
     let delta = 0;
-    if (dragged <= -width / 2) delta = 1;
-    else if (dragged >= width / 2) delta = -1;
+    if (dragged <= -width / 4) delta = 1;
+    else if (dragged >= width / 4) delta = -1;
     step(delta);
   };
 
@@ -320,17 +322,17 @@ export default function ExperienceCarousel() {
             >
               <div className="experience-card-inner px-6 md:px-0">
                 <header className="section-heading experience-heading mx-auto w-full min-w-0 max-w-5xl text-center text-[#42081a]">
-                  <p className="section-eyebrow font-display text-sm uppercase tracking-[0.34em] md:text-[21px]">
+                  <p className="section-eyebrow font-display text-[12px] uppercase leading-none tracking-[2.4px] md:text-[22px] md:tracking-[4.4px]">
                     Experience
                   </p>
-                  <h2 className="section-title mx-auto mt-9 max-w-full break-words font-display text-[22px] font-light uppercase leading-[1.3] tracking-[0.1em] md:text-5xl md:leading-none md:tracking-[0.2em]">
+                  <h2 className="section-title mx-auto mt-[20px] max-w-full break-words font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] md:mt-[50px] md:text-5xl md:leading-none md:tracking-[0.2em]">
                     {experience.title}
                   </h2>
-                  <p className="section-subtitle mx-auto mt-8 max-w-[calc(100vw-3rem)] break-words font-serif text-[17px] font-light italic leading-[1.8] tracking-[0.02em] md:mt-10 md:max-w-4xl md:text-[28px] md:tracking-[0.1em]">
+                  <p className="section-subtitle mx-auto mt-[20px] max-w-[calc(100vw-3rem)] break-words font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] md:mt-[50px] md:max-w-4xl md:text-[28px] md:tracking-[2.8px]">
                     {experience.subtitle}
                   </p>
                 </header>
-                <div className="experience-layout mx-auto mt-20 grid max-w-6xl items-center gap-12 min-[1440px]:mt-0 min-[1440px]:grid-cols-[652px_304px] min-[1440px]:gap-[90px]">
+                <div className="experience-layout mx-auto mt-10 grid max-w-6xl items-center gap-12 min-[1440px]:mt-0 min-[1440px]:grid-cols-[652px_304px] min-[1440px]:gap-[90px]">
                   <div className="experience-image relative aspect-[1.3/1] overflow-hidden">
                     <Image
                       src={experience.image}

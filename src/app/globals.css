@@ -13,6 +13,14 @@
   --font-serif: var(--font-serif);
 }
 
+/* Single mobile/desktop switch point. There is no separate tablet view: below
+   796px the site uses the mobile layout, at 796px and up it uses the desktop
+   layout. Overriding the `md` breakpoint moves every `md:` utility to 796px in
+   one place; the raw media queries below are bumped to the same boundary. */
+@theme {
+  --breakpoint-md: 796px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -140,7 +148,7 @@ html.motion-ready [data-anim="draw-icon"] path {
   letter-spacing: normal;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 796px) {
   .welcome-lockup {
     width: 435px;
     font-size: 48px;
@@ -215,7 +223,7 @@ html.motion-ready [data-anim="draw-icon"] path {
   height: 400px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 796px) {
   .gallery-viewport {
     width: 1440px;
     max-width: none;
@@ -235,7 +243,7 @@ html.motion-ready [data-anim="draw-icon"] path {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1439px) {
+@media (min-width: 796px) and (max-width: 1439px) {
   .welcome-inner,
   .experience-card-inner,
   .discover-inner {
@@ -456,9 +464,9 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .features-grid p {
     margin-top: 18px;
-    font-size: 12px;
+    font-size: 15px;
     line-height: 1;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.5px;
     white-space: nowrap;
   }
 
@@ -634,7 +642,7 @@ html.motion-ready [data-anim="draw-icon"] path {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 795px) {
   .hero-nav {
     background: rgb(255 255 255 / 4%);
     backdrop-filter: blur(2px);

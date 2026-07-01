@@ -139,7 +139,7 @@ export default function Home() {
 
         <SiteHeader theme="home" />
 
-        <div className="hero-content relative z-10 flex flex-col items-center px-5 text-center text-white">
+        <div className="hero-content relative z-10 flex flex-col items-center px-5 text-center text-white max-[795px]:h-full max-[795px]:w-full max-[795px]:justify-center">
           <h1 className="sr-only">Can Sakhara</h1>
           <Image
             src="/images/hero-wordmark.svg"
@@ -149,7 +149,7 @@ export default function Home() {
             data-hero-hide
             className="hero-wordmark mx-auto h-auto w-[300px] sm:w-[520px] md:w-[655px]"
           />
-          <div className="hero-actions mt-12 flex flex-col items-center justify-center gap-4 min-[376px]:flex-row min-[376px]:justify-between sm:justify-center">
+          <div className="hero-actions mt-12 flex flex-col items-center justify-center gap-4 min-[376px]:flex-row max-[795px]:absolute max-[795px]:inset-x-0 max-[795px]:bottom-[71px] max-[795px]:mt-0 max-[795px]:px-5">
             <Link
               href="/by-day"
               data-hero-hide
@@ -178,7 +178,7 @@ export default function Home() {
             subtitle="Ibiza beckons. An iconic home, reimagined. A view like no other"
           />
 
-          <div className="welcome-content mx-auto mt-24 grid min-w-0 max-w-6xl items-center gap-14 min-[1440px]:mt-0 min-[1440px]:grid-cols-[666px_346px] min-[1440px]:gap-[90px]">
+          <div className="welcome-content mx-auto mt-[25px] grid min-w-0 max-w-6xl items-center gap-[25px] md:mt-24 min-[1440px]:mt-0 min-[1440px]:grid-cols-[666px_346px] min-[1440px]:gap-[90px]">
             <div className="map-frame relative mx-auto aspect-[1.24/1] w-full max-w-[620px]">
               <div className="map-art relative size-full">
                 <Image
@@ -217,21 +217,23 @@ export default function Home() {
           </div>
 
           <div className="features-block mx-auto mt-24 max-w-4xl md:mt-32">
-            <h3 className="features-title text-center font-display text-lg uppercase tracking-[0.32em]">
+            <h3 className="features-title text-center font-display text-[10px] uppercase leading-none tracking-[2px] md:text-[21px] md:tracking-[4.2px]">
               Featuring
             </h3>
-            <div className="features-grid mt-12 grid grid-cols-3 gap-x-5 gap-y-10 md:grid-cols-6">
+            <div className="features-grid mt-[30px] grid grid-cols-3 gap-x-5 gap-y-5 md:mt-[50px] md:grid-cols-6">
               {features.map((feature) => (
                 <div key={feature.label} className="text-center">
-                  <div className="feature-circle mx-auto flex size-16 flex-col items-center justify-center rounded-full bg-[#f2ebe2]">
-                    <span className="font-serif text-xl leading-none">
+                  <div className="feature-circle mx-auto flex size-10 flex-col items-center justify-center rounded-full bg-[#f2ebe2] md:size-[68px]">
+                    <span className="font-body text-[12px] font-normal leading-none tracking-[0.6px] md:text-[22px] md:tracking-[1.1px]">
                       {feature.value}
                     </span>
                     {feature.unit && (
-                      <span className="mt-1 text-[9px]">{feature.unit}</span>
+                      <span className="mt-0.5 font-body text-[6px] font-light leading-none tracking-[0.6px] md:mt-1 md:text-[11px] md:tracking-[1.1px]">
+                        {feature.unit}
+                      </span>
                     )}
                   </div>
-                  <p className="mt-5 font-body text-[11px] uppercase tracking-[0.18em]">
+                  <p className="mt-[14px] font-body text-[10px] font-light uppercase leading-none tracking-[1px] md:mt-[18px] md:text-[15px] md:tracking-[1.5px]">
                     {feature.label}
                   </p>
                 </div>

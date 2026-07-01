@@ -94,7 +94,7 @@ export default function SiteHeader({ theme = "home" }: { theme?: SiteTheme }) {
     <>
       <nav
         style={solid ? { backgroundColor: DRAWER_COLORS[theme] } : undefined}
-        className={`fixed inset-x-0 top-0 z-30 flex h-28 items-center px-5 text-white transition-[translate,background-color] duration-500 ease-out md:h-[131px] md:px-20 ${
+        className={`fixed inset-x-0 top-0 z-30 flex h-[90px] items-center px-5 text-white transition-[translate,background-color] duration-500 ease-out md:h-[120px] md:px-20 ${
           solid ? "" : "bg-white/5 backdrop-blur-[3px]"
         } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
       >

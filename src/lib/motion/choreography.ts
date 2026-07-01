@@ -90,11 +90,18 @@ export function buildHomeScroll(shell: HTMLElement): void {
   const wEyebrow = one(shell, ".welcome-heading .section-eyebrow");
   if (wEyebrow) fadeUp(wEyebrow);
 
-  // Brand lockup: reveal the EXISTING per-char spans (justify layout untouched).
-  const lockupChars = $(shell, ".welcome-lockup-line > span");
-  if (lockupChars.length) {
-    revealExistingChars(lockupChars, {
-      trigger: one(shell, ".welcome-lockup") ?? lockupChars[0],
+  // Brand lockup: reveal the EXISTING per-char spans (justify layout untouched)
+  // one LINE at a time — "Introducing" lands first, then "Can Sakhara" — so the
+  // two never read as a single block. Both lines share the lockup trigger; the
+  // second line is delayed until the first has largely settled.
+  const lockupLines = $(shell, ".welcome-lockup-line");
+  if (lockupLines.length) {
+    const lockupTrigger = one(shell, ".welcome-lockup") ?? lockupLines[0];
+    lockupLines.forEach((line, i) => {
+      const chars = $(line, ":scope > span");
+      if (chars.length) {
+        revealExistingChars(chars, { trigger: lockupTrigger, delay: i * 0.6 });
+      }
     });
   }
 

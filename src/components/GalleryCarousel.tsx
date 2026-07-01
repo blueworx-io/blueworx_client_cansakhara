@@ -16,7 +16,7 @@ export default function GalleryCarousel({ images }: { images: GalleryImage[] }) 
   const [useScrollRow, setUseScrollRow] = useState(false);
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 768px)");
+    const desktop = window.matchMedia("(min-width: 796px)");
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setUseScrollRow(desktop.matches && !reduce.matches);
     update();

@@ -29,7 +29,7 @@ export const DIST = {
   // Subtle rise; lighter on mobile. Read at build time (reveals are one-shot).
   y(): number {
     if (typeof window === "undefined") return 28;
-    return window.matchMedia("(min-width: 768px)").matches ? 28 : 16;
+    return window.matchMedia("(min-width: 796px)").matches ? 28 : 16;
   },
 } as const;
 

@@ -5,6 +5,7 @@ import {
   Source_Serif_4,
 } from "next/font/google";
 import MotionRoot from "@/components/MotionRoot";
+import SideProgressNav from "@/components/SideProgressNav";
 import "./globals.css";
 
 const display = Montserrat({
@@ -54,6 +55,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        <SideProgressNav />
         <MotionRoot />
       </body>
     </html>

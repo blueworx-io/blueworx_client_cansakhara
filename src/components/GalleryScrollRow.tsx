@@ -25,7 +25,7 @@ import type { GalleryImage } from "./GalleryCarousel";
 // being parked at the top with one large dead gap dumped beneath it. The ScrollTrigger
 // start is shifted down by that same centring offset so the horizontal scrub runs
 // exactly over the window in which the band is stuck.
-// Mounted only at >=768px with motion allowed.
+// Mounted only at >=796px with motion allowed.
 export default function GalleryScrollRow({ images }: { images: GalleryImage[] }) {
   const outerRef = useRef<HTMLDivElement>(null);
   const bandRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ export default function GalleryScrollRow({ images }: { images: GalleryImage[] })
       const mm = gsap.matchMedia();
       mm.add(
         {
-          isDesktop: "(min-width: 768px)",
+          isDesktop: "(min-width: 796px)",
           reduced: "(prefers-reduced-motion: reduce)",
         },
         (ctx) => {

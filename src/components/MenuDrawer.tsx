@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, type RefObject } from "react";
 
@@ -111,29 +110,17 @@ export default function MenuDrawer({
           <CloseIcon />
         </button>
 
-        {/* Content stack — flow column. Mobile centres the logo and right-aligns
-            the links; desktop left-aligns everything at the 50px gutter. */}
-        <div className="flex h-full flex-col items-center pt-[64px] md:items-start md:pl-[50px] md:pt-[131px]">
+        {/* Content stack — flow column. A matching hairline brackets the menu top
+            and bottom (Figma menu rules). Mobile right-aligns the links; desktop
+            left-aligns everything at the 50px gutter. The logo has been removed
+            so the links sit up directly beneath the top rule. */}
+        <div className="flex h-full flex-col items-center pt-[64px] pb-[64px] md:items-start md:pl-[50px] md:pt-[131px] md:pb-[131px]">
           <span
             aria-hidden="true"
             className="h-px w-[362px] bg-white md:w-[350px]"
           />
 
-          <span
-            className={`relative mt-[51px] block h-[76px] w-[200px] transition-[opacity,translate] duration-500 ease-out md:mt-[70px] md:h-[85px] md:w-[251px] ${
-              open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-            }`}
-            style={{ transitionDelay: open ? "160ms" : "0ms" }}
-          >
-            <Image
-              src="/images/logo-stacked-white.svg"
-              alt="Can Sakhara"
-              fill
-              sizes="(max-width: 767px) 200px, 251px"
-            />
-          </span>
-
-          <ul className="mt-[70px] flex w-[200px] flex-col items-end gap-[34.6px] text-right md:w-auto md:items-start md:gap-[37.6px] md:text-left">
+          <ul className="mt-[51px] flex w-[200px] flex-col items-end gap-[34.6px] text-right md:mt-[70px] md:w-auto md:items-start md:gap-[37.6px] md:text-left">
             {menuLinks.map((link, i) => (
               <li key={link.href}>
                 <Link
@@ -150,6 +137,13 @@ export default function MenuDrawer({
               </li>
             ))}
           </ul>
+
+          {/* Bottom rule — identical hairline to the top, pinned to the foot of
+              the drawer so the top and bottom lines match on desktop and mobile. */}
+          <span
+            aria-hidden="true"
+            className="mt-auto h-px w-[362px] bg-white md:w-[350px]"
+          />
         </div>
       </aside>
     </>
