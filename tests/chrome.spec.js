@@ -91,6 +91,28 @@ test('the side nav builds one dot per section and rings the one in view', async 
   expect(sections).toBeGreaterThan(1);
   await expect(page.locator('[data-cansakhara-side-nav] [data-cansakhara-dot]')).toHaveCount(sections);
 
-  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 2000; });
+  const activeDotIndex = () => page.evaluate(() => {
+    const dots = Array.from(document.querySelectorAll('[data-cansakhara-side-nav] [data-cansakhara-dot]'));
+    return dots.findIndex((dot) => dot.getAttribute('data-active') === 'true');
+  });
+
+  // Near the top of the page, exactly one dot is active — read which.
   await expect(page.locator('[data-cansakhara-side-nav] [data-cansakhara-dot][data-active="true"]')).toHaveCount(1);
+  const topIndex = await activeDotIndex();
+
+  // Scrolled well down, still exactly one active dot, but a later one — this
+  // is what a hard-coded "dot 0 is always active" implementation would fail.
+  // toHaveCount(1) alone isn't enough of a wait here: it's already true
+  // (dot 0 still active) the instant scrollTop is set, before the scroll
+  // handler has run — so poll for the index itself moving past topIndex.
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 2000; });
+  await page.waitForFunction((initial) => {
+    const dots = Array.from(document.querySelectorAll('[data-cansakhara-side-nav] [data-cansakhara-dot]'));
+    const active = dots.filter((dot) => dot.getAttribute('data-active') === 'true');
+    return active.length === 1 && dots.indexOf(active[0]) > initial;
+  }, topIndex);
+
+  await expect(page.locator('[data-cansakhara-side-nav] [data-cansakhara-dot][data-active="true"]')).toHaveCount(1);
+  const scrolledIndex = await activeDotIndex();
+  expect(scrolledIndex).toBeGreaterThan(topIndex);
 });
