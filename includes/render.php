@@ -10,30 +10,62 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Whether this plugin — rather than the theme — turned title-tag support on.
+ *
+ * @var bool
+ */
+$GLOBALS['cansakhara_added_title_tag'] = false;
+
+/**
  * Declares title-tag support so an owned page always emits a <title>.
  *
  * WordPress only prints one when the active theme has opted in. These pages
  * must not depend on that seam — the whole point of rendering the document
  * ourselves is that the output is identical regardless of the active theme.
  *
- * Scoped to owned pages. Declared site-wide (the obvious `after_setup_theme`
- * home for this) it would switch `_wp_render_title_tag()` on for every
- * front-end request on the host site, and a theme that prints its own
- * <title> in header.php would then emit two of them on every blog, shop and
- * contact page. `after_setup_theme` runs before the query is resolved, so it
- * cannot tell whose page this is; `wp` runs after the query and well before
- * `wp_head`, which is where the title is actually rendered.
+ * This has to be registered before `wp_loaded`, which is long before the query
+ * says whose page is being viewed: core refuses a late
+ * add_theme_support( 'title-tag' ) outright and logs a doing-it-wrong notice.
+ * So support is declared early and withdrawn again on any request that turns
+ * out not to be ours — see cansakhara_scope_title_tag_support(). Runs late on
+ * `after_setup_theme` so a theme that declares its own support has already
+ * done so, in which case this leaves well alone and never withdraws anything.
  *
  * @return void
  */
 function cansakhara_ensure_title_tag_support() {
-	if ( ! cansakhara_is_owned_request() ) {
+	if ( current_theme_supports( 'title-tag' ) ) {
 		return;
 	}
 
 	add_theme_support( 'title-tag' );
+	$GLOBALS['cansakhara_added_title_tag'] = true;
 }
-add_action( 'wp', 'cansakhara_ensure_title_tag_support' );
+add_action( 'after_setup_theme', 'cansakhara_ensure_title_tag_support', 99 );
+
+/**
+ * Withdraws that support again on pages this plugin does not own.
+ *
+ * Left in place site-wide it would switch `_wp_render_title_tag()` on for
+ * every front-end request on the host site, and a theme that prints its own
+ * <title> in header.php would then emit two of them on every blog, shop and
+ * contact page. Only ever removes what this plugin itself added, so a theme
+ * that opted in keeps its own titles untouched.
+ *
+ * `wp` is the first hook that knows the queried object, and it runs well
+ * before `wp_head`, where the title is actually rendered.
+ *
+ * @return void
+ */
+function cansakhara_scope_title_tag_support() {
+	if ( ! $GLOBALS['cansakhara_added_title_tag'] || cansakhara_is_owned_request() ) {
+		return;
+	}
+
+	remove_theme_support( 'title-tag' );
+	$GLOBALS['cansakhara_added_title_tag'] = false;
+}
+add_action( 'wp', 'cansakhara_scope_title_tag_support' );
 
 /**
  * Takes over rendering for pages this plugin owns.
