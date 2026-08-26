@@ -16,3 +16,16 @@ test('no image on the home page is broken', async ({ page }) => {
   );
   expect(broken).toEqual([]);
 });
+
+for (const path of ['/by-day/', '/by-night/']) {
+  test(`${path} renders its enquire call to action and unbroken images`, async ({ page }) => {
+    await page.goto(path);
+    await expect(
+      page.locator('a[href="mailto:reservations@cansakhara.com"]').first()
+    ).toBeVisible();
+    const broken = await page.locator('img').evaluateAll((imgs) =>
+      imgs.filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src)
+    );
+    expect(broken).toEqual([]);
+  });
+}
