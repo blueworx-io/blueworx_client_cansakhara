@@ -59,7 +59,8 @@ function cansakhara_install_pages() {
 	foreach ( cansakhara_pages() as $slug => $page ) {
 		$existing = isset( $ids[ $slug ] ) ? (int) $ids[ $slug ] : 0;
 
-		if ( $existing > 0 && 'page' === get_post_type( $existing ) && 'trash' !== get_post_status( $existing ) ) {
+		if ( $existing > 0 && 'page' === get_post_type( $existing ) && 'trash' !== get_post_status( $existing ) && get_post_meta( $existing, CANSAKHARA_PAGE_META, true ) === $slug ) {
+			update_post_meta( $existing, CANSAKHARA_PAGE_META, $slug );
 			continue;
 		}
 
