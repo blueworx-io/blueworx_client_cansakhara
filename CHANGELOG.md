@@ -21,6 +21,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Self-updating from GitHub Releases via the vendored Plugin Update Checker.
 - The release zip build (`npm run build:zip`), staged from an explicit
   allowlist and verified after packaging.
+- A filter, `cansakhara_keep_styles`, for keeping a stylesheet a site needs
+  (a consent banner, a chat widget) on the plugin's pages, which otherwise
+  drop every stylesheet but their own.
+
+### Fixed
+
+- Pages render correctly for logged-in users: the WordPress admin bar no
+  longer pushes the foot of the page off screen or covers the header.
+- By Day and By Night links point at the pages the plugin created, so they
+  work on a site that already uses those page names and on sites without
+  pretty permalinks.
+- The plugin no longer switches page titles on for the whole site, which on
+  some themes produced two titles on every page.
+- If the page's motion never starts — a caching or optimisation plugin
+  breaking it, say — the page now falls back to its plain, fully visible
+  state instead of showing the hero photograph with nothing on it.
+- A tagged release now ships only what the site needs: the build inputs,
+  Node tooling and developer dependencies are excluded from the zip.
 
 ### Removed
 
