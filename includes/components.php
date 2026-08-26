@@ -47,22 +47,26 @@ function cansakhara_outline_button( $label, $href, $class = '', $anim = '' ) { /
  *
  * The two source copies are identical except for the hover text colour:
  * by-day uses `hover:text-[#ac9a8c]`, by-night uses `hover:text-[#031927]`.
- * That single token is exposed here as `$hover_class` rather than folded
- * into one hard-coded default, per the instruction to keep any per-page
- * difference as a parameter. This parameter is not in the task's interface
- * list — callers on the by-day and by-night pages (later tasks) must pass
- * it explicitly; the default below reproduces the by-day value only.
+ * That single token is exposed here as a required `$hover_class` parameter
+ * rather than folded into one hard-coded default, per the instruction to
+ * keep any per-page difference as a parameter. This parameter is not in the
+ * task's interface list. It is required, not defaulted: a defaulted value
+ * would let a caller silently render the wrong hover colour with nothing
+ * to catch it (no functional spec or screenshot diff asserts hover state),
+ * so a missing argument fails loudly (PHP fatal) instead. It is required
+ * to appear before `$class` and `$anim` because PHP disallows a required
+ * parameter after optional ones.
  *
  * @param string $label       Button text.
  * @param string $href        Destination.
+ * @param string $hover_class Required. Hover text-colour utility —
+ *                             'hover:text-[#ac9a8c]' on by-day,
+ *                             'hover:text-[#031927]' on by-night.
  * @param string $class       Extra classes appended to the base string.
  * @param string $anim        Optional data-anim value used by the motion layer.
- * @param string $hover_class Hover text-colour utility. Defaults to the
- *                             by-day value; by-night must pass
- *                             'hover:text-[#031927]' explicitly.
  * @return void
  */
-function cansakhara_secondary_button( $label, $href, $class = '', $anim = '', $hover_class = 'hover:text-[#ac9a8c]' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
+function cansakhara_secondary_button( $label, $href, $hover_class, $class = '', $anim = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
 	$classes = 'inline-flex items-center justify-center whitespace-nowrap border border-white px-4 py-[10px] font-display text-[10px] font-normal uppercase leading-[1.4] tracking-[4px] text-white transition-colors hover:bg-white ' . $hover_class . ' focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px] ' . $class;
 	?>
 	<a
