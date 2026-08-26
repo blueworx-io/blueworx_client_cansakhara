@@ -5,6 +5,7 @@ import { initMotion } from './motion.js';
 import { initHeader } from './header.js';
 import { initSideNav } from './side-nav.js';
 import { initExperienceCarousel } from './experience-carousel.js';
+import { initGalleryPeekStrip } from './gallery-peek-strip.js';
 
 function pageSlug() {
 	const match = document.body.className.match( /page-cansakhara-([\w-]+)/ );
@@ -17,6 +18,7 @@ function start() {
 	initHeader();
 	initSideNav();
 	initExperienceCarousel();
+	initGalleryPeekStrip();
 }
 
 if ( document.readyState === 'loading' ) {

@@ -83,3 +83,72 @@ test('the experience carousel loop wraps rather than stalling at the end', async
   // without ever closing the loop.
   expect(previous).toBe(start);
 });
+
+// The gallery peek strip (By Day / By Night) has no next/previous control
+// either — see templates/parts/gallery-peek-strip.php. It advances only by
+// pointer drag and ArrowLeft/ArrowRight on the focused viewport, plus its
+// own 4s autoplay loop. The whole image list is tripled (not 3 asymmetric
+// clones like the Experience carousel), and `index` starts at `n`, the
+// first slide of the middle copy.
+
+test('dragging the gallery peek strip advances it and does not lock up afterwards', async ({ page }) => {
+  // The desktop gallery-viewport is a fixed 1440px — wider than the default
+  // test viewport — so widen the window first or the drag coordinates land
+  // outside the visible page and never reach the element.
+  await page.setViewportSize({ width: 1600, height: 900 });
+  await page.goto('/by-day/');
+  const root = page.locator('[data-cansakhara-carousel="peek"]').first();
+  await expect(root).toBeVisible();
+  await root.scrollIntoViewIfNeeded();
+
+  const before = await root.getAttribute('data-cansakhara-index');
+  expect(before).not.toBeNull();
+
+  const box = await root.boundingBox();
+  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.2, box.y + box.height / 2, { steps: 12 });
+  await page.mouse.up();
+  // Let the snap transition settle (DURATION_MS is 650ms in the source).
+  await page.waitForTimeout(800);
+
+  const settled = await root.getAttribute('data-cansakhara-index');
+  expect(settled).not.toBe(before);
+
+  // After a drag settles, a further interaction must still be able to move
+  // the carousel (the drag-snap lockup regression guarded on the Experience
+  // carousel — this port must not reintroduce the equivalent for this
+  // carousel's own settling guard).
+  await root.focus();
+  await root.press('ArrowRight');
+  await page.waitForTimeout(700);
+  const afterFurtherInteraction = await root.getAttribute('data-cansakhara-index');
+  expect(afterFurtherInteraction).not.toBe(settled);
+});
+
+test('the gallery peek strip loop wraps rather than stalling at the end', async ({ page }) => {
+  await page.goto('/by-day/');
+  const root = page.locator('[data-cansakhara-carousel="peek"]').first();
+  const slideCount = await root.locator('[data-cansakhara-slide]').count();
+  // The part triples the whole image list, so the real slide count is a
+  // third of the rendered clone list, and `index` starts at n.
+  const n = slideCount / 3;
+
+  await root.focus();
+  const start = await root.getAttribute('data-cansakhara-index');
+  expect(start).not.toBeNull();
+
+  let previous = start;
+  for (let i = 0; i < n; i += 1) {
+    await root.press('ArrowRight');
+    await page.waitForTimeout(750);
+    const current = await root.getAttribute('data-cansakhara-index');
+    expect(current).not.toBe(previous);
+    previous = current;
+  }
+
+  // A full lap (n steps) must land back on the slide it started from,
+  // proving the loop wraps into the middle copy rather than stalling or
+  // running off the tripled list.
+  expect(previous).toBe(start);
+});
