@@ -51,3 +51,10 @@ next-env.d.ts
 
 # Subagent-driven-development scratch workspace
 .superpowers/
+
+# WordPress plugin build/test artifacts
+.wp-test/
+vendor/
+test-results/
+playwright-report/
+dist/
