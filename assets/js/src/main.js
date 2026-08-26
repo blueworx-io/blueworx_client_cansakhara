@@ -6,6 +6,7 @@ import { initHeader } from './header.js';
 import { initSideNav } from './side-nav.js';
 import { initExperienceCarousel } from './experience-carousel.js';
 import { initGalleryPeekStrip } from './gallery-peek-strip.js';
+import { initGalleryCarouselSwitcher, initGalleryScrollRow } from './gallery-scroll-row.js';
 
 function pageSlug() {
 	const match = document.body.className.match( /page-cansakhara-([\w-]+)/ );
@@ -18,6 +19,12 @@ function start() {
 	initHeader();
 	initSideNav();
 	initExperienceCarousel();
+	// Switcher first: it settles which of the two gallery containers is
+	// visible before initGalleryScrollRow() measures the band/track, so a
+	// desktop/motion-allowed load never measures against a still-hidden
+	// container (see gallery-scroll-row.js's header comment).
+	initGalleryCarouselSwitcher();
+	initGalleryScrollRow();
 	initGalleryPeekStrip();
 }
 

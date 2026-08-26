@@ -184,13 +184,26 @@ function initOne( root ) {
 	// forever. Paused while the user drags and disabled under reduced-motion;
 	// any manual input restarts the dwell so it never double-steps right
 	// after a swipe or keypress.
+	//
+	// Also skips a tick while this root is not the one shown by the By Day /
+	// By Night gallery switcher (gallery-scroll-row.js's
+	// initGalleryCarouselSwitcher() toggles `hidden` on an ancestor, which
+	// makes `offsetParent` null) — the source had no such switcher of its
+	// own to reproduce; the mount/unmount that used to stop this loop
+	// outright is now a visibility check instead, since this module still
+	// runs on every page unconditionally. Pointer/keyboard input need no
+	// equivalent check: a `display: none` element can't receive pointer
+	// events or hold focus.
 	function scheduleAutoplay() {
 		if ( autoplayTimer ) {
 			window.clearInterval( autoplayTimer );
 			autoplayTimer = null;
 		}
 		if ( state.reduced || state.isDragging ) return;
-		autoplayTimer = window.setInterval( () => step( 1 ), AUTOPLAY_MS );
+		autoplayTimer = window.setInterval( () => {
+			if ( root.offsetParent === null ) return;
+			step( 1 );
+		}, AUTOPLAY_MS );
 	}
 
 	const media = window.matchMedia( '(prefers-reduced-motion: reduce)' );
