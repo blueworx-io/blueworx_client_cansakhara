@@ -83,3 +83,14 @@ test('re-activating the still-focusable trigger while the drawer is already open
   const after = await page.evaluate(() => document.querySelector('.site-shell').style.overflow);
   expect(after).toBe(before);
 });
+
+test('the side nav builds one dot per section and rings the one in view', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const sections = await page.locator('.site-shell > section').count();
+  expect(sections).toBeGreaterThan(1);
+  await expect(page.locator('[data-cansakhara-side-nav] [data-cansakhara-dot]')).toHaveCount(sections);
+
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 2000; });
+  await expect(page.locator('[data-cansakhara-side-nav] [data-cansakhara-dot][data-active="true"]')).toHaveCount(1);
+});

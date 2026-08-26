@@ -3,6 +3,7 @@
 // absent, so one bundle serves all three pages.
 import { initMotion } from './motion.js';
 import { initHeader } from './header.js';
+import { initSideNav } from './side-nav.js';
 
 function pageSlug() {
 	const match = document.body.className.match( /page-cansakhara-([\w-]+)/ );
@@ -13,6 +14,7 @@ function start() {
 	const slug = pageSlug();
 	initMotion( slug );
 	initHeader();
+	initSideNav();
 }
 
 if ( document.readyState === 'loading' ) {
