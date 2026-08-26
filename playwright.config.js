@@ -21,6 +21,11 @@ export default defineConfig({
   // tests/baselines/ — it would silently overwrite the irreplaceable
   // reference images with whatever the plugin currently renders.
   snapshotPathTemplate: '{testDir}/baselines/{arg}{ext}',
+  // The warning above in prose; this is the same warning the runner enforces.
+  // 'none' makes Playwright refuse to write a snapshot file at all — a stray
+  // `-u` / `--update-snapshots` now fails the run instead of quietly replacing
+  // the irreplaceable baselines.
+  updateSnapshots: 'none',
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:8881',
   },

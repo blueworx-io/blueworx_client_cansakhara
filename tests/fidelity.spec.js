@@ -30,6 +30,24 @@
 // test-results/ on failure.
 import { test, expect } from '@playwright/test';
 
+// This is a LOCAL acceptance gate, and deliberately not a CI check.
+//
+// tests/baselines/*.png were captured on Windows, from a Next.js build that no
+// longer exists. Windows rasterises text through DirectWrite; the Foundation's
+// tests job runs on ubuntu-latest, which uses FreeType. The same page renders
+// different pixels under the two, and nobody has measured whether that stays
+// inside the 1% gate. If it did not, there would be no recovery: a Linux
+// baseline can never be made, because the reference build is gone.
+//
+// So the gate runs where the reference is valid — on the machine whose fonts
+// produced it — and skips under CI. Everything else in tests/ still runs there,
+// which is what keeps the Foundation's "the suite executed zero tests" guard
+// satisfied.
+test.skip(
+  !!process.env.CI,
+  'Fidelity baselines were captured on Windows and cannot be regenerated for another platform — run this gate locally.'
+);
+
 const ROUTES = { home: '/', 'by-day': '/by-day/', 'by-night': '/by-night/' };
 const WIDTHS = { mobile: 390, desktop: 1440 };
 
