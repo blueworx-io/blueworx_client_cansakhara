@@ -1,9 +1,17 @@
 @import "tailwindcss";
 
 /* Tailwind v4 scans for class names itself. The plugin's markup is PHP, which
-   is outside the default scan roots, so name them explicitly. */
+   is outside the default scan roots, so name them explicitly. The runtime
+   behaviour scripts (header.js and friends) toggle classes that appear
+   nowhere in the PHP templates — e.g. `translate-x-0`, `opacity-100`,
+   `-translate-y-full` only ever exist as JS string literals — so they need
+   their own explicit root too. Without this, those classes exist in the
+   compiled CSS only because Tailwind's automatic content detection happens
+   to also reach assets/js/src; disabling or reconfiguring auto-detection
+   would silently drop them with no error and no failing test. */
 @source "../../../templates";
 @source "../../../includes";
+@source "../../js/src";
 
 /* Self-hosted faces, copied verbatim from the Next.js build that produced the
    Task 1 screenshot baselines (.next/dev/static/media + the matching

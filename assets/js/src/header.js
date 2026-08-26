@@ -32,57 +32,70 @@ export function initHeader() {
 	// signal this script reads in place of the React `theme` prop.
 	const themeIsHome = ! nav.style.backgroundColor;
 
-	let open = false;
 	let overflowRestore = null;
 	let escapeListener = null;
 	let lastHidden = false;
 
+	// The drawer's own `aria-hidden` attribute is the single source of truth
+	// for "is it open" — reading it back here, rather than mirroring it into a
+	// separate JS variable, means the guard in `setDrawerOpen` below can never
+	// drift out of sync with what is actually on screen.
+	function isOpen() {
+		return drawer.getAttribute( 'aria-hidden' ) !== 'true';
+	}
+
 	// ---- drawer open/close ------------------------------------------------
 
 	function setDrawerOpen( next ) {
-		open = next;
+		// No-op when the requested state already matches reality. Without this
+		// guard, a second `setDrawerOpen(true)` while already open — reachable
+		// by tabbing back to the still-focusable trigger and activating it
+		// again — would re-capture `overflowRestore` as the already-locked
+		// "hidden" value and attach a second, permanently leaked Escape
+		// listener, leaving the page scroll-locked forever after close.
+		if ( next === isOpen() ) return;
 
-		drawer.classList.toggle( 'translate-x-0', open );
-		drawer.classList.toggle( '-translate-x-full', ! open );
-		drawer.setAttribute( 'aria-hidden', open ? 'false' : 'true' );
-		trigger.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+		drawer.classList.toggle( 'translate-x-0', next );
+		drawer.classList.toggle( '-translate-x-full', ! next );
+		drawer.setAttribute( 'aria-hidden', next ? 'false' : 'true' );
+		trigger.setAttribute( 'aria-expanded', next ? 'true' : 'false' );
 
 		if ( scrim ) {
-			scrim.classList.toggle( 'opacity-100', open );
-			scrim.classList.toggle( 'opacity-0', ! open );
-			scrim.classList.toggle( 'pointer-events-none', ! open );
+			scrim.classList.toggle( 'opacity-100', next );
+			scrim.classList.toggle( 'opacity-0', ! next );
+			scrim.classList.toggle( 'pointer-events-none', ! next );
 		}
 
 		if ( closeButton ) {
-			closeButton.tabIndex = open ? 0 : -1;
-			closeButton.classList.toggle( 'translate-y-0', open );
-			closeButton.classList.toggle( 'opacity-100', open );
-			closeButton.classList.toggle( '-translate-y-1', ! open );
-			closeButton.classList.toggle( 'opacity-0', ! open );
-			closeButton.style.transitionDelay = open ? '120ms' : '0ms';
+			closeButton.tabIndex = next ? 0 : -1;
+			closeButton.classList.toggle( 'translate-y-0', next );
+			closeButton.classList.toggle( 'opacity-100', next );
+			closeButton.classList.toggle( '-translate-y-1', ! next );
+			closeButton.classList.toggle( 'opacity-0', ! next );
+			closeButton.style.transitionDelay = next ? '120ms' : '0ms';
 		}
 
 		drawerLinks.forEach( ( link, i ) => {
-			link.tabIndex = open ? 0 : -1;
-			link.classList.toggle( 'translate-y-0', open );
-			link.classList.toggle( 'opacity-100', open );
-			link.classList.toggle( 'translate-y-3', ! open );
-			link.classList.toggle( 'opacity-0', ! open );
-			link.style.transitionDelay = open ? `${ 220 + i * 70 }ms` : '0ms';
+			link.tabIndex = next ? 0 : -1;
+			link.classList.toggle( 'translate-y-0', next );
+			link.classList.toggle( 'opacity-100', next );
+			link.classList.toggle( 'translate-y-3', ! next );
+			link.classList.toggle( 'opacity-0', ! next );
+			link.style.transitionDelay = next ? `${ 220 + i * 70 }ms` : '0ms';
 		} );
 
 		// The `-translate-y-full`/`translate-y-0` header state also depends on
 		// `open` (SiteHeader.tsx: `hidden && !open`) — re-apply it here so
 		// opening the drawer while the header happens to be hidden reveals it.
-		applyHiddenClass( open ? false : lastHidden );
+		applyHiddenClass( next ? false : lastHidden );
 
-		if ( open ) {
+		if ( next ) {
 			const scroller = document.querySelector( '.site-shell' ) || document.body;
 			overflowRestore = scroller.style.overflow;
 			scroller.style.overflow = 'hidden';
 
 			escapeListener = ( event ) => {
-				if ( event.key === 'Escape' ) closeDrawer();
+				if ( event.key === 'Escape' ) setDrawerOpen( false );
 			};
 			document.addEventListener( 'keydown', escapeListener );
 
@@ -101,13 +114,9 @@ export function initHeader() {
 		}
 	}
 
-	function closeDrawer() {
-		if ( open ) setDrawerOpen( false );
-	}
-
 	trigger.addEventListener( 'click', () => setDrawerOpen( true ) );
-	closeButton?.addEventListener( 'click', closeDrawer );
-	scrim?.addEventListener( 'click', closeDrawer );
+	closeButton?.addEventListener( 'click', () => setDrawerOpen( false ) );
+	scrim?.addEventListener( 'click', () => setDrawerOpen( false ) );
 
 	// ---- logo self-draw -----------------------------------------------
 
@@ -139,7 +148,7 @@ export function initHeader() {
 	}
 
 	function applyHiddenClass( hide ) {
-		const effective = hide && ! open;
+		const effective = hide && ! isOpen();
 		nav.classList.toggle( '-translate-y-full', effective );
 		nav.classList.toggle( 'translate-y-0', ! effective );
 	}

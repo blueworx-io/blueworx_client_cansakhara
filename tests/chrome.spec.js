@@ -59,3 +59,27 @@ test('the header hides on scroll down and returns on scroll up', async ({ page }
   await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 400; });
   await expect(header).toHaveClass(/translate-y-0/);
 });
+
+test('re-activating the still-focusable trigger while the drawer is already open does not leak the scroll lock', async ({ page }) => {
+  await page.goto('/');
+  const trigger = page.locator('[data-cansakhara-menu-open]');
+
+  const before = await page.evaluate(() => document.querySelector('.site-shell').style.overflow);
+
+  await trigger.click();
+  await expect(page.locator('#site-menu')).toHaveAttribute('aria-hidden', 'false');
+
+  // The trigger stays focusable while the drawer is open (faithful to the
+  // source), even though the drawer visually covers it — so a mouse click
+  // can't reach it, but a keyboard user can Shift+Tab back to it and press
+  // Enter. Re-opening an already-open drawer must be a no-op.
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#site-menu')).toHaveAttribute('aria-hidden', 'false');
+
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#site-menu')).toHaveAttribute('aria-hidden', 'true');
+
+  const after = await page.evaluate(() => document.querySelector('.site-shell').style.overflow);
+  expect(after).toBe(before);
+});
