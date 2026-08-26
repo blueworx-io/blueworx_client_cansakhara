@@ -30,3 +30,32 @@ test('the side nav container is present', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('[data-cansakhara-side-nav]')).toHaveCount(1);
 });
+
+test('the drawer opens, traps focus, closes on Escape and returns focus', async ({ page }) => {
+  await page.goto('/');
+  const trigger = page.locator('[data-cansakhara-menu-open]');
+  await trigger.click();
+
+  await expect(page.locator('#site-menu')).toHaveAttribute('aria-hidden', 'false');
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('[data-cansakhara-menu-close]')).toBeFocused();
+
+  // The scroll container is locked while the drawer is open.
+  const locked = await page.evaluate(() =>
+    getComputedStyle(document.querySelector('.site-shell')).overflow
+  );
+  expect(locked).toBe('hidden');
+
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#site-menu')).toHaveAttribute('aria-hidden', 'true');
+  await expect(trigger).toBeFocused();
+});
+
+test('the header hides on scroll down and returns on scroll up', async ({ page }) => {
+  await page.goto('/');
+  const header = page.locator('[data-cansakhara-header]');
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 800; });
+  await expect(header).toHaveClass(/-translate-y-full/);
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 400; });
+  await expect(header).toHaveClass(/translate-y-0/);
+});

@@ -2,6 +2,7 @@
 // set, then starts every behaviour. Each init is a no-op when its markup is
 // absent, so one bundle serves all three pages.
 import { initMotion } from './motion.js';
+import { initHeader } from './header.js';
 
 function pageSlug() {
 	const match = document.body.className.match( /page-cansakhara-([\w-]+)/ );
@@ -11,6 +12,7 @@ function pageSlug() {
 function start() {
 	const slug = pageSlug();
 	initMotion( slug );
+	initHeader();
 }
 
 if ( document.readyState === 'loading' ) {
