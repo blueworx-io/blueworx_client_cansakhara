@@ -1,7 +1,12 @@
 // Experience carousel behaviour. Ports `ExperienceCarousel.tsx`, with React
 // state (`index`/`animate`/`dragPx`/`isDragging`/`reduced`) replaced by one
 // mutable `state` object and a `render()` that writes it into the DOM the PHP
-// template already rendered (`templates/parts/experience-carousel.php`).
+// template already rendered (`templates/parts/experience-carousel.php`). It
+// also carries the source's own local `useGSAP` entrance reveal (the drag/
+// snap behaviour and the reveal shipped together in one component, so they
+// stay together here too — same precedent as `header.js` carrying
+// `SiteHeader`'s local `drawSelf` hook rather than living in the shared
+// `choreography.js` orchestrator).
 //
 // There is no next/previous control anywhere in this design — the source
 // component is driven only by pointer drag and ArrowLeft/ArrowRight on the
@@ -29,6 +34,9 @@
 //  experiences[0], experiences[1]] — index 0 is the trailing clone (backward
 // wrap), index n+1 and n+2 are the leading clones (forward wrap + its peek).
 // `index` starts at 1, the first real slide.
+
+import { gsap } from './gsap.js';
+import { fadeUp, clipImageReveal } from './animations.js';
 
 const EASING = 'cubic-bezier(0.22, 1, 0.36, 1)';
 const DURATION_MS = 650;
@@ -211,6 +219,40 @@ export function initExperienceCarousel() {
 	viewport.addEventListener( 'pointerup', endDrag );
 	viewport.addEventListener( 'pointercancel', endDrag );
 	track.addEventListener( 'transitionend', onTransitionEnd );
+
+	// ---- entrance reveal ------------------------------------------------
+	//
+	// One-time reveal of the initially-visible slide's heading and image when
+	// the section scrolls into view. The source's `useGSAP` call passes no
+	// dependency array, which the GSAP React integration treats as "run once
+	// on mount" — it never re-runs as `index` changes, so it does not track
+	// which slide is currently active; it only ever reveals whichever slide
+	// happened to be active at mount (always index 1, the first real slide,
+	// since that is what the PHP template renders `aria-hidden="false"` on).
+	// This port matches that: the active slide is resolved once, right here,
+	// and never re-queried when `step()`/`commit()` later change `index`.
+	//
+	// Both fadeUp (heading) and clipImageReveal (image) trigger off the
+	// section (`root`), not off the elements themselves — carried over
+	// verbatim from the source's own comment: triggering on the elements
+	// would leave the (lower) image clipped if the carousel were advanced
+	// before the section itself had scrolled into view, since an
+	// already-advanced slide's image trigger may never cross the ScrollTrigger
+	// start line on its own.
+	//
+	// No `mm.revert()` cleanup: the source's `useGSAP` returns one for React's
+	// unmount, but nothing here ever unmounts — each page is its own full
+	// load, exactly like `header.js`'s `drawSelf` setup below, which sets up
+	// its own `gsap.matchMedia()` the same way with no revert either.
+	const entranceMedia = gsap.matchMedia();
+	entranceMedia.add( '(prefers-reduced-motion: no-preference)', () => {
+		const active = root.querySelector( '.experience-slide[aria-hidden="false"]' );
+		if ( ! active ) return;
+		const heading = active.querySelector( '.experience-heading' );
+		const image = active.querySelector( '.experience-image' );
+		if ( heading ) fadeUp( heading, { trigger: root } );
+		if ( image ) clipImageReveal( image, { trigger: root } );
+	} );
 
 	commit();
 }

@@ -59,16 +59,27 @@ test('the experience carousel loop wraps rather than stalling at the end', async
   const root = page.locator('[data-cansakhara-carousel="experience"]');
   const viewport = root.locator('[role="group"]');
   const slideCount = await root.locator('[data-cansakhara-slide]').count();
+  // The clone list is [last real slide, ...real slides, clone of the first
+  // two real slides] — 3 clones bracketing n real slides.
+  const n = slideCount - 3;
 
   await viewport.focus();
-  // Step past every real slide, well beyond a single lap, so a forward wrap
-  // must occur at least once. If the loop stalled on a clone, the index would
-  // stop changing rather than continuing to report a plain non-negative
-  // integer on every step.
-  for (let i = 0; i < slideCount + 2; i += 1) {
+  const start = await root.getAttribute('data-cansakhara-index');
+  expect(start).not.toBeNull();
+
+  let previous = start;
+  for (let i = 0; i < n; i += 1) {
     await viewport.press('ArrowRight');
     await page.waitForTimeout(700);
     const current = await root.getAttribute('data-cansakhara-index');
-    expect(current).toMatch(/^\d+$/);
+    // Every step must actually move the carousel — a frozen index would pass
+    // a well-formedness check (e.g. /^\d+$/) without ever proving progress.
+    expect(current).not.toBe(previous);
+    previous = current;
   }
+
+  // A full lap (n steps) must land back on the slide it started from,
+  // proving the loop wraps rather than stalling on a clone or running away
+  // without ever closing the loop.
+  expect(previous).toBe(start);
 });
