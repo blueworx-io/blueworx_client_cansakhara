@@ -158,6 +158,23 @@ export function initGalleryScrollRow() {
 	);
 }
 
+// Pairs a scroll-row container with its peek-strip sibling by the explicit
+// `data-cansakhara-gallery-peek` hook Task 9/11 already put there for this
+// purpose, not by DOM adjacency/order — a `previousElementSibling` read
+// would silently mispair (or fail to pair at all) the moment a future edit
+// inserts something between the two containers or reorders them, and the
+// resulting failure mode is a gallery silently showing the wrong component
+// rather than an error. Scoped to `:scope > ` direct children of the
+// scroll-row container's own parent, so on a page with more than one
+// gallery pair, each pair's lookup only ever sees its own local parent's
+// children — it cannot reach across and match a different pair's peek
+// container.
+function findPeekContainer( scrollRowContainer ) {
+	const parent = scrollRowContainer.parentElement;
+	if ( ! parent ) return null;
+	return parent.querySelector( ':scope > [data-cansakhara-gallery-peek]' );
+}
+
 export function initGalleryCarouselSwitcher() {
 	const scrollRowContainers = document.querySelectorAll( '[data-cansakhara-gallery-scroll-row]' );
 	if ( ! scrollRowContainers.length ) return;
@@ -168,10 +185,7 @@ export function initGalleryCarouselSwitcher() {
 	function update() {
 		const useScrollRow = desktop.matches && ! reduced.matches;
 		scrollRowContainers.forEach( ( scrollRowContainer ) => {
-			// Fixed sibling markup in both by-day.php and by-night.php: the peek
-			// container immediately precedes the scroll-row container inside the
-			// gallery <section>.
-			const peekContainer = scrollRowContainer.previousElementSibling;
+			const peekContainer = findPeekContainer( scrollRowContainer );
 			scrollRowContainer.classList.toggle( 'hidden', ! useScrollRow );
 			if ( peekContainer ) peekContainer.classList.toggle( 'hidden', useScrollRow );
 		} );
