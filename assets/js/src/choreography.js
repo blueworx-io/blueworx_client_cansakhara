@@ -3,7 +3,7 @@
 // MotionRoot calls these inside a reduced-motion-gated matchMedia block: the
 // `*Hero` builds run immediately (pre-paint page load), the `*Scroll` builds run
 // after webfonts settle (so SplitText measures real font metrics).
-import { gsap, ScrollTrigger, EASE, DUR, scrollTriggerVars } from "./gsap";
+import { gsap, ScrollTrigger, EASE, DUR, scrollTriggerVars } from "./gsap.js";
 import {
   fade,
   fadeUp,

@@ -98,10 +98,17 @@ import { gsap, getScroller } from './gsap.js';
 const DESKTOP_QUERY = '(min-width: 796px)';
 const REDUCED_QUERY = '(prefers-reduced-motion: reduce)';
 
+// querySelectorAll, matching initGalleryCarouselSwitcher() below — that
+// function already documents pages carrying more than one gallery pair, and a
+// single querySelector here would animate the first row and quietly leave the
+// rest static.
 export function initGalleryScrollRow() {
-	const viewport = document.querySelector( '[data-cansakhara-carousel="scroll-row"]' );
-	if ( ! viewport ) return;
+	document
+		.querySelectorAll( '[data-cansakhara-carousel="scroll-row"]' )
+		.forEach( setupScrollRow );
+}
 
+function setupScrollRow( viewport ) {
 	const track = viewport.querySelector( '[data-cansakhara-track]' );
 	const flexWrapper = viewport.parentElement;
 	const band = flexWrapper ? flexWrapper.parentElement : null;

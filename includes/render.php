@@ -97,13 +97,28 @@ function cansakhara_document_open( $args = array() ) {
 	<?php wp_head(); ?>
 	<script>
 		/* Pre-paint no-FOUC guard: hide the above-the-fold hero entrance
-		   elements before first paint, but only when JS runs and motion is
-		   allowed. Ported verbatim from the Next.js layout. */
+		elements before first paint, but only when JS runs and motion is
+		allowed. Ported verbatim from the Next.js layout. */
 		try {
 			if ( ! matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
 				document.documentElement.classList.add( 'motion-ready' );
 			}
 		} catch ( e ) {}
+		/* Watchdog. The guard above hides the hero until the motion layer
+		reveals it, so a bundle that never runs — deferred, combined, minified
+		or simply broken by a caching or optimisation plugin — would leave the
+		front page as a photograph with no wordmark and no calls to action,
+		permanently, with nothing logged. The motion layer sets
+		data-cansakhara-motion on <html> the moment it initialises. If that has
+		not happened by window load, nothing is going to reveal the hero, so
+		the class comes off and the page falls back to its plain visible state.
+		This lives here rather than in the bundle on purpose: the failure it
+		catches is the bundle not running. */
+		window.addEventListener( 'load', function () {
+			if ( ! document.documentElement.hasAttribute( 'data-cansakhara-motion' ) ) {
+				document.documentElement.classList.remove( 'motion-ready' );
+			}
+		} );
 	</script>
 </head>
 <body <?php body_class( $classes ); ?>>

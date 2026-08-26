@@ -25,6 +25,12 @@ export function initMotion( pageSlug ) {
 		else if ( isDayNight ) buildDayNightHero( shell );
 	} );
 
+	// The explicit "the motion layer is up" signal read by the pre-paint
+	// guard's watchdog in includes/render.php. Set after the hero build, not
+	// before it: if that build throws, nothing will reveal the hero, and the
+	// watchdog should treat it as a failure rather than as a running layer.
+	document.documentElement.setAttribute( 'data-cansakhara-motion', 'ready' );
+
 	// Phase 2 — scroll and text reveals. Deferred until webfonts settle so
 	// SplitText line breaks are measured against the real fonts.
 	const buildScroll = () => {
