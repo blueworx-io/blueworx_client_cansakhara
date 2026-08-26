@@ -3,9 +3,13 @@
  * Home page — ported from src/app/page.tsx.
  *
  * The hero image is the page's only `priority` next/image, so it alone gets
- * `loading="eager"`/`fetchpriority="high"`; every other image on the page
- * (including the above-the-fold hero wordmark, which the source never marks
- * `priority`) gets `loading="lazy"`, matching next/image's own default.
+ * `fetchpriority="high"`; every other below-the-fold image gets
+ * `loading="lazy"`, matching next/image's own default.
+ *
+ * The hero wordmark is the exception: the source never marked it `priority`,
+ * but it is above the fold, and lazy-loading an above-the-fold image only
+ * delays it. It is `eager` here. This cannot move the fidelity comparison —
+ * the capture forces every lazy image eager before it shoots.
  *
  * The `WelcomeTitleLockup`/`JustifiedLine` helpers from the source are not
  * promoted to includes/components.php (they are single-use, page-specific,
@@ -105,19 +109,19 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 				width="655"
 				height="50"
 				data-hero-hide
-				loading="lazy"
+				loading="eager"
 				class="hero-wordmark mx-auto h-auto w-[300px] sm:w-[520px] md:w-[655px]"
 			/>
 			<div class="hero-actions mt-12 flex flex-col items-center justify-center gap-4 min-[376px]:flex-row max-[795px]:absolute max-[795px]:inset-x-0 max-[795px]:bottom-[71px] max-[795px]:mt-0 max-[795px]:px-5">
 				<a
-					href="<?php echo esc_url( home_url( '/by-day/' ) ); ?>"
+					href="<?php echo esc_url( cansakhara_page_url( 'by-day' ) ); ?>"
 					data-hero-hide
 					class="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#ac9a8c] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
 				>
 					By day
 				</a>
 				<a
-					href="<?php echo esc_url( home_url( '/by-night/' ) ); ?>"
+					href="<?php echo esc_url( cansakhara_page_url( 'by-night' ) ); ?>"
 					data-hero-hide
 					class="hero-choice flex h-[54px] w-40 items-center justify-center border border-white bg-[#001c2b] px-5 font-display text-xs uppercase tracking-[0.35em] transition-colors hover:bg-white hover:text-[#001c2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
 				>
@@ -203,14 +207,14 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 					<h3 class="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-[44px] md:tracking-[0.4em]">
 						By day
 					</h3>
-					<?php cansakhara_outline_button( 'Explore', home_url( '/by-day/' ), 'mt-10 border-white bg-[#918074] hover:bg-white hover:text-[#ac9a8c] md:mt-[50px]' ); ?>
+					<?php cansakhara_outline_button( 'Explore', cansakhara_page_url( 'by-day' ), 'mt-10 border-white bg-[#918074] hover:bg-white hover:text-[#ac9a8c] md:mt-[50px]' ); ?>
 				</article>
 				<article class="discover-card flex aspect-square flex-col items-center justify-center bg-[#031927] px-6 text-center text-white">
 					<?php cansakhara_moon_icon( 'size-20 md:size-[180px]' ); ?>
 					<h3 class="discover-card-title mt-10 font-display text-base font-light uppercase tracking-[0.5em] md:mt-[50px] md:text-[44px] md:tracking-[0.4em]">
 						By night
 					</h3>
-					<?php cansakhara_outline_button( 'Explore', home_url( '/by-night/' ), 'mt-10 border-white bg-[#255a6b] hover:bg-white hover:text-[#001c2b] md:mt-[50px]' ); ?>
+					<?php cansakhara_outline_button( 'Explore', cansakhara_page_url( 'by-night' ), 'mt-10 border-white bg-[#255a6b] hover:bg-white hover:text-[#001c2b] md:mt-[50px]' ); ?>
 				</article>
 			</div>
 		</div>

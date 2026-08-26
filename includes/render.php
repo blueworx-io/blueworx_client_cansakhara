@@ -16,12 +16,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  * must not depend on that seam — the whole point of rendering the document
  * ourselves is that the output is identical regardless of the active theme.
  *
+ * Scoped to owned pages. Declared site-wide (the obvious `after_setup_theme`
+ * home for this) it would switch `_wp_render_title_tag()` on for every
+ * front-end request on the host site, and a theme that prints its own
+ * <title> in header.php would then emit two of them on every blog, shop and
+ * contact page. `after_setup_theme` runs before the query is resolved, so it
+ * cannot tell whose page this is; `wp` runs after the query and well before
+ * `wp_head`, which is where the title is actually rendered.
+ *
  * @return void
  */
 function cansakhara_ensure_title_tag_support() {
+	if ( ! cansakhara_is_owned_request() ) {
+		return;
+	}
+
 	add_theme_support( 'title-tag' );
 }
-add_action( 'after_setup_theme', 'cansakhara_ensure_title_tag_support' );
+add_action( 'wp', 'cansakhara_ensure_title_tag_support' );
 
 /**
  * Takes over rendering for pages this plugin owns.
@@ -121,6 +133,10 @@ function cansakhara_document_close() {
  * @return void
  */
 function cansakhara_part( $name, $args = array() ) {
+	// Every caller passes a hardcoded literal, but a part name reaches an
+	// include() — so it is reduced to a bare filename here rather than trusted
+	// to stay that way.
+	$name = basename( (string) $name, '.php' );
 	$path = CANSAKHARA_DIR . 'templates/parts/' . $name . '.php';
 
 	if ( ! file_exists( $path ) ) {

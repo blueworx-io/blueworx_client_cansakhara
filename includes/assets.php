@@ -12,10 +12,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Whether the current request is one of this plugin's pages.
  *
+ * The ownership test itself lives in one place — cansakhara_page_is_ours() —
+ * so there is no second copy to drift. This only adds "and it is the page
+ * being viewed".
+ *
  * @return bool
  */
 function cansakhara_is_owned_request() {
-	return is_singular( 'page' ) && '' !== cansakhara_page_slug( get_queried_object_id() );
+	return is_singular( 'page' ) && cansakhara_page_is_ours( get_queried_object_id() );
 }
 
 /**
@@ -58,7 +62,27 @@ function cansakhara_sweep_foreign_assets() {
 		return;
 	}
 
-	$keep = array( 'cansakhara-public', 'admin-bar', 'dashicons' );
+	/**
+	 * Filters the stylesheet handles the sweep leaves alone on owned pages.
+	 *
+	 * Foreign scripts are kept by design, so a consent banner or chat widget
+	 * still runs — but its stylesheet is dropped with everything else and it
+	 * renders unstyled. This is the seam for rescuing that one handle without
+	 * editing the plugin:
+	 *
+	 *     add_filter( 'cansakhara_keep_styles', function ( $keep ) {
+	 *         $keep[] = 'my-consent-banner';
+	 *         return $keep;
+	 *     } );
+	 *
+	 * Anything added here is, by definition, allowed to affect the design.
+	 *
+	 * @param string[] $keep Stylesheet handles to keep.
+	 */
+	$keep = (array) apply_filters(
+		'cansakhara_keep_styles',
+		array( 'cansakhara-public', 'admin-bar', 'dashicons' )
+	);
 
 	foreach ( wp_styles()->queue as $handle ) {
 		if ( ! in_array( $handle, $keep, true ) ) {

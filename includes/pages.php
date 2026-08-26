@@ -103,6 +103,37 @@ function cansakhara_install_pages() {
 }
 
 /**
+ * The permalink of an owned page.
+ *
+ * Internal links must resolve the page this plugin actually created, not a
+ * guessed URL. On a site that already has a page slugged "by-day",
+ * wp_insert_post() stores ours as "by-day-2" — a hardcoded home_url(
+ * '/by-day/' ) would then link to somebody else's page while ours stayed
+ * unreachable. Plain permalinks (?page_id=…) break the guess just as badly.
+ *
+ * Falls back to the slug-shaped URL only when the tracked page is missing,
+ * which is the same link the plugin used to emit unconditionally.
+ *
+ * @param string $slug Owned-page slug: 'home', 'by-day' or 'by-night'.
+ * @return string Permalink.
+ */
+function cansakhara_page_url( $slug ) {
+	$slug = (string) $slug;
+	$ids  = (array) get_option( 'cansakhara_page_ids', array() );
+	$id   = isset( $ids[ $slug ] ) ? (int) $ids[ $slug ] : 0;
+
+	if ( $id > 0 && cansakhara_page_slug( $id ) === $slug ) {
+		$url = get_permalink( $id );
+
+		if ( is_string( $url ) && '' !== $url ) {
+			return $url;
+		}
+	}
+
+	return home_url( 'home' === $slug ? '/' : '/' . $slug . '/' );
+}
+
+/**
  * Whether a page was created by this plugin.
  *
  * @param int $post_id Page ID.

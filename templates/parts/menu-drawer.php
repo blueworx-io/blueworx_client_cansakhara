@@ -26,15 +26,15 @@ $cansakhara_panel_color = isset( $args['panel_color'] ) ? (string) $args['panel_
 $cansakhara_menu_links = array(
 	array(
 		'label' => 'Experience',
-		'href'  => home_url( '/' ),
+		'href'  => cansakhara_page_url( 'home' ),
 	),
 	array(
 		'label' => 'By Day',
-		'href'  => home_url( '/by-day/' ),
+		'href'  => cansakhara_page_url( 'by-day' ),
 	),
 	array(
 		'label' => 'By Night',
-		'href'  => home_url( '/by-night/' ),
+		'href'  => cansakhara_page_url( 'by-night' ),
 	),
 );
 ?>
