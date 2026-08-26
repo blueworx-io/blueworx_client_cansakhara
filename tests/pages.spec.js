@@ -11,3 +11,10 @@ test('the front page is the plugin home page, not the WordPress blog roll', asyn
   await page.goto('/');
   await expect(page.locator('body')).toHaveClass(/cansakhara-page/);
 });
+
+test('the plugin renders the whole document, not the theme', async ({ page }) => {
+  await page.goto('/by-day/');
+  await expect(page.locator('body')).toHaveClass(/cansakhara-theme-day/);
+  // A theme's own wrapper would appear here if get_header() were being used.
+  await expect(page.locator('#page, .wp-site-blocks')).toHaveCount(0);
+});
