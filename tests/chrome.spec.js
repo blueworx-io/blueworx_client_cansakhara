@@ -20,3 +20,13 @@ test('the by-day header takes the day panel colour', async ({ page }) => {
     'data-cansakhara-solid-color', '#ac9a8c'
   );
 });
+
+test('the footer renders its outbound links', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('footer a[href="https://mdmsl.com/"]')).toHaveCount(1);
+});
+
+test('the side nav container is present', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('[data-cansakhara-side-nav]')).toHaveCount(1);
+});
