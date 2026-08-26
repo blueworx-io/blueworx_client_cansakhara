@@ -643,6 +643,43 @@ body {
   display: none;
 }
 
+/* The WordPress admin bar.
+ *
+ * Since WP 6.4 the bar pushes the whole document down with an inline
+ * `html { margin-top: 32px !important }` (46px below 782px). These pages are a
+ * 100dvh shell with the window's own scrolling switched off, so that margin is
+ * pure overflow: the bottom 32px of every page drops below the fold behind a
+ * window scrollbar that should not exist, and the fixed header sits underneath
+ * the bar where it cannot be clicked.
+ *
+ * Everything here is keyed off the `admin-bar` class WordPress puts on <body>
+ * only when it is actually rendering the bar. A logged-out visitor matches none
+ * of it, so public rendering — and every fidelity capture — is untouched.
+ */
+body.admin-bar,
+body.admin-bar .site-shell {
+  height: calc(100dvh - 32px);
+}
+
+body.admin-bar [data-cansakhara-header],
+body.admin-bar [data-cansakhara-scrim],
+body.admin-bar #site-menu {
+  top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+  body.admin-bar,
+  body.admin-bar .site-shell {
+    height: calc(100dvh - 46px);
+  }
+
+  body.admin-bar [data-cansakhara-header],
+  body.admin-bar [data-cansakhara-scrim],
+  body.admin-bar #site-menu {
+    top: 46px;
+  }
+}
+
 /* flow-root establishes a block formatting context so the dividers' negative
    margins bleed the line across the section boundary (straddling it 50/50)
    instead of collapsing through and shifting the whole section. */
