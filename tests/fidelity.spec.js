@@ -1,5 +1,15 @@
 // The acceptance gate for the whole WordPress-plugin conversion.
 //
+// !!! DO NOT RUN WITH --update-snapshots !!!
+// playwright.config.js points this spec's snapshotPathTemplate directly at
+// tests/baselines/*.png — there is no separate copy anymore. Those PNGs are
+// the Task 1 Next.js-build baselines and CANNOT be regenerated (the Next.js
+// app that produced them no longer exists in this tree). Running
+// `--update-snapshots` (or any script/CI step that passes it) against this
+// spec would silently overwrite the irreplaceable reference images with
+// whatever the plugin currently renders, permanently destroying the ground
+// truth this gate compares against.
+//
 // Compares the plugin's rendered output against the Next.js baselines
 // captured in Task 1 (tests/baselines/*.png). The Next.js app no longer
 // exists in the working tree, so those baselines are the fixed reference
