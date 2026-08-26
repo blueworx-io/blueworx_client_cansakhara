@@ -20,7 +20,14 @@ const ALLOW = [
 	'readme.txt',
 	'includes',
 	'templates',
-	'assets',
+	// Only the built runtime assets — not assets/js/src or assets/css/src,
+	// which are build inputs. includes/assets.php only ever enqueues
+	// assets/css/public.css and assets/js/public.js, so the source trees
+	// are dead weight nothing on a live site loads.
+	'assets/css/public.css',
+	'assets/js/public.js',
+	'assets/img',
+	'assets/fonts',
 	// The vendored update checker. Without it the plugin fatals on activation,
 	// since the main file requires it unconditionally.
 	'plugin-update-checker',
