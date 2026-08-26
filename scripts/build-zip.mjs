@@ -36,11 +36,12 @@ const ALLOW = [
 // Staged by the allowlist above, then removed. Kept as a deny list rather than
 // by pruning the vendored library in the repo, so upgrading it stays a
 // wholesale folder swap.
-const DENY = [
-	// The library's own Composer declaration. We load it through its own
-	// bundled autoloader, and a composer.json has no business on a live site.
-	join('plugin-update-checker', 'composer.json'),
-];
+//
+// Currently empty: this vendored copy of the update checker carries no
+// composer.json (the earlier entry for one matched nothing). Entries belong
+// here when a shipped directory contains a file that must not reach a site —
+// a composer.json anywhere in the archive fails the release content check.
+const DENY = [];
 
 // bsdtar writes forward slashes on every platform and can read/write zip.
 // On Windows the System32 copy is bsdtar; whatever `tar` resolves to first

@@ -8,5 +8,14 @@ jobs:
     with:
       plugin_slug: blueworx-client-cansakhara
       foundation_ref: v1
+      # Keep IDENTICAL to ci.yml's input of the same name — see the note there.
+      exclude_paths: |
+        /assets/js/src
+        /assets/css/src
+        /scripts
+        /vendor
+        /dist
+        /.wp-test
+        /.mcp.json
     permissions:
       contents: write
