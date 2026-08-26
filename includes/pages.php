@@ -26,21 +26,30 @@ const CANSAKHARA_PAGE_META = '_cansakhara_page';
  * plugins behave normally. Rendering is taken over in includes/render.php, so
  * the active theme never gets a say in how they look.
  *
- * @return array<string, array{title: string, template: string}>
+ * `description` carries the original Next.js build's per-page metadata
+ * description (recovered from the `nextjs-final` tag). It is stored as each
+ * page's `post_excerpt` on creation, not rendered as a hardcoded meta tag —
+ * that would fight a real SEO plugin, which is free to read the excerpt (or
+ * override it) normally.
+ *
+ * @return array<string, array{title: string, template: string, description: string}>
  */
 function cansakhara_pages() {
 	return array(
 		'home'     => array(
-			'title'    => __( 'Home', 'blueworx-client-cansakhara' ),
-			'template' => 'pages/home.php',
+			'title'       => __( 'Home', 'blueworx-client-cansakhara' ),
+			'template'    => 'pages/home.php',
+			'description' => __( 'Discover Can Sakhara, a private art-filled villa overlooking Ibiza and Formentera.', 'blueworx-client-cansakhara' ),
 		),
 		'by-day'   => array(
-			'title'    => __( 'By Day', 'blueworx-client-cansakhara' ),
-			'template' => 'pages/by-day.php',
+			'title'       => __( 'By Day', 'blueworx-client-cansakhara' ),
+			'template'    => 'pages/by-day.php',
+			'description' => __( 'Sun-drenched serenity at Can Sakhara — a myriad of spaces, both inside and out, inviting each guest to shape the day as they choose.', 'blueworx-client-cansakhara' ),
 		),
 		'by-night' => array(
-			'title'    => __( 'By Night', 'blueworx-client-cansakhara' ),
-			'template' => 'pages/by-night.php',
+			'title'       => __( 'By Night', 'blueworx-client-cansakhara' ),
+			'template'    => 'pages/by-night.php',
+			'description' => __( 'As the sun sets over the island, Can Sakhara comes alive in the glow of the afterhours — a warm and cinematic retreat for nights to remember.', 'blueworx-client-cansakhara' ),
 		),
 	);
 }
@@ -71,6 +80,7 @@ function cansakhara_install_pages() {
 				'post_title'     => $page['title'],
 				'post_name'      => $slug,
 				'post_content'   => '',
+				'post_excerpt'   => $page['description'],
 				'comment_status' => 'closed',
 				'ping_status'    => 'closed',
 			)

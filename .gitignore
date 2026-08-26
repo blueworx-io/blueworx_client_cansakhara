@@ -53,8 +53,11 @@ next-env.d.ts
 .superpowers/
 
 # WordPress plugin build/test artifacts
+# Anchored to the repo root: an unanchored "vendor/" also matched
+# plugin-update-checker/vendor/, silently dropping that vendored library's
+# own dependencies from every commit.
 .wp-test/
-vendor/
+/vendor/
 test-results/
 playwright-report/
 dist/
