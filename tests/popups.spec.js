@@ -74,4 +74,10 @@ test('Login in the menu drawer closes the drawer and opens the login popup', asy
   await page.locator('#site-menu').getByRole('button', { name: 'Login' }).click();
   await expect(page.locator('#site-menu')).toHaveAttribute('aria-hidden', 'true');
   await expect(login(page)).toHaveAttribute('aria-hidden', 'false');
+
+  // Closing must not return focus to the drawer's own (now off-screen,
+  // tabindex="-1") Login button — it returns to the hamburger instead.
+  await page.keyboard.press('Escape');
+  await expect(login(page)).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('[data-cansakhara-menu-open]')).toBeFocused();
 });

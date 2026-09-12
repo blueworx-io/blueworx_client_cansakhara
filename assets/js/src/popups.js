@@ -50,7 +50,12 @@ export function initPopups() {
 			hide( current );
 		} else if ( ! current ) {
 			closeDrawerIfOpen();
-			opener = trigger || null;
+			// A trigger inside the drawer (e.g. its Login entry) is now
+			// tabindex="-1" and hidden off-screen — return focus to the
+			// hamburger that reopens the drawer instead of parking it there.
+			opener = trigger && trigger.closest( '#site-menu' )
+				? document.querySelector( '[data-cansakhara-menu-open]' )
+				: ( trigger || null );
 			const el = scroller();
 			overflowRestore = el.style.overflow;
 			el.style.overflow = 'hidden';
