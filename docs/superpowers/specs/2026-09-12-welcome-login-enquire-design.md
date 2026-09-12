@@ -102,10 +102,11 @@ tracking `1.2px`, underlined) — opens the Enquire popup. SUBMIT.
 
 Submission is in the background so the popup stays open on failure:
 
-- JS posts `email` and `password` to a REST route `cansakhara/v1/login`
-  (`POST`, permission: anyone) with the standard `X-WP-Nonce` header — the
-  `wp_rest` nonce printed into the page via `wp_localize_script`. The nonce
-  is what stops a third-party site posting logins through the route.
+- JS posts `email` and `password` as JSON to a REST route
+  `cansakhara/v1/login` (`POST`, permission: anyone). No nonce, on purpose:
+  WordPress's own `wp-login.php` has none, and a nonce printed into a page
+  that a caching plugin serves for a day goes stale and locks every guest
+  out. The route is exactly as exposed as core's login form, no more.
 - Server: `wp_signon()` with the email as the login. WordPress already
   accepts an email address in `user_login`. On success respond
   `{ redirect: <url> }`; on failure respond `403` with one generic message
@@ -121,8 +122,12 @@ Submission is in the background so the popup stays open on failure:
   line and a button to the destination page instead of the form.
 - No JS: the form still `POST`s to the same page, where a request handler
   on `template_redirect` performs the same login and redirects; failure
-  redirects back with `?cansakhara_login=failed`, which reopens the popup
-  with the message. This keeps the popup usable if the bundle is broken by
+  redirects back with `?cansakhara_login=failed`, which renders the popup
+  open with the message.
+- Existing sites get the Welcome page without reactivating: on `init`, a
+  stored `cansakhara_version` that differs from the running version re-runs
+  page installation (without touching the front-page setting) and updates
+  the stored version. This keeps the popup usable if the bundle is broken by
   a caching plugin — the same failure mode the hero watchdog exists for.
 
 Destination: the page set in settings. If none is set, `home_url( '/' )`.
