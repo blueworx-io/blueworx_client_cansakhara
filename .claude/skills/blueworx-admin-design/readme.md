@@ -186,13 +186,24 @@ has card HTML showing its states. **Open `components/index.html` for the live in
 `EmptyState` · `HelpTip`
 
 **`components/data/`** — records and figures
-`DataTable` · `StatCard` · `BulkActions` · `DescriptionList` · `ActivityLog`
+`DataTable` · `StatCard` · `SummaryStrip` · `Gantt` · `BulkActions` · `DescriptionList` · `ActivityLog`
 
 Styling lives in `.css` files beside each group (`core.css`, `forms.css` + `forms-extra.css`,
 `layout.css` + `layout-extra.css`, `navigation.css`, `feedback.css` + `feedback-extra.css`,
 `data.css` + `data-extra.css`), all imported by `styles.css`, all built on the tokens. A plugin
 that cannot ship React can use the classes alone: `.bw-btn.bw-btn--primary`, `.bw-card`,
 `.bw-table`, `.bw-formrow`, and so on.
+
+Two patterns exist only as classes, because they are read rather than operated and every
+screen that shows one is PHP: `.bw-schedule`, a gantt with the controls taken off, and
+`.bw-calendar`, a month grid. The calendar is a `table` with `.bw-calendar__day` cells,
+each holding a `.bw-calendar__daynum` and a `.bw-calendar__entries` list; a day outside the
+month is `--outside`, today is `--today`, and an entry's leading `.bw-calendar__kind` word
+takes its tone from an `--accent`, `--success`, `--warning`, `--danger` or `--info`
+modifier on the entry. Every day cell carries its short weekday name in `data-weekday`, and a day
+with nothing on it is also `--empty`: under 782px the grid becomes a list of the days that have
+something on them, and those are what it reads. Its `.bw-calendar__nav` is two ghost buttons around a
+`.bw-calendar__month` heading. See `components/data/data-calendar.card.html`.
 
 ### Which control for which job
 
@@ -212,6 +223,9 @@ that cannot ship React can use the classes alone: `.bw-btn.bw-btn--primary`, `.b
 | Views of one screen | `Tabs` |
 | More than four settings sections | `SectionNav` |
 | Optional or advanced settings | `Accordion` |
+| Derived figures that stay put while tabs change | `SummaryStrip` |
+| Phases against a week or date scale | `Gantt` |
+| Dates on the month they fall in | `.bw-calendar` (classes only) |
 
 ### Intentional additions
 
@@ -265,11 +279,19 @@ Both use a generic sample plugin. All names, records and figures are invented.
 ### Using it in a plugin
 
 ```php
-// styles.css is copied verbatim from the skill folder to assets/blueworx-admin-design.css.
-wp_enqueue_style( 'bw-admin', PLUGIN_URL . 'assets/blueworx-admin-design.css', [], BW_VERSION );
-// assets/icons/lucide-icons.js is copied verbatim to assets/blueworx-admin-icons.js, beside the stylesheet.
-// Only for screens rendered as PHP/HTML rather than React — a React screen uses lucide-react.
-wp_enqueue_script_module( 'bw-icons', PLUGIN_URL . 'assets/blueworx-admin-icons.js', [], BW_VERSION );
+// Load the design system on your admin screens. Do not enqueue the stylesheet
+// yourself: on a site with two BlueWorx plugins, whichever enqueued first used
+// to win and the other plugin's screens wore its stylesheet. This loads the
+// newest copy present on the site, once.
+require_once PLUGIN_DIR . 'assets/blueworx-admin-design.php';
+
+add_action( 'admin_enqueue_scripts', function ( $hook ) {
+	if ( ! my_plugin_is_own_screen( $hook ) ) {
+		return;
+	}
+	blueworx_admin_design_enqueue();
+	blueworx_admin_design_enqueue_icons();
+} );
 ```
 
 ```html
@@ -284,3 +306,99 @@ body.toplevel_page_<slug> #wpcontent { padding-left: 0; }
 body.toplevel_page_<slug> #wpbody-content { padding-bottom: 0; }
 body.toplevel_page_<slug> #wpfooter { display: none; }
 ```
+
+## Custom editor screens
+
+Any screen where a site owner edits a record or a set of page content is built by the
+**page editor library** (`editor/` in this skill), never by hand. The library owns the shape;
+the plugin owns only what goes in it.
+
+**The skeleton, always in this order:** page header (`bw-pagehead`) → tabs (`bw-tabs`, optional)
+→ panels (`bw-card`, stacked full width) → save bar (`bw-savebar`, pinned to the bottom of the
+window, one per screen).
+
+**Rules that are not negotiable**
+
+- No second navigation column. The only left-hand nav is WordPress's own admin menu.
+- One save bar per screen, whatever the tab. Tabs are views of one record; nothing saves on its own.
+- One to three field groups: no tabs. Several areas: a tab each. More than about five panels in a
+  tab: split the tab. WordPress's own settings: their own tab, last.
+- Optional or expert settings go in a closed `bw-accordion`. Required fields are never hidden.
+- Tab and panel counts come from the data. An empty group reads "empty", never "0".
+- Records are WordPress post types. The library refuses to run a record editor whose post type
+  nobody registered.
+
+**Editor controls**
+
+| Job | Class |
+|---|---|
+| Rich text — bold, italic, link, list, image, nothing else | `bw-richtext` |
+| Free-text list or tags | `bw-tokens` with `bw-chip` |
+| Long taxonomy list, capped so it never grows the panel | `bw-scrolllist` |
+| Fields that only exist while a condition holds | `bw-conditional` |
+| The record's title, and the slug beneath it | `bw-titleinput`, `bw-permalink` |
+| A small muted note with an icon | `bw-fieldnote` |
+| A collapsible group | `bw-accordion` (not a new control) |
+| Rows that fall into named groups, each with its own subtotal | a `repeater` with `group_by` and `subtotal_of` |
+| Phases on a week or date scale | `gantt` |
+| A list whose rows are settled, wording still editable | a `repeater` or `gantt` with `fixed` |
+| Derived figures under the header, live as values change | the screen's `summary` |
+
+**Rows that fall into groups.** A `repeater` may set `group_by` to the id of one of its own
+`select` cells and `subtotal_of` to the id of one of its own `number` cells. Rows then draw
+under a header per group, in the order the select offers, each header carrying that group's
+subtotal (`subtotal_suffix` names the unit). Rows whose group cell is empty fall under one
+last group, named by `group_empty_label`. A repeater that sets neither behaves exactly as it
+did before.
+
+**Lists whose rows are settled.** A `repeater` or a `gantt` may set `fixed` to true. The
+screen then offers no way to add a row, remove one or reorder them — those controls are not
+drawn at all, rather than drawn and disabled — while every cell stays editable. Use it where
+the rows come from somewhere else and the order is part of the product, not a per-record
+choice. It is not `readonly`, which locks the values too. Only a repeater and a gantt hold
+rows, so `fixed` on any other kind is rejected when the screen is registered.
+
+**A timeline.** A `gantt` field holds a list of phases — `title`, `desc`, `start`, `end`,
+`milestone`, `kind` (`pre` | `launch` | `post`) and `visible`. The screen can switch between
+project weeks and calendar dates; `origin` is the date week 1 counts from, and dates are only
+ever a way of reading the weeks, never what is stored. **Weeks are authored, never derived
+from estimated hours** — a schedule is what the team can actually do. Exactly one phase may
+be the launch milestone, and a phase that ends before it starts is refused on save.
+
+**The summary strip.** A screen may declare `summary`, a list of cells shown under the page
+header and above the tabs. Each cell has an `id`, a `label`, an optional `foot` and `suffix`,
+and either `sum` (`'repeaterId.cellId'`, added up across the rows) or `count` (a repeater or
+gantt field id). An optional `where` (`'repeaterId.toggleCellId'`) counts only the rows that
+toggle is on for. The figures are worked out in the browser, so the strip moves as somebody
+types rather than catching up after a save — which is why a cell says *what* to work out and
+never *how*.
+
+**What a repeater row may hold**
+
+`text`, `number`, `textarea`, `select`, `toggle`, `media`. That list is
+`Schema::REPEATER_KINDS`, and it is what the row actually draws — a kind may
+only be added to it once `Repeater()` in the browser file has a case for it,
+which a test enforces. A url or email cell is a `text` with a `format`, not a
+kind of its own. Anything wider than this list belongs outside the repeater.
+
+**A field that suggests without constraining**
+
+A `text` field may carry `suggestions` — a list of `{ value, label }` offered as
+a `<datalist>`. The field stays free text and nothing is checked against the
+list, because the case it exists for is a link field: most links point at one of
+the site's own pages, and plenty do not. Only `text` accepts it.
+
+**A screen that keeps its values somewhere else**
+
+A settings screen may supply `read` and `write` callbacks instead of an
+`option_name`, and the library will use them in place of its own store.
+Everything else — the schema, capability filtering both ways, sanitising,
+validation, the save bar and its states — is unchanged, and a value still
+reaches `write` already cleaned by its field's kind.
+
+Supply both or neither. Record screens may not: a record's values belong to its
+post, which is what "records are post types" means.
+
+Use it when the truth already lives somewhere and an option would be a second
+copy of it — a switch that is really a page's post status, say, where storing it
+twice means the two can disagree with no way to tell which is right.

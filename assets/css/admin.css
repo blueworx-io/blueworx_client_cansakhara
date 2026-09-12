@@ -1,0 +1,8 @@
+/* Settings → Can Sakhara is a full-bleed blueworx-admin-design screen. These
+   are the only rules the design system allows a plugin to keep of its own:
+   dropping WordPress's chrome padding on this one screen. Everything visual
+   comes from assets/blueworx-admin-design.css. */
+.wrap.bw-wrap { margin: 0; }
+body.settings_page_cansakhara #wpcontent { padding-left: 0; }
+body.settings_page_cansakhara #wpbody-content { padding-bottom: 0; }
+body.settings_page_cansakhara #wpfooter { display: none; }

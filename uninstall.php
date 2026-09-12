@@ -15,3 +15,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 delete_option( 'cansakhara_page_ids' );
 delete_option( 'cansakhara_version' );
+delete_option( 'cansakhara_settings' );

@@ -27,6 +27,11 @@ require_once CANSAKHARA_DIR . 'includes/render.php';
 require_once CANSAKHARA_DIR . 'includes/assets.php';
 require_once CANSAKHARA_DIR . 'includes/components.php';
 
+// The design system registrar must load at top level, before any hook — see
+// the header comment in that file.
+require_once CANSAKHARA_DIR . 'assets/blueworx-admin-design.php';
+require_once CANSAKHARA_DIR . 'includes/settings.php';
+
 require_once CANSAKHARA_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
