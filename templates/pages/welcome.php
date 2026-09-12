@@ -20,6 +20,7 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 	class="site-shell relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[#5b0a00] bg-cover bg-center text-white"
 	style="background-image: url('<?php echo esc_url( CANSAKHARA_URL . 'assets/img/welcome-bg.jpg' ); ?>')"
 >
+	<h1 class="sr-only">Can Sakhara</h1>
 	<div class="flex -translate-y-[40px] flex-col items-center gap-[24px] md:-translate-y-[60px] md:gap-[38px]">
 		<img
 			src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/logo-white.svg' ); ?>"
