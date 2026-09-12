@@ -1,8 +1,9 @@
 // Bundle entry. Reads the page identity from the body class the PHP renderer
 // set, then starts every behaviour. Each init is a no-op when its markup is
-// absent, so one bundle serves all three pages.
+// absent, so one bundle serves every owned page.
 import { initMotion } from './motion.js';
 import { initHeader } from './header.js';
+import { initPopups } from './popups.js';
 import { initSideNav } from './side-nav.js';
 import { initExperienceCarousel } from './experience-carousel.js';
 import { initGalleryPeekStrip } from './gallery-peek-strip.js';
@@ -17,6 +18,7 @@ function start() {
 	const slug = pageSlug();
 	initMotion( slug );
 	initHeader();
+	initPopups();
 	initSideNav();
 	initExperienceCarousel();
 	// Switcher first: it settles which of the two gallery containers is

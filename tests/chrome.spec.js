@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-test('the header renders with its menu trigger and enquire link', async ({ page }) => {
+test('the header renders with its menu trigger and enquire button', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('[data-cansakhara-header]')).toBeVisible();
   await expect(page.locator('[data-cansakhara-menu-open]')).toHaveAttribute('aria-expanded', 'false');
   await expect(
-    page.locator('[data-cansakhara-header]').getByRole('link', { name: 'Enquire' })
-  ).toHaveAttribute('href', 'mailto:reservations@cansakhara.com');
+    page.locator('[data-cansakhara-header]').getByRole('button', { name: 'Enquire' })
+  ).toHaveAttribute('data-cansakhara-popup-open', 'enquire');
 });
 
 test('the drawer is present and closed on load', async ({ page }) => {

@@ -23,7 +23,8 @@ export function initHeader() {
 
 	const closeButton = drawer.querySelector( '[data-cansakhara-menu-close]' );
 	const scrim = document.querySelector( '[data-cansakhara-scrim]' );
-	const drawerLinks = drawer.querySelectorAll( 'a[href]' );
+	// Drawer entries: the page links plus the Login trigger.
+	const drawerLinks = drawer.querySelectorAll( 'a[href], button[data-cansakhara-popup-open]' );
 	const logoPath = nav.querySelector( '[data-cansakhara-logo-path]' );
 	const solidColor = nav.getAttribute( 'data-cansakhara-solid-color' ) || '';
 	// theme !== "home": the header PHP template only sets an inline

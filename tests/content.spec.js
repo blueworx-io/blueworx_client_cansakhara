@@ -23,9 +23,14 @@ test('no image on the home page is broken', async ({ page }) => {
 for (const path of ['/by-day/', '/by-night/']) {
   test(`${path} renders its enquire call to action and unbroken images`, async ({ page }) => {
     await page.goto(path);
-    await expect(
-      page.locator('a[href="mailto:reservations@cansakhara.com"]').first()
-    ).toBeVisible();
+    // Scoped to <main>: the header now also renders the Enquire popup
+    // (templates/parts/popups.php) outside <main>, whose closed fallback
+    // mailto link shares this href and would otherwise win an unscoped
+    // .first(). The in-page CTA itself reveals on scroll (GSAP
+    // ScrollTrigger), same as the features-grid figures above.
+    const cta = page.locator('main a[href="mailto:reservations@cansakhara.com"]');
+    await cta.scrollIntoViewIfNeeded();
+    await expect(cta).toBeVisible();
     const broken = await page.locator('img').evaluateAll((imgs) =>
       imgs.filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src)
     );

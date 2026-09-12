@@ -612,6 +612,32 @@
   --breakpoint-md: 796px;
 }
 
+/* The outlined SUBMIT from the popup frames (Figma 1:108 / 1:155). A class
+   rather than utilities so the SureForms submit button can share it. */
+@layer components {
+  .cansakhara-popup-submit {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #42071a;
+    padding: 16px 32px;
+    font-family: var(--font-display), sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 5.6px;
+    text-indent: 5.6px;
+    text-transform: uppercase;
+    color: #fff;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 200ms ease-out;
+  }
+  .cansakhara-popup-submit:hover { background-color: #490500; }
+  .cansakhara-popup-submit:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+  .cansakhara-popup-submit:disabled { opacity: .5; cursor: wait; }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -691,6 +717,23 @@ body.admin-bar #site-menu {
 a,
 button {
   cursor: pointer;
+}
+
+/* Login/Enquire popup fade (templates/parts/popups.php). Opacity always
+   animates over the same 300ms. Visibility is asymmetric on purpose: opening
+   snaps it to `visible` with zero duration/delay so popups.js can focus the
+   heading and Tab-trap into the panel in the same synchronous click handler,
+   with nothing to wait for; closing keeps it `visible` for the full 300ms
+   (zero duration, but delayed by the fade length) so the fade-out plays in
+   full before the panel — and its now-offscreen controls — leave the tab
+   order. A plain rule, not Tailwind utilities, because the two states need
+   different transition-property timings that one utility class can't hold. */
+.cansakhara-popup {
+  transition: opacity 300ms ease-out, visibility 0s 300ms;
+}
+
+.cansakhara-popup.visible {
+  transition: opacity 300ms ease-out, visibility 0s;
 }
 
 a {
