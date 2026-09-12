@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test('the three plugin pages are reachable', async ({ page }) => {
-  for (const path of ['/', '/by-day/', '/by-night/']) {
+test('the four plugin pages are reachable', async ({ page }) => {
+  for (const path of ['/', '/by-day/', '/by-night/', '/welcome/']) {
     const response = await page.goto(path);
     expect(response.status(), `${path} should return 200`).toBe(200);
   }

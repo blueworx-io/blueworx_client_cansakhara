@@ -51,18 +51,27 @@ function cansakhara_pages() {
 			'template'    => 'pages/by-night.php',
 			'description' => __( 'As the sun sets over the island, Can Sakhara comes alive in the glow of the afterhours — a warm and cinematic retreat for nights to remember.', 'blueworx-client-cansakhara' ),
 		),
+		'welcome'  => array(
+			'title'       => __( 'Welcome', 'blueworx-client-cansakhara' ),
+			'template'    => 'pages/welcome.php',
+			'description' => __( 'Sign in for private access to Can Sakhara, or enquire about availability.', 'blueworx-client-cansakhara' ),
+		),
 	);
 }
 
 /**
- * Creates any missing owned pages, stamps them, and sets the front page.
+ * Creates any missing owned pages, stamps them, and (on activation) sets the
+ * front page.
  *
  * Idempotent: an existing stamped page is reused rather than duplicated, so
  * reactivating the plugin never leaves a second copy behind.
  *
+ * @param bool $set_front_page Whether to point the site's front page at the
+ *                             owned home page. True on activation; false when
+ *                             an update merely adds a page.
  * @return void
  */
-function cansakhara_install_pages() {
+function cansakhara_install_pages( $set_front_page = true ) {
 	$ids = (array) get_option( 'cansakhara_page_ids', array() );
 
 	foreach ( cansakhara_pages() as $slug => $page ) {
@@ -96,7 +105,7 @@ function cansakhara_install_pages() {
 
 	update_option( 'cansakhara_page_ids', $ids );
 
-	if ( isset( $ids['home'] ) && $ids['home'] > 0 ) {
+	if ( $set_front_page && isset( $ids['home'] ) && $ids['home'] > 0 ) {
 		update_option( 'show_on_front', 'page' );
 		update_option( 'page_on_front', (int) $ids['home'] );
 	}
@@ -114,7 +123,7 @@ function cansakhara_install_pages() {
  * Falls back to the slug-shaped URL only when the tracked page is missing,
  * which is the same link the plugin used to emit unconditionally.
  *
- * @param string $slug Owned-page slug: 'home', 'by-day' or 'by-night'.
+ * @param string $slug Owned-page slug: 'home', 'by-day', 'by-night' or 'welcome'.
  * @return string Permalink.
  */
 function cansakhara_page_url( $slug ) {

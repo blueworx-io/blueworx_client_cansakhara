@@ -71,9 +71,30 @@ $cansakhara_update_checker->getVcsApi()->enableReleaseAssets();
  */
 function cansakhara_activate() {
 	cansakhara_install_pages();
+	update_option( 'cansakhara_version', CANSAKHARA_VERSION );
 	flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'cansakhara_activate' );
+
+/**
+ * Creates pages added by an update, on sites that never reactivate.
+ *
+ * Updates arrive through the update checker, which does not fire the
+ * activation hook — so a page added in a later version would never exist on
+ * an existing site. Runs on the first request after an update, front end or
+ * admin, and never touches the front-page setting.
+ *
+ * @return void
+ */
+function cansakhara_maybe_upgrade() {
+	if ( get_option( 'cansakhara_version' ) === CANSAKHARA_VERSION ) {
+		return;
+	}
+
+	cansakhara_install_pages( false );
+	update_option( 'cansakhara_version', CANSAKHARA_VERSION );
+}
+add_action( 'init', 'cansakhara_maybe_upgrade' );
 
 /**
  * Flushes rewrites on deactivation. Pages are deliberately left in place.
