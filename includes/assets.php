@@ -46,6 +46,15 @@ function cansakhara_enqueue_assets() {
 		CANSAKHARA_VERSION,
 		true
 	);
+
+	wp_localize_script(
+		'cansakhara-public',
+		'cansakharaLogin',
+		array(
+			'endpoint'     => rest_url( 'cansakhara/v1/login' ),
+			'genericError' => cansakhara_login_failed_message(),
+		)
+	);
 }
 add_action( 'wp_enqueue_scripts', 'cansakhara_enqueue_assets', 20 );
 

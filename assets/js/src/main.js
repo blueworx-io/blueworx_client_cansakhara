@@ -4,6 +4,7 @@
 import { initMotion } from './motion.js';
 import { initHeader } from './header.js';
 import { initPopups } from './popups.js';
+import { initLoginForm } from './login.js';
 import { initSideNav } from './side-nav.js';
 import { initExperienceCarousel } from './experience-carousel.js';
 import { initGalleryPeekStrip } from './gallery-peek-strip.js';
@@ -19,6 +20,7 @@ function start() {
 	initMotion( slug );
 	initHeader();
 	initPopups();
+	initLoginForm();
 	initSideNav();
 	initExperienceCarousel();
 	// Switcher first: it settles which of the two gallery containers is
