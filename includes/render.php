@@ -179,7 +179,7 @@ function cansakhara_document_close() {
  * @param array  $args Variables made available to the part as $args.
  * @return void
  */
-function cansakhara_part( $name, $args = array() ) {
+function cansakhara_part( $name, $args = array() ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $args is read by the included part, which phpcs cannot see.
 	// Every caller passes a hardcoded literal, but a part name reaches an
 	// include() — so it is reduced to a bare filename here rather than trusted
 	// to stay that way.

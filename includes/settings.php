@@ -226,16 +226,18 @@ function cansakhara_render_settings_page() {
 								<div class="bw-formrow__control">
 									<span class="bw-select">
 										<?php
+										// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_dropdown_pages() escapes every attribute and label it prints.
 										wp_dropdown_pages(
 											array(
-												'name'              => CANSAKHARA_SETTINGS_OPTION . '[login_redirect]',
-												'id'                => 'cansakhara-login-redirect',
-												'class'             => 'bw-select__el',
-												'selected'          => $settings['login_redirect'],
-												'show_option_none'  => __( 'Home page', 'blueworx-client-cansakhara' ),
+												'name'     => CANSAKHARA_SETTINGS_OPTION . '[login_redirect]',
+												'id'       => 'cansakhara-login-redirect',
+												'class'    => 'bw-select__el',
+												'selected' => $settings['login_redirect'],
+												'show_option_none' => __( 'Home page', 'blueworx-client-cansakhara' ),
 												'option_none_value' => '0',
 											)
 										);
+										// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 										?>
 										<i class="bw-icon bw-icon--14 bw-select__arrow" data-lucide="chevron-down"></i>
 									</span>

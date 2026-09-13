@@ -52,7 +52,7 @@ function cansakhara_enquiry_form() {
 		);
 		?>
 	</p>
-	<?php
+		<?php
 	endif;
 }
 
