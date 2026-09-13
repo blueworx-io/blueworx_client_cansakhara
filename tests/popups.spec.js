@@ -81,3 +81,27 @@ test('Login in the menu drawer closes the drawer and opens the login popup', asy
   await expect(login(page)).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('[data-cansakhara-menu-open]')).toBeFocused();
 });
+
+test('the Mel de Magranetes mark in each popup links to mdmsl.com in a new tab', async ({ page }) => {
+  await page.goto('/welcome/');
+  for (const name of ['login', 'enquire']) {
+    const link = page.locator(`[data-cansakhara-popup="${name}"] a:has(img[alt="Mel de Magranetes"])`);
+    await expect(link).toHaveAttribute('href', 'https://mdmsl.com/');
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', /noopener/);
+  }
+});
+
+test('popup content stays vertically centred on a tall viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1800 });
+  await page.goto('/welcome/');
+  await page.getByRole('button', { name: 'Login' }).click();
+  const gaps = await page.evaluate(() => {
+    const popup = document.querySelector('[data-cansakhara-popup="login"]');
+    const heading = popup.querySelector('h2').getBoundingClientRect();
+    const mark = popup.querySelector('img[alt="Mel de Magranetes"]').getBoundingClientRect();
+    return { top: heading.top, bottom: window.innerHeight - mark.bottom };
+  });
+  // Centred: the space above the heading matches the space below the mark.
+  expect(Math.abs(gaps.top - gaps.bottom)).toBeLessThan(4);
+});

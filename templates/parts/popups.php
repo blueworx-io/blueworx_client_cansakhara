@@ -38,7 +38,11 @@ $cansakhara_panel_base  = 'cansakhara-popup fixed inset-0 z-[60] overflow-y-auto
 $cansakhara_panel_class = $cansakhara_panel_base . ' opacity-0 invisible pointer-events-none';
 $cansakhara_login_class = $cansakhara_login_open ? $cansakhara_panel_base . ' opacity-100 visible' : $cansakhara_panel_class;
 $cansakhara_close_class = 'absolute right-[20px] top-[19px] grid size-[33px] place-items-center border border-white transition-colors duration-200 hover:bg-white hover:text-[#5b0a00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:right-[50px] md:top-[46px] md:size-[52px]';
-$cansakhara_inner_class = 'flex min-h-full w-full flex-col items-center px-5 pb-[40px] pt-[90px] md:pb-[79px] md:pt-[118px]';
+// Vertically centred as one block (symmetric padding, so the centre is the
+// true centre), with the padding clearing the close button. The mark keeps
+// a fixed distance below the form rather than pinning to the bottom, so a
+// tall viewport never splits the content top and bottom.
+$cansakhara_inner_class = 'flex min-h-full w-full flex-col items-center justify-center px-5 py-[80px] md:py-[110px]';
 $cansakhara_title_class = 'font-display text-[24px] font-thin uppercase leading-none tracking-[9.6px] indent-[9.6px] outline-none md:text-[32px] md:tracking-[12.8px] md:indent-[12.8px]';
 $cansakhara_intro_class = 'mt-[30px] w-full max-w-[443px] text-center font-serif text-[13px] font-light italic leading-[1.4] tracking-[1.3px] md:mt-[43px] md:text-[14px] md:tracking-[1.4px]';
 $cansakhara_field_class = 'cansakhara-popup-field w-full bg-[#490500] px-8 py-4 text-center font-body text-[16px] font-light leading-[1.4] tracking-[0.8px] text-white placeholder:text-white focus:outline focus:outline-2 focus:outline-white/60';
@@ -116,9 +120,9 @@ $cansakhara_mark_class  = 'h-[50px] w-[150px]';
 		</form>
 		<?php endif; ?>
 
-		<div class="mt-auto pt-[40px] md:pt-[60px]">
+		<a href="https://mdmsl.com/" target="_blank" rel="noopener noreferrer" class="mt-[40px] block md:mt-[60px]">
 			<img src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/mel-de-magranetes.svg' ); ?>" alt="Mel de Magranetes" width="150" height="50" class="<?php echo esc_attr( $cansakhara_mark_class ); ?>" />
-		</div>
+		</a>
 	</div>
 </div>
 
@@ -145,8 +149,8 @@ $cansakhara_mark_class  = 'h-[50px] w-[150px]';
 			<?php cansakhara_enquiry_form(); ?>
 		</div>
 
-		<div class="mt-auto pt-[40px] md:pt-[60px]">
+		<a href="https://mdmsl.com/" target="_blank" rel="noopener noreferrer" class="mt-[40px] block md:mt-[60px]">
 			<img src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/mel-de-magranetes.svg' ); ?>" alt="Mel de Magranetes" width="150" height="50" class="<?php echo esc_attr( $cansakhara_mark_class ); ?>" />
-		</div>
+		</a>
 	</div>
 </div>
