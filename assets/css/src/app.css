@@ -652,7 +652,13 @@
     background: transparent !important;
     padding: 0 !important;
     max-width: none !important;
+    gap: 0 !important;
   }
+  /* SureForms' own .srfm-block-single rule only sets a bottom margin, but
+     .srfm-form is itself a flex column with its own row gap (18px from
+     --srfm-row-gap-between-blocks, zeroed above) — without killing both, the
+     two stack and fields end up ~110px apart instead of the 20px the design
+     calls for. */
   .cansakhara-popup .srfm-block { margin: 0 0 20px !important; }
   .cansakhara-popup .srfm-block-label {
     position: absolute !important;
@@ -661,6 +667,10 @@
     overflow: hidden !important;
     clip: rect(0 0 0 0) !important;
   }
+  /* SureForms fixes a 44px height (--srfm-input-height) and a 6px/6px
+     margin-top/bottom on every input, which fights the 16px/32px padding
+     the design wants — override both so the field's height comes from
+     padding + line-height alone (~54px) with no extra margin. */
   .cansakhara-popup .srfm-input-common {
     width: 100% !important;
     background: #490500 !important;
@@ -668,6 +678,8 @@
     border: 0 !important;
     border-radius: 0 !important;
     padding: 16px 32px !important;
+    margin: 0 !important;
+    height: auto !important;
     text-align: center !important;
     font-family: var(--font-body), sans-serif !important;
     font-weight: 300 !important;
@@ -676,6 +688,14 @@
     letter-spacing: .8px !important;
   }
   .cansakhara-popup .srfm-input-common::placeholder { color: #fff !important; opacity: 1 !important; }
+  /* SureForms reserves a fixed 16px (--srfm-error-line-height) under every
+     field for its error message even while that message is display:none —
+     collapse it to the message's own content height so it only takes space
+     once a validation error actually shows. */
+  .cansakhara-popup .srfm-error-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+  }
   .cansakhara-popup .srfm-gdpr-block .srfm-block-wrap { display: flex !important; justify-content: center !important; }
   .cansakhara-popup .srfm-gdpr-block .srfm-block-label {
     position: static !important;
