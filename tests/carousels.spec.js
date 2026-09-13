@@ -1,4 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { GUEST_STATE } from './helpers/wp.js';
+
+// These pages are private: browse them as the signed-in guest.
+test.use({ storageState: GUEST_STATE });
 
 // The Experience carousel has no next/previous control in this design (see
 // templates/parts/experience-carousel.php and task-9's report) — it advances
@@ -6,7 +10,7 @@ import { test, expect } from '@playwright/test';
 // These tests drive it the same way a real visitor or keyboard user would.
 
 test('keyboard advances the experience carousel and mirrors the index on the root', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   const root = page.locator('[data-cansakhara-carousel="experience"]');
   const viewport = root.locator('[role="group"]');
   const slideCount = await root.locator('[data-cansakhara-slide]').count();
@@ -24,7 +28,7 @@ test('keyboard advances the experience carousel and mirrors the index on the roo
 });
 
 test('dragging the experience carousel advances it and does not lock up afterwards', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   const root = page.locator('[data-cansakhara-carousel="experience"]');
   const viewport = root.locator('[role="group"]');
 
@@ -55,7 +59,7 @@ test('dragging the experience carousel advances it and does not lock up afterwar
 });
 
 test('the experience carousel loop wraps rather than stalling at the end', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   const root = page.locator('[data-cansakhara-carousel="experience"]');
   const viewport = root.locator('[role="group"]');
   const slideCount = await root.locator('[data-cansakhara-slide]').count();

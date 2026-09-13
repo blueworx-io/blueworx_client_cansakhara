@@ -27,7 +27,15 @@ const ALLOW = [
 	'assets/css/public.css',
 	'assets/js/public.js',
 	'assets/img',
+	'assets/video',
 	'assets/fonts',
+	// The admin design system, shipped verbatim (CI compares each against the
+	// foundation), plus the one chrome-override stylesheet the settings
+	// screen is allowed to carry.
+	'assets/blueworx-admin-design.css',
+	'assets/blueworx-admin-design.php',
+	'assets/blueworx-admin-icons.js',
+	'assets/css/admin.css',
 	// The vendored update checker. Without it the plugin fatals on activation,
 	// since the main file requires it unconditionally.
 	'plugin-update-checker',

@@ -51,18 +51,27 @@ function cansakhara_pages() {
 			'template'    => 'pages/by-night.php',
 			'description' => __( 'As the sun sets over the island, Can Sakhara comes alive in the glow of the afterhours — a warm and cinematic retreat for nights to remember.', 'blueworx-client-cansakhara' ),
 		),
+		'welcome'  => array(
+			'title'       => __( 'Welcome', 'blueworx-client-cansakhara' ),
+			'template'    => 'pages/welcome.php',
+			'description' => __( 'Sign in for private access to Can Sakhara, or enquire about availability.', 'blueworx-client-cansakhara' ),
+		),
 	);
 }
 
 /**
- * Creates any missing owned pages, stamps them, and sets the front page.
+ * Creates any missing owned pages, stamps them, and (on activation) makes
+ * Welcome the front page.
  *
  * Idempotent: an existing stamped page is reused rather than duplicated, so
  * reactivating the plugin never leaves a second copy behind.
  *
+ * @param bool $set_front_page Whether to point the site's front page at the
+ *                             owned Welcome page. True on activation; false
+ *                             when an update merely adds a page.
  * @return void
  */
-function cansakhara_install_pages() {
+function cansakhara_install_pages( $set_front_page = true ) {
 	$ids = (array) get_option( 'cansakhara_page_ids', array() );
 
 	foreach ( cansakhara_pages() as $slug => $page ) {
@@ -96,10 +105,39 @@ function cansakhara_install_pages() {
 
 	update_option( 'cansakhara_page_ids', $ids );
 
-	if ( isset( $ids['home'] ) && $ids['home'] > 0 ) {
-		update_option( 'show_on_front', 'page' );
-		update_option( 'page_on_front', (int) $ids['home'] );
+	if ( $set_front_page ) {
+		cansakhara_set_front_page();
 	}
+}
+
+/**
+ * Points the site's front page at the owned Welcome page.
+ *
+ * Welcome is the site's front door: the only public page, where guests sign
+ * in. The Home page keeps its own permalink (/home/) behind the sign-in.
+ *
+ * @return void
+ */
+function cansakhara_set_front_page() {
+	$ids = (array) get_option( 'cansakhara_page_ids', array() );
+
+	if ( isset( $ids['welcome'] ) && (int) $ids['welcome'] > 0 ) {
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', (int) $ids['welcome'] );
+	}
+}
+
+/**
+ * Whether the site's front page is currently the owned Home page.
+ *
+ * Earlier versions made Home the front page. An update moves it to Welcome
+ * only when that is still the case, so a site owner who has since chosen
+ * their own front page is left alone.
+ *
+ * @return bool
+ */
+function cansakhara_front_page_is_home() {
+	return 'page' === get_option( 'show_on_front' ) && 'home' === cansakhara_page_slug( (int) get_option( 'page_on_front' ) );
 }
 
 /**
@@ -114,7 +152,7 @@ function cansakhara_install_pages() {
  * Falls back to the slug-shaped URL only when the tracked page is missing,
  * which is the same link the plugin used to emit unconditionally.
  *
- * @param string $slug Owned-page slug: 'home', 'by-day' or 'by-night'.
+ * @param string $slug Owned-page slug: 'home', 'by-day', 'by-night' or 'welcome'.
  * @return string Permalink.
  */
 function cansakhara_page_url( $slug ) {
@@ -130,7 +168,7 @@ function cansakhara_page_url( $slug ) {
 		}
 	}
 
-	return home_url( 'home' === $slug ? '/' : '/' . $slug . '/' );
+	return home_url( 'welcome' === $slug ? '/' : '/' . $slug . '/' );
 }
 
 /**

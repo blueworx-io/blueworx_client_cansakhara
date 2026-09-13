@@ -1,16 +1,20 @@
 import { test, expect } from '@playwright/test';
+import { GUEST_STATE } from './helpers/wp.js';
 
-test('the header renders with its menu trigger and enquire link', async ({ page }) => {
-  await page.goto('/');
+// These pages are private: browse them as the signed-in guest.
+test.use({ storageState: GUEST_STATE });
+
+test('the header renders with its menu trigger and enquire button', async ({ page }) => {
+  await page.goto('/home/');
   await expect(page.locator('[data-cansakhara-header]')).toBeVisible();
   await expect(page.locator('[data-cansakhara-menu-open]')).toHaveAttribute('aria-expanded', 'false');
   await expect(
-    page.locator('[data-cansakhara-header]').getByRole('link', { name: 'Enquire' })
-  ).toHaveAttribute('href', 'mailto:reservations@cansakhara.com');
+    page.locator('[data-cansakhara-header]').getByRole('button', { name: 'Enquire' })
+  ).toHaveAttribute('data-cansakhara-popup-open', 'enquire');
 });
 
 test('the drawer is present and closed on load', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   await expect(page.locator('#site-menu')).toHaveAttribute('aria-hidden', 'true');
 });
 
@@ -22,17 +26,17 @@ test('the by-day header takes the day panel colour', async ({ page }) => {
 });
 
 test('the footer renders its outbound links', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   await expect(page.locator('footer a[href="https://mdmsl.com/"]')).toHaveCount(1);
 });
 
 test('the side nav container is present', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   await expect(page.locator('[data-cansakhara-side-nav]')).toHaveCount(1);
 });
 
 test('the drawer opens, traps focus, closes on Escape and returns focus', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   const trigger = page.locator('[data-cansakhara-menu-open]');
   await trigger.click();
 
@@ -52,16 +56,19 @@ test('the drawer opens, traps focus, closes on Escape and returns focus', async 
 });
 
 test('the header hides on scroll down and returns on scroll up', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   const header = page.locator('[data-cansakhara-header]');
-  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 800; });
+  // Instant, not the shell's smooth scroll: otherwise the second scroll can
+  // start while the first is still animating upward, and the header — which
+  // only compares consecutive positions — never sees a scroll up.
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTo({ top: 800, behavior: 'instant' }); });
   await expect(header).toHaveClass(/-translate-y-full/);
-  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 400; });
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTo({ top: 400, behavior: 'instant' }); });
   await expect(header).toHaveClass(/translate-y-0/);
 });
 
 test('re-activating the still-focusable trigger while the drawer is already open does not leak the scroll lock', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   const trigger = page.locator('[data-cansakhara-menu-open]');
 
   const before = await page.evaluate(() => document.querySelector('.site-shell').style.overflow);
@@ -86,7 +93,7 @@ test('re-activating the still-focusable trigger while the drawer is already open
 
 test('the side nav builds one dot per section and rings the one in view', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/');
+  await page.goto('/home/');
   const sections = await page.locator('.site-shell > section').count();
   expect(sections).toBeGreaterThan(1);
   await expect(page.locator('[data-cansakhara-side-nav] [data-cansakhara-dot]')).toHaveCount(sections);

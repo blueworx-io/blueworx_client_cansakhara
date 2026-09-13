@@ -13,6 +13,9 @@
  * The centre logo mark stays inline SVG (not the logo-white.svg asset) so
  * Task 12's DrawSVG animation can animate the path stroke.
  *
+ * Also renders the Login/Enquire popups (templates/parts/popups.php), so they
+ * exist on every page that has a header.
+ *
  * @package CanSakhara
  *
  * @var array $args {
@@ -72,7 +75,7 @@ $cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center
 		</button>
 
 		<a
-			href="<?php echo esc_url( home_url( '/' ) ); ?>"
+			href="<?php echo esc_url( cansakhara_page_url( 'home' ) ); ?>"
 			aria-label="Can Sakhara home"
 			class="grid place-items-center justify-self-center"
 		>
@@ -95,14 +98,19 @@ $cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center
 		</a>
 
 		<div class="justify-self-end">
-			<a
-				href="mailto:reservations@cansakhara.com"
+			<button
+				type="button"
+				data-cansakhara-popup-open="enquire"
+				aria-haspopup="dialog"
+				aria-expanded="false"
+				aria-controls="cansakhara-popup-enquire"
 				class="inline-flex items-center justify-center whitespace-nowrap border border-current px-4 py-[10px] font-display text-[10px] uppercase tracking-[4px] transition-colors duration-200 hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px]"
 			>
 				Enquire
-			</a>
+			</button>
 		</div>
 	</div>
 </nav>
 <?php
 cansakhara_part( 'menu-drawer', array( 'panel_color' => $cansakhara_panel_color ) );
+cansakhara_part( 'popups' );

@@ -29,6 +29,7 @@
 // the failure message and writes -expected/-actual/-diff PNGs to
 // test-results/ on failure.
 import { test, expect } from '@playwright/test';
+import { GUEST_STATE } from './helpers/wp.js';
 
 // This is a LOCAL acceptance gate, and deliberately not a CI check.
 //
@@ -48,13 +49,15 @@ test.skip(
   'Fidelity baselines were captured on Windows and cannot be regenerated for another platform — run this gate locally.'
 );
 
-const ROUTES = { home: '/', 'by-day': '/by-day/', 'by-night': '/by-night/' };
+const ROUTES = { home: '/home/', 'by-day': '/by-day/', 'by-night': '/by-night/' };
 const WIDTHS = { mobile: 390, desktop: 1440 };
 
 for (const [name, route] of Object.entries(ROUTES)) {
   for (const [size, width] of Object.entries(WIDTHS)) {
     test(`${name} at ${size} matches the Next.js baseline`, async ({ browser }) => {
       const page = await browser.newPage({
+        // The pages are private: browse as the signed-in guest.
+        storageState: GUEST_STATE,
         viewport: { width, height: 900 },
         deviceScaleFactor: 1,
         // Same conditions the baselines were captured under: motion is

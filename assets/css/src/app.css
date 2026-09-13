@@ -612,6 +612,143 @@
   --breakpoint-md: 796px;
 }
 
+/* The outlined SUBMIT from the popup frames (Figma 1:108 / 1:155). A class
+   rather than utilities so the SureForms submit button can share it. */
+@layer components {
+  .cansakhara-popup-submit {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #42071a;
+    padding: 16px 32px;
+    font-family: var(--font-display), sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 5.6px;
+    text-indent: 5.6px;
+    text-transform: uppercase;
+    color: #fff;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 200ms ease-out;
+  }
+  .cansakhara-popup-submit:hover { background-color: #490500; }
+  .cansakhara-popup-submit:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+  .cansakhara-popup-submit:disabled { opacity: .5; cursor: wait; }
+
+  /* SureForms inside the Enquire popup, restyled to Figma 1:109. Verified
+     against the installed 2.12.7 markup (its "Text"/"Email"/"Phone Number"
+     fields all share .srfm-input-common; the submit button is
+     .srfm-btn-frontend.srfm-button, not .srfm-submit-btn as first assumed;
+     and the GDPR checkbox itself is screen-reader-only — the visible box is
+     the first .srfm-span-wrap inside .srfm-cbx, shown/hidden by SureForms'
+     own adjacent-sibling CSS). Every declaration needs !important: SureForms'
+     stylesheet is not in a layer, and un-layered CSS always beats a
+     `@layer` rule regardless of selector weight — except when the layered
+     rule is also !important, which is why this works. */
+  .cansakhara-popup .srfm-form-container,
+  .cansakhara-popup .srfm-form {
+    background: transparent !important;
+    padding: 0 !important;
+    max-width: none !important;
+    gap: 0 !important;
+  }
+  /* SureForms' own .srfm-block-single rule only sets a bottom margin, but
+     .srfm-form is itself a flex column with its own row gap (18px from
+     --srfm-row-gap-between-blocks, zeroed above) — without killing both, the
+     two stack and fields end up ~110px apart instead of the 20px the design
+     calls for. */
+  .cansakhara-popup .srfm-block { margin: 0 0 20px !important; }
+  .cansakhara-popup .srfm-block-label {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+  }
+  /* SureForms fixes a 44px height (--srfm-input-height) and a 6px/6px
+     margin-top/bottom on every input, which fights the 16px/32px padding
+     the design wants — override both so the field's height comes from
+     padding + line-height alone (~54px) with no extra margin. */
+  .cansakhara-popup .srfm-input-common {
+    width: 100% !important;
+    background: #490500 !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 16px 32px !important;
+    margin: 0 !important;
+    height: auto !important;
+    text-align: center !important;
+    font-family: var(--font-body), sans-serif !important;
+    font-weight: 300 !important;
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+    letter-spacing: .8px !important;
+  }
+  .cansakhara-popup .srfm-input-common::placeholder { color: #fff !important; opacity: 1 !important; }
+  /* SureForms reserves a fixed 16px (--srfm-error-line-height) under every
+     field for its error message even while that message is display:none —
+     collapse it to the message's own content height so it only takes space
+     once a validation error actually shows. */
+  .cansakhara-popup .srfm-error-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  .cansakhara-popup .srfm-gdpr-block .srfm-block-wrap { display: flex !important; justify-content: center !important; }
+  .cansakhara-popup .srfm-gdpr-block .srfm-block-label {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    clip: auto !important;
+    color: #fff !important;
+    font-family: var(--font-body), sans-serif !important;
+    font-weight: 200 !important;
+    font-size: 12px !important;
+    letter-spacing: .6px !important;
+  }
+  .cansakhara-popup .srfm-gdpr-block .srfm-cbx .srfm-span-wrap:first-child {
+    width: 18px !important;
+    height: 18px !important;
+    border: 1px solid #fff !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    margin-right: 12px !important;
+  }
+  .cansakhara-popup .srfm-gdpr-block .srfm-input-gdpr:checked + .srfm-cbx > .srfm-span-wrap:first-child {
+    background: #fff !important;
+    border-color: #fff !important;
+  }
+  .cansakhara-popup .srfm-gdpr-block .srfm-input-gdpr:checked + .srfm-cbx > .srfm-span-wrap:first-child svg {
+    stroke: #490500 !important;
+  }
+  .cansakhara-popup .srfm-btn-frontend,
+  .cansakhara-popup .srfm-button {
+    all: unset !important;
+    display: inline-flex !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #42071a !important;
+    padding: 16px 32px !important;
+    cursor: pointer !important;
+    font-family: var(--font-display), sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+    letter-spacing: 5.6px !important;
+    text-indent: 5.6px !important;
+    text-transform: uppercase !important;
+    color: #fff !important;
+    transition: background-color 200ms ease-out !important;
+  }
+  .cansakhara-popup .srfm-btn-frontend:hover,
+  .cansakhara-popup .srfm-button:hover { background-color: #490500 !important; }
+  .cansakhara-popup .srfm-error-message { color: #fff !important; font-size: 12px !important; text-align: center !important; }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -663,7 +800,8 @@ body.admin-bar .site-shell {
 
 body.admin-bar [data-cansakhara-header],
 body.admin-bar [data-cansakhara-scrim],
-body.admin-bar #site-menu {
+body.admin-bar #site-menu,
+body.admin-bar .cansakhara-popup {
   top: 32px;
 }
 
@@ -675,7 +813,8 @@ body.admin-bar #site-menu {
 
   body.admin-bar [data-cansakhara-header],
   body.admin-bar [data-cansakhara-scrim],
-  body.admin-bar #site-menu {
+  body.admin-bar #site-menu,
+  body.admin-bar .cansakhara-popup {
     top: 46px;
   }
 }
@@ -691,6 +830,23 @@ body.admin-bar #site-menu {
 a,
 button {
   cursor: pointer;
+}
+
+/* Login/Enquire popup fade (templates/parts/popups.php). Opacity always
+   animates over the same 300ms. Visibility is asymmetric on purpose: opening
+   snaps it to `visible` with zero duration/delay so popups.js can focus the
+   heading and Tab-trap into the panel in the same synchronous click handler,
+   with nothing to wait for; closing keeps it `visible` for the full 300ms
+   (zero duration, but delayed by the fade length) so the fade-out plays in
+   full before the panel — and its now-offscreen controls — leave the tab
+   order. A plain rule, not Tailwind utilities, because the two states need
+   different transition-property timings that one utility class can't hold. */
+.cansakhara-popup {
+  transition: opacity 300ms ease-out, visibility 0s 300ms;
+}
+
+.cansakhara-popup.visible {
+  transition: opacity 300ms ease-out, visibility 0s;
 }
 
 a {
