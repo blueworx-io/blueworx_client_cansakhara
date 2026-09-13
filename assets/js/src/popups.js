@@ -17,6 +17,7 @@ export function initPopups() {
 
 	let current = null;
 	let opener = null;
+	let openerSubstituted = false;
 	let overflowRestore = null;
 
 	function scroller() {
@@ -53,7 +54,10 @@ export function initPopups() {
 			// A trigger inside the drawer (e.g. its Login entry) is now
 			// tabindex="-1" and hidden off-screen — return focus to the
 			// hamburger that reopens the drawer instead of parking it there.
-			opener = trigger && trigger.closest( '#site-menu' )
+			// That hamburger's own aria-expanded describes the drawer, not
+			// this popup, so it must not be touched below.
+			openerSubstituted = Boolean( trigger && trigger.closest( '#site-menu' ) );
+			opener = openerSubstituted
 				? document.querySelector( '[data-cansakhara-menu-open]' )
 				: ( trigger || null );
 			const el = scroller();
@@ -66,7 +70,7 @@ export function initPopups() {
 		panel.classList.remove( ...CLOSED_CLASSES );
 		panel.classList.add( ...OPEN_CLASSES );
 		panel.setAttribute( 'aria-hidden', 'false' );
-		setExpanded( opener, true );
+		if ( ! openerSubstituted ) setExpanded( opener, true );
 
 		const heading = panel.querySelector( 'h2[tabindex="-1"]' );
 		heading?.focus( { preventScroll: true } );
@@ -88,9 +92,10 @@ export function initPopups() {
 		overflowRestore = null;
 		document.removeEventListener( 'keydown', onKeydown );
 
-		setExpanded( opener, false );
+		if ( ! openerSubstituted ) setExpanded( opener, false );
 		opener?.focus();
 		opener = null;
+		openerSubstituted = false;
 	}
 
 	function onKeydown( event ) {

@@ -800,7 +800,8 @@ body.admin-bar .site-shell {
 
 body.admin-bar [data-cansakhara-header],
 body.admin-bar [data-cansakhara-scrim],
-body.admin-bar #site-menu {
+body.admin-bar #site-menu,
+body.admin-bar .cansakhara-popup {
   top: 32px;
 }
 
@@ -812,7 +813,8 @@ body.admin-bar #site-menu {
 
   body.admin-bar [data-cansakhara-header],
   body.admin-bar [data-cansakhara-scrim],
-  body.admin-bar #site-menu {
+  body.admin-bar #site-menu,
+  body.admin-bar .cansakhara-popup {
     top: 46px;
   }
 }

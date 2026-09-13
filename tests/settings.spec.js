@@ -1,9 +1,14 @@
 import { test, expect } from '@playwright/test';
-import { loginAsAdmin } from './helpers/wp.js';
+import { loginAsAdmin, setSettings } from './helpers/wp.js';
 
 test.describe('the settings screen', () => {
   test.beforeEach(async ({ page }) => {
     await loginAsAdmin(page);
+  });
+
+  test.afterEach(async ({ page }) => {
+    await loginAsAdmin(page);
+    await setSettings(page, { loginRedirect: 'Home page' });
   });
 
   test('is built from the admin design system', async ({ page }) => {
@@ -23,11 +28,6 @@ test.describe('the settings screen', () => {
 
     await page.reload();
     await expect(page.locator('#cansakhara-login-redirect option:checked')).toHaveText('By Day');
-
-    // Put it back so other specs start from the default.
-    await page.selectOption('#cansakhara-login-redirect', { label: 'Home page' });
-    await page.click('button[type="submit"]:has-text("Save changes")');
-    await page.waitForURL(/settings-updated=true/);
   });
 
   test('explains the enquiry form picker when SureForms is not installed', async ({ page }) => {

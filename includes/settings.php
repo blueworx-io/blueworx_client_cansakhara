@@ -91,9 +91,16 @@ function cansakhara_sanitize_settings( $input ) {
 		$page_id = 0;
 	}
 
-	$form_id = isset( $input['enquiry_form'] ) ? absint( $input['enquiry_form'] ) : 0;
-	if ( $form_id > 0 && 'sureforms_form' !== get_post_type( $form_id ) ) {
-		$form_id = 0;
+	// The select is `disabled` (and so unsubmitted) while SureForms is
+	// inactive; treat its absence as "unchanged" rather than clearing the
+	// saved choice out from under a site owner who has just deactivated it.
+	if ( isset( $input['enquiry_form'] ) ) {
+		$form_id = absint( $input['enquiry_form'] );
+		if ( $form_id > 0 && 'sureforms_form' !== get_post_type( $form_id ) ) {
+			$form_id = 0;
+		}
+	} else {
+		$form_id = cansakhara_settings()['enquiry_form'];
 	}
 
 	return array(

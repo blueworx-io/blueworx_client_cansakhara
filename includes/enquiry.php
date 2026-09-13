@@ -60,8 +60,12 @@ function cansakhara_enquiry_form() {
  * Keeps SureForms' stylesheets on owned pages.
  *
  * The asset sweep in includes/assets.php drops every foreign stylesheet so
- * the design cannot be disturbed. SureForms' own layout and error states
- * need its CSS, so its handles (all prefixed srfm-) are let through and
+ * the design cannot be disturbed. This runs at wp_enqueue_scripts priority
+ * 100, before the shortcode renders in the body, so it can only see and keep
+ * SureForms handles (all prefixed srfm-) that are already queued at that
+ * point; any it enqueues later during rendering are untouched, because the
+ * sweep this filter feeds has already run by then. In practice SureForms
+ * queues its styles early enough that this keeps them, and they are
  * restyled by the .cansakhara-popup rules in app.css.
  *
  * @param string[] $keep Stylesheet handles to keep.

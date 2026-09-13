@@ -11,6 +11,11 @@ test.beforeEach(async ({ page }) => {
   await logout(page);
 });
 
+test.afterEach(async ({ page }) => {
+  await loginAsAdmin(page);
+  await setSettings(page, { loginRedirect: 'Home page' });
+});
+
 test('the REST route rejects wrong details with one generic message', async ({ page }) => {
   const response = await page.request.post('/wp-json/cansakhara/v1/login', {
     data: { email, password: 'definitely-wrong' },
@@ -71,9 +76,6 @@ test('the right password sends the guest to the chosen page', async ({ page }) =
 
   await page.waitForURL(/\/by-day\//);
   await expect(page.locator('body')).toHaveClass(/page-cansakhara-by-day/);
-
-  await loginAsAdmin(page);
-  await setSettings(page, { loginRedirect: 'Home page' });
 });
 
 test('a signed-in visitor sees the signed-in state instead of the form', async ({ page }) => {

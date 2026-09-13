@@ -1,7 +1,8 @@
 // Background submit for the login popup's form, so a wrong password keeps
-// the popup open with a message instead of reloading the page. Without this
-// script (or with it broken by an optimiser), the form still posts natively
-// and includes/login.php handles it the same way.
+// the popup open with a message instead of reloading the page. Anything
+// other than a clean refusal — a blocked REST route, a non-JSON body, a
+// thrown fetch — falls back to a native form submit, which includes/login.php
+// handles the same way.
 export function initLoginForm() {
 	const form = document.querySelector( '[data-cansakhara-login-form]' );
 	const config = window.cansakharaLogin;
@@ -21,8 +22,10 @@ export function initLoginForm() {
 		if ( error ) error.hidden = true;
 		if ( submit ) submit.disabled = true;
 
+		let response;
+		let data;
 		try {
-			const response = await fetch( config.endpoint, {
+			response = await fetch( config.endpoint, {
 				method: 'POST',
 				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/json' },
@@ -31,17 +34,27 @@ export function initLoginForm() {
 					password: form.elements.password.value,
 				} ),
 			} );
-			const data = await response.json().catch( () => ( {} ) );
-
-			if ( response.ok && data.redirect ) {
-				window.location.assign( data.redirect );
-				return;
-			}
-			showError( data.message || config.genericError );
-		} catch ( e ) {
-			showError( config.genericError );
-		} finally {
-			if ( submit ) submit.disabled = false;
+			data = await response.json();
+		} catch {
+			// Blocked, offline, or a non-JSON body — hand off to the PHP path.
+			// form.submit() does not re-trigger this listener.
+			form.submit();
+			return;
 		}
+
+		if ( response.ok && data.redirect ) {
+			window.location.assign( data.redirect );
+			return;
+		}
+
+		if ( 'cansakhara_login_failed' === data.code ) {
+			showError( data.message || config.genericError );
+			if ( submit ) submit.disabled = false;
+			return;
+		}
+
+		// Any other status or code (a security plugin's own 401, for example)
+		// isn't a real refusal — fall back to the native submit.
+		form.submit();
 	} );
 }
