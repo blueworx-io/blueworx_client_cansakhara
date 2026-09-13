@@ -11,11 +11,6 @@ test.beforeEach(async ({ page }) => {
   await logout(page);
 });
 
-test.afterEach(async ({ page }) => {
-  await loginAsAdmin(page);
-  await setSettings(page, { loginRedirect: 'Home page' });
-});
-
 test('the REST route rejects wrong details with one generic message', async ({ page }) => {
   const response = await page.request.post('/wp-json/cansakhara/v1/login', {
     data: { email, password: 'definitely-wrong' },
@@ -55,27 +50,34 @@ test('the right password sends the guest to the front page when nothing is chose
   await expect(page.locator('body')).toHaveClass(/page-cansakhara-home/);
 });
 
-test('the right password sends the guest to the chosen page', async ({ page }) => {
-  // Three admin round trips (beforeEach, setting 'By Day', resetting to
-  // 'Home page') against the slow single-threaded local PHP server outrun
-  // the default 30s budget even though every step succeeds. The server log
-  // shows an occasional ~30-40s stall with no requests served at all
-  // (consistent with the single PHP worker blocking on a WP-cron self-
-  // request), not a login failure, so this test gets generous headroom
-  // rather than a tighter one that would flake on that stall.
-  test.setTimeout(90000);
-  await loginAsAdmin(page);
-  await setSettings(page, { loginRedirect: 'By Day' });
-  await logout(page);
+test.describe('when the login destination is set to a chosen page', () => {
+  test.afterEach(async ({ page }) => {
+    await loginAsAdmin(page);
+    await setSettings(page, { loginRedirect: 'Home page' });
+  });
 
-  await page.goto('/welcome/');
-  await page.getByRole('button', { name: 'Login' }).click();
-  await page.fill('#cansakhara-login-email', email);
-  await page.fill('#cansakhara-login-password', adminPassword());
-  await page.locator('[data-cansakhara-login-form] button[type="submit"]').click();
+  test('the right password sends the guest to the chosen page', async ({ page }) => {
+    // Three admin round trips (beforeEach, setting 'By Day', resetting to
+    // 'Home page') against the slow single-threaded local PHP server outrun
+    // the default 30s budget even though every step succeeds. The server log
+    // shows an occasional ~30-40s stall with no requests served at all
+    // (consistent with the single PHP worker blocking on a WP-cron self-
+    // request), not a login failure, so this test gets generous headroom
+    // rather than a tighter one that would flake on that stall.
+    test.setTimeout(90000);
+    await loginAsAdmin(page);
+    await setSettings(page, { loginRedirect: 'By Day' });
+    await logout(page);
 
-  await page.waitForURL(/\/by-day\//);
-  await expect(page.locator('body')).toHaveClass(/page-cansakhara-by-day/);
+    await page.goto('/welcome/');
+    await page.getByRole('button', { name: 'Login' }).click();
+    await page.fill('#cansakhara-login-email', email);
+    await page.fill('#cansakhara-login-password', adminPassword());
+    await page.locator('[data-cansakhara-login-form] button[type="submit"]').click();
+
+    await page.waitForURL(/\/by-day\//);
+    await expect(page.locator('body')).toHaveClass(/page-cansakhara-by-day/);
+  });
 });
 
 test('a signed-in visitor sees the signed-in state instead of the form', async ({ page }) => {

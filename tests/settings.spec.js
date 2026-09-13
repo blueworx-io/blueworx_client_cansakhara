@@ -6,11 +6,6 @@ test.describe('the settings screen', () => {
     await loginAsAdmin(page);
   });
 
-  test.afterEach(async ({ page }) => {
-    await loginAsAdmin(page);
-    await setSettings(page, { loginRedirect: 'Home page' });
-  });
-
   test('is built from the admin design system', async ({ page }) => {
     await page.goto('/wp-admin/options-general.php?page=cansakhara');
     await expect(page.locator('.bw-admin.bw-page')).toBeVisible();
@@ -19,15 +14,22 @@ test.describe('the settings screen', () => {
     await expect(css).toHaveCount(1);
   });
 
-  test('saves the login destination and shows it after reload', async ({ page }) => {
-    await page.goto('/wp-admin/options-general.php?page=cansakhara');
-    await page.selectOption('#cansakhara-login-redirect', { label: 'By Day' });
-    await page.click('button[type="submit"]:has-text("Save changes")');
-    await page.waitForURL(/settings-updated=true/);
-    await expect(page.locator('.bw-notice--success')).toBeVisible();
+  test.describe('when the login destination is changed', () => {
+    test.afterEach(async ({ page }) => {
+      await loginAsAdmin(page);
+      await setSettings(page, { loginRedirect: 'Home page' });
+    });
 
-    await page.reload();
-    await expect(page.locator('#cansakhara-login-redirect option:checked')).toHaveText('By Day');
+    test('saves the login destination and shows it after reload', async ({ page }) => {
+      await page.goto('/wp-admin/options-general.php?page=cansakhara');
+      await page.selectOption('#cansakhara-login-redirect', { label: 'By Day' });
+      await page.click('button[type="submit"]:has-text("Save changes")');
+      await page.waitForURL(/settings-updated=true/);
+      await expect(page.locator('.bw-notice--success')).toBeVisible();
+
+      await page.reload();
+      await expect(page.locator('#cansakhara-login-redirect option:checked')).toHaveText('By Day');
+    });
   });
 
   test('explains the enquiry form picker when SureForms is not installed', async ({ page }) => {
