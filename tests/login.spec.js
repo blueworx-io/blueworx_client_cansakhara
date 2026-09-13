@@ -52,19 +52,14 @@ test('the right password sends the guest to the front page when nothing is chose
 
 test.describe('when the login destination is set to a chosen page', () => {
   test.afterEach(async ({ page }) => {
-    await loginAsAdmin(page);
+    // Already signed in as admin at this point (the test just signed the
+    // guest in as admin through the popup) — no loginAsAdmin() here, since
+    // that navigates to /wp-login.php, which stalls for ~32s when the
+    // browser is already authenticated.
     await setSettings(page, { loginRedirect: 'Home page' });
   });
 
   test('the right password sends the guest to the chosen page', async ({ page }) => {
-    // Three admin round trips (beforeEach, setting 'By Day', resetting to
-    // 'Home page') against the slow single-threaded local PHP server outrun
-    // the default 30s budget even though every step succeeds. The server log
-    // shows an occasional ~30-40s stall with no requests served at all
-    // (consistent with the single PHP worker blocking on a WP-cron self-
-    // request), not a login failure, so this test gets generous headroom
-    // rather than a tighter one that would flake on that stall.
-    test.setTimeout(90000);
     await loginAsAdmin(page);
     await setSettings(page, { loginRedirect: 'By Day' });
     await logout(page);

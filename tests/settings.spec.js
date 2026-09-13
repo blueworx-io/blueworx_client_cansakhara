@@ -16,7 +16,9 @@ test.describe('the settings screen', () => {
 
   test.describe('when the login destination is changed', () => {
     test.afterEach(async ({ page }) => {
-      await loginAsAdmin(page);
+      // Already signed in as admin (the outer beforeEach did it) — no
+      // loginAsAdmin() here, since that navigates to /wp-login.php, which
+      // stalls for ~32s when the browser is already authenticated.
       await setSettings(page, { loginRedirect: 'Home page' });
     });
 
