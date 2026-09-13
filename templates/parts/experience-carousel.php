@@ -133,7 +133,7 @@ $cansakhara_index = 1;
 						<p class="section-eyebrow font-display text-[12px] uppercase leading-none tracking-[2.4px] md:text-[22px] md:tracking-[4.4px]">Experience</p>
 						<h2 class="section-title mx-auto mt-[20px] max-w-full break-words font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] md:mt-[50px] md:text-5xl md:leading-none md:tracking-[0.2em]"><?php echo esc_html( $cansakhara_experience['title'] ); ?></h2>
 						<p class="section-subtitle mx-auto mt-[20px] max-w-[calc(100vw-3rem)] break-words font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] md:mt-[50px] md:max-w-4xl md:text-[28px] md:tracking-[2.8px]">
-							<span class="block [text-wrap:balance] md:hidden"><?php echo esc_html( $cansakhara_experience['subtitle_mobile'] ); ?></span>
+							<span class="block text-balance md:hidden"><?php echo esc_html( $cansakhara_experience['subtitle_mobile'] ); ?></span>
 							<span class="hidden md:inline"><?php echo esc_html( $cansakhara_experience['subtitle_desktop'][0] ); ?><br /><?php echo esc_html( $cansakhara_experience['subtitle_desktop'][1] ); ?></span>
 						</p>
 					</header>

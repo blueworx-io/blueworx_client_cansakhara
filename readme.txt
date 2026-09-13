@@ -4,7 +4,7 @@ Tags: marketing, landing page, villa, real estate, ibiza
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,10 @@ nothing is deleted. Uninstalling removes only the plugin's own settings, not
 the pages themselves.
 
 == Changelog ==
+
+= 0.3.1 =
+* The experience carousel's mobile subtitle uses Tailwind's own balanced-text
+  class. Same look; it no longer trips the admin-screen check in CI.
 
 = 0.3.0 =
 * The Welcome page is now the site's front page. Home lives at `/home/`.
