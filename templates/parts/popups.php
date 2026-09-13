@@ -42,7 +42,7 @@ $cansakhara_inner_class = 'flex min-h-full w-full flex-col items-center px-5 pb-
 $cansakhara_title_class = 'font-display text-[24px] font-thin uppercase leading-none tracking-[9.6px] indent-[9.6px] outline-none md:text-[32px] md:tracking-[12.8px] md:indent-[12.8px]';
 $cansakhara_intro_class = 'mt-[30px] w-full max-w-[443px] text-center font-serif text-[13px] font-light italic leading-[1.4] tracking-[1.3px] md:mt-[43px] md:text-[14px] md:tracking-[1.4px]';
 $cansakhara_field_class = 'cansakhara-popup-field w-full bg-[#490500] px-8 py-4 text-center font-body text-[16px] font-light leading-[1.4] tracking-[0.8px] text-white placeholder:text-white focus:outline focus:outline-2 focus:outline-white/60';
-$cansakhara_mark_class  = 'mt-auto h-[50px] w-[150px] pt-[40px] md:pt-[60px] box-content';
+$cansakhara_mark_class  = 'h-[50px] w-[150px]';
 ?>
 <div
 	data-cansakhara-popup="login"
@@ -116,7 +116,9 @@ $cansakhara_mark_class  = 'mt-auto h-[50px] w-[150px] pt-[40px] md:pt-[60px] box
 		</form>
 		<?php endif; ?>
 
-		<img src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/mel-de-magranetes.svg' ); ?>" alt="Mel de Magranetes" width="150" height="50" class="<?php echo esc_attr( $cansakhara_mark_class ); ?>" />
+		<div class="mt-auto pt-[40px] md:pt-[60px]">
+			<img src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/mel-de-magranetes.svg' ); ?>" alt="Mel de Magranetes" width="150" height="50" class="<?php echo esc_attr( $cansakhara_mark_class ); ?>" />
+		</div>
 	</div>
 </div>
 
@@ -143,6 +145,8 @@ $cansakhara_mark_class  = 'mt-auto h-[50px] w-[150px] pt-[40px] md:pt-[60px] box
 			<?php cansakhara_enquiry_form(); ?>
 		</div>
 
-		<img src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/mel-de-magranetes.svg' ); ?>" alt="Mel de Magranetes" width="150" height="50" class="<?php echo esc_attr( $cansakhara_mark_class ); ?>" />
+		<div class="mt-auto pt-[40px] md:pt-[60px]">
+			<img src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/mel-de-magranetes.svg' ); ?>" alt="Mel de Magranetes" width="150" height="50" class="<?php echo esc_attr( $cansakhara_mark_class ); ?>" />
+		</div>
 	</div>
 </div>
