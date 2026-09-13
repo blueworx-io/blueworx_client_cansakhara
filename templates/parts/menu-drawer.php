@@ -83,26 +83,15 @@ $cansakhara_menu_links = array(
 			</li>
 			<?php endforeach; ?>
 			<li>
-				<?php if ( is_user_logged_in() ) : ?>
+				<?php // Everyone who can see this menu is signed in: the pages behind it are private. ?>
 				<a
-					href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>"
+					href="<?php echo esc_url( wp_logout_url( cansakhara_page_url( 'welcome' ) ) ); ?>"
 					tabindex="-1"
 					style="transition-delay: 0ms"
 					class="block font-display text-[16px] font-light uppercase leading-[1.4] tracking-[3.2px] text-white transition-[opacity,translate,color] duration-500 ease-out hover:text-white/70 md:text-[21px] md:tracking-[4.2px] translate-y-3 opacity-0"
 				>
 					Log out
 				</a>
-				<?php else : ?>
-				<button
-					type="button"
-					data-cansakhara-popup-open="login"
-					tabindex="-1"
-					style="transition-delay: 0ms"
-					class="block font-display text-[16px] font-light uppercase leading-[1.4] tracking-[3.2px] text-white transition-[opacity,translate,color] duration-500 ease-out hover:text-white/70 md:text-[21px] md:tracking-[4.2px] translate-y-3 opacity-0"
-				>
-					Login
-				</button>
-				<?php endif; ?>
 			</li>
 		</ul>
 

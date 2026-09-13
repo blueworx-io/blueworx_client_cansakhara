@@ -23,7 +23,7 @@ test('the REST route rejects wrong details with one generic message', async ({ p
 });
 
 test('a wrong password keeps the popup open and shows the message', async ({ page }) => {
-  await page.goto('/welcome/');
+  await page.goto('/');
   await page.getByRole('button', { name: 'Login' }).click();
   await page.fill('#cansakhara-login-email', email);
   await page.fill('#cansakhara-login-password', 'definitely-wrong');
@@ -31,22 +31,23 @@ test('a wrong password keeps the popup open and shows the message', async ({ pag
 
   await expect(page.locator('[data-cansakhara-login-error]')).toHaveText(GENERIC);
   await expect(page.locator('[data-cansakhara-popup="login"]')).toHaveAttribute('aria-hidden', 'false');
-  expect(new URL(page.url()).pathname).toBe('/welcome/');
+  expect(new URL(page.url()).pathname).toBe('/');
+
   await expect(page.locator('#cansakhara-login-email')).toHaveValue(email);
 });
 
-test('the right password sends the guest to the front page when nothing is chosen', async ({ page }) => {
+test('the right password sends the guest to the home page when nothing is chosen', async ({ page }) => {
   await loginAsAdmin(page);
   await setSettings(page, { loginRedirect: 'Home page' });
   await logout(page);
 
-  await page.goto('/welcome/');
+  await page.goto('/');
   await page.getByRole('button', { name: 'Login' }).click();
   await page.fill('#cansakhara-login-email', email);
   await page.fill('#cansakhara-login-password', adminPassword());
   await page.locator('[data-cansakhara-login-form] button[type="submit"]').click();
 
-  await page.waitForURL((url) => url.pathname === '/');
+  await page.waitForURL((url) => url.pathname === '/home/');
   await expect(page.locator('body')).toHaveClass(/page-cansakhara-home/);
 });
 
@@ -64,7 +65,7 @@ test.describe('when the login destination is set to a chosen page', () => {
     await setSettings(page, { loginRedirect: 'By Day' });
     await logout(page);
 
-    await page.goto('/welcome/');
+    await page.goto('/');
     await page.getByRole('button', { name: 'Login' }).click();
     await page.fill('#cansakhara-login-email', email);
     await page.fill('#cansakhara-login-password', adminPassword());
@@ -77,7 +78,7 @@ test.describe('when the login destination is set to a chosen page', () => {
 
 test('a signed-in visitor sees the signed-in state instead of the form', async ({ page }) => {
   await loginAsAdmin(page);
-  await page.goto('/welcome/');
+  await page.goto('/');
   await page.getByRole('button', { name: 'Login' }).click();
   const popup = page.locator('[data-cansakhara-popup="login"]');
   await expect(popup.getByText('You’re signed in.')).toBeVisible();
@@ -86,7 +87,7 @@ test('a signed-in visitor sees the signed-in state instead of the form', async (
 });
 
 test('without JavaScript, a failed login redirects back with the popup open and the message', async ({ page }) => {
-  const response = await page.request.post('/welcome/', {
+  const response = await page.request.post('/', {
     form: { cansakhara_action: 'login', email, password: 'definitely-wrong' },
     maxRedirects: 0,
   });
@@ -100,10 +101,10 @@ test('without JavaScript, a failed login redirects back with the popup open and 
 });
 
 test('without JavaScript, a successful login redirects to the destination', async ({ page }) => {
-  const response = await page.request.post('/welcome/', {
+  const response = await page.request.post('/', {
     form: { cansakhara_action: 'login', email, password: adminPassword() },
     maxRedirects: 0,
   });
   expect(response.status()).toBe(302);
-  expect(new URL(response.headers()['location']).pathname).toBe('/');
+  expect(new URL(response.headers()['location']).pathname).toBe('/home/');
 });

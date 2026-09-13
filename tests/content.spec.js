@@ -1,7 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { GUEST_STATE } from './helpers/wp.js';
+
+// These pages are private: browse them as the signed-in guest.
+test.use({ storageState: GUEST_STATE });
 
 test('the home page renders its hero and feature figures', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   await expect(page.locator('.site-shell')).toBeVisible();
   // The feature figures reveal on scroll (GSAP ScrollTrigger); scroll them
   // into the in-page scroller's view so the reveal fires before asserting.
@@ -12,7 +16,7 @@ test('the home page renders its hero and feature figures', async ({ page }) => {
 });
 
 test('no image on the home page is broken', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   await page.evaluate(() => document.fonts.ready);
   const broken = await page.locator('img').evaluateAll((imgs) =>
     imgs.filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.currentSrc || i.src)

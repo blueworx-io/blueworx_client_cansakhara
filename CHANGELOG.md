@@ -5,6 +5,21 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-09-13
+
+### Changed
+
+- The Welcome page is now the site's front page. Home lives at `/home/`.
+- Home, By Day and By Night are private: anyone not signed in is sent to
+  Welcome. Guests who sign in are taken to Home unless you choose another
+  page in Settings → Can Sakhara. Logging out returns to Welcome.
+- Guests no longer see the WordPress toolbar on the site; editors still do.
+- The Welcome page plays the looping video behind the logo.
+- The Login and Enquire popups stay centred on tall screens, and their
+  Mel de Magranetes mark links to mdmsl.com in a new tab.
+- Sites already running the plugin are moved to the new front page on
+  their next update, unless they had chosen a different one themselves.
+
 ## [0.2.0] - 2026-09-12
 
 ### Added

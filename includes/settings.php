@@ -30,7 +30,7 @@ function cansakhara_settings() {
 /**
  * Where a guest is sent after signing in.
  *
- * The chosen page, or the front page when nothing is chosen or the chosen
+ * The chosen page, or the Home page when nothing is chosen or the chosen
  * page has since been deleted or unpublished.
  *
  * @return string URL.
@@ -46,7 +46,7 @@ function cansakhara_login_redirect_url() {
 		}
 	}
 
-	return home_url( '/' );
+	return cansakhara_page_url( 'home' );
 }
 
 /**

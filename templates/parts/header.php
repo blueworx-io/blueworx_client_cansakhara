@@ -75,7 +75,7 @@ $cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center
 		</button>
 
 		<a
-			href="<?php echo esc_url( home_url( '/' ) ); ?>"
+			href="<?php echo esc_url( cansakhara_page_url( 'home' ) ); ?>"
 			aria-label="Can Sakhara home"
 			class="grid place-items-center justify-self-center"
 		>

@@ -1,4 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { GUEST_STATE } from './helpers/wp.js';
+
+// These pages are private: browse them as the signed-in guest.
+test.use({ storageState: GUEST_STATE });
 
 // browser.newPage() does not inherit the config's use.baseURL, so specs that
 // open their own page must resolve the host themselves or they silently test
@@ -8,14 +12,14 @@ const BASE = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:8881';
 test('the motion layer runs and binds ScrollTrigger to the in-page scroller', async ({ page }) => {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto('/');
+  await page.goto('/home/');
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(500);
   expect(errors).toEqual([]);
 });
 
 test('the motion layer marks itself as running', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/home/');
   await expect
     .poll(() => page.evaluate(() => document.documentElement.hasAttribute('data-cansakhara-motion')))
     .toBe(true);
@@ -32,7 +36,7 @@ test('a bundle that never runs degrades to the plain visible page', async ({ bro
   // the guard rather than leave the front page wordmark-less forever.
   const page = await browser.newPage();
   await page.route('**/assets/js/public.js*', (route) => route.abort());
-  await page.goto(`${BASE}/`, { waitUntil: 'load' });
+  await page.goto(`${BASE}/home/`, { waitUntil: 'load' });
 
   await expect
     .poll(() => page.evaluate(() => document.documentElement.classList.contains('motion-ready')))
@@ -47,7 +51,7 @@ test('a bundle that never runs degrades to the plain visible page', async ({ bro
 
 test('reduced motion leaves the hero visible rather than hidden', async ({ browser }) => {
   const page = await browser.newPage({ reducedMotion: 'reduce' });
-  await page.goto(`${BASE}/`);
+  await page.goto(`${BASE}/home/`);
   await expect(page.locator('.site-shell')).toBeVisible();
   // The no-FOUC guard must not have hidden anything when motion is reduced.
   const ready = await page.evaluate(() =>

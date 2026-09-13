@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Can Sakhara
  * Description: The Can Sakhara marketing site, as a self-contained WordPress plugin.
- * Version: 0.2.0
+ * Version: 0.3.0
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author: BlueWorx
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CANSAKHARA_VERSION', '0.2.0' );
+define( 'CANSAKHARA_VERSION', '0.3.0' );
 define( 'CANSAKHARA_SLUG', 'blueworx-client-cansakhara' );
 define( 'CANSAKHARA_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CANSAKHARA_URL', plugin_dir_url( __FILE__ ) );
@@ -32,6 +32,7 @@ require_once CANSAKHARA_DIR . 'includes/components.php';
 require_once CANSAKHARA_DIR . 'assets/blueworx-admin-design.php';
 require_once CANSAKHARA_DIR . 'includes/settings.php';
 require_once CANSAKHARA_DIR . 'includes/login.php';
+require_once CANSAKHARA_DIR . 'includes/access.php';
 require_once CANSAKHARA_DIR . 'includes/enquiry.php';
 
 require_once CANSAKHARA_DIR . 'plugin-update-checker/plugin-update-checker.php';
@@ -84,7 +85,8 @@ register_activation_hook( __FILE__, 'cansakhara_activate' );
  * Updates arrive through the update checker, which does not fire the
  * activation hook — so a page added in a later version would never exist on
  * an existing site. Runs on the first request after an update, front end or
- * admin, and never touches the front-page setting.
+ * admin. Only touches the front-page setting to finish a move this plugin
+ * itself began.
  *
  * @return void
  */
@@ -94,6 +96,13 @@ function cansakhara_maybe_upgrade() {
 	}
 
 	cansakhara_install_pages( false );
+
+	// 0.3.0 made Welcome the front page. Move a site still on the old Home
+	// front page across; leave any other choice alone.
+	if ( cansakhara_front_page_is_home() ) {
+		cansakhara_set_front_page();
+	}
+
 	update_option( 'cansakhara_version', CANSAKHARA_VERSION );
 }
 add_action( 'init', 'cansakhara_maybe_upgrade' );

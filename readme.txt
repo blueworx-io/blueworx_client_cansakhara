@@ -4,7 +4,7 @@ Tags: marketing, landing page, villa, real estate, ibiza
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,20 +13,24 @@ The Can Sakhara marketing site, as a self-contained WordPress plugin.
 == Description ==
 
 Can Sakhara is a private, art-filled villa overlooking Ibiza and Formentera.
-This plugin ships its marketing site — Home, By Day and By Night — pixel-for-
-pixel matched against the original Figma designs.
+This plugin ships its private site — a public Welcome page where guests sign
+in or enquire, and Home, By Day and By Night behind it — pixel-for-pixel
+matched against the original Figma designs.
 
-On activation the plugin creates its three pages and sets the site's home
-page to Home. It renders those pages itself, end to end, independent of the
+On activation the plugin creates its four pages and makes Welcome the site's
+front page. It renders those pages itself, end to end, independent of the
 active theme, so the design is exact regardless of what else is installed.
 
 == Installation ==
 
 1. Upload the plugin to `wp-content/plugins/` and activate it, or install the
    zip through **Plugins → Add New → Upload Plugin**.
-2. Activation creates the Home, By Day and By Night pages automatically and
-   sets Home as the site's front page.
-3. Set the site title under **Settings → General** (and, if you use one, your
+2. Activation creates the Welcome, Home, By Day and By Night pages
+   automatically and sets Welcome as the site's front page.
+3. Give each guest a WordPress account (Subscriber is enough) and, under
+   **Settings → Can Sakhara**, choose the enquiry form and where guests land
+   after signing in.
+4. Set the site title under **Settings → General** (and, if you use one, your
    SEO plugin's site description) to match the original site's branding.
 
 == Frequently Asked Questions ==
@@ -44,6 +48,18 @@ nothing is deleted. Uninstalling removes only the plugin's own settings, not
 the pages themselves.
 
 == Changelog ==
+
+= 0.3.0 =
+* The Welcome page is now the site's front page. Home lives at `/home/`.
+* Home, By Day and By Night are private: anyone not signed in is sent to
+  Welcome. Guests who sign in are taken to Home unless you choose another
+  page in Settings → Can Sakhara. Logging out returns to Welcome.
+* Guests no longer see the WordPress toolbar on the site; editors still do.
+* The Welcome page plays the looping video behind the logo.
+* The Login and Enquire popups stay centred on tall screens, and their
+  Mel de Magranetes mark links to mdmsl.com in a new tab.
+* Sites already running the plugin are moved to the new front page on
+  their next update, unless they had chosen a different one themselves.
 
 = 0.2.0 =
 * A Welcome page (`/welcome/`): the red splash with the Can Sakhara mark and

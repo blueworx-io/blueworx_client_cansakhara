@@ -33,3 +33,24 @@ export async function setSettings(page, { loginRedirect }) {
   await page.click('button[type="submit"]:has-text("Save changes")');
   await page.waitForURL(/settings-updated=true/);
 }
+
+// The guest account the suite signs in with to reach the private pages.
+// Created by tests/global-setup.js; its signed-in browser state is saved to
+// GUEST_STATE. Specs opt in with `test.use({ storageState: GUEST_STATE })`.
+export const GUEST = {
+  user: 'cansakhara-guest',
+  email: 'guest@cansakhara.test',
+  pass: 'guest-test-pw-2026',
+};
+export const GUEST_STATE = 'test-results/guest-state.json';
+
+// Signs the guest in through wp-login.php on a page that is not yet signed
+// in. Most specs should use GUEST_STATE instead; this is for a test that
+// needs a session of its own, such as one that logs out.
+export async function loginAsGuest(page) {
+  await page.goto('/wp-login.php');
+  await page.fill('#user_login', GUEST.user);
+  await page.fill('#user_pass', GUEST.pass);
+  await page.click('#wp-submit');
+  await page.waitForURL((url) => !url.pathname.endsWith('/wp-login.php'));
+}

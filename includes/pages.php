@@ -60,15 +60,15 @@ function cansakhara_pages() {
 }
 
 /**
- * Creates any missing owned pages, stamps them, and (on activation) sets the
- * front page.
+ * Creates any missing owned pages, stamps them, and (on activation) makes
+ * Welcome the front page.
  *
  * Idempotent: an existing stamped page is reused rather than duplicated, so
  * reactivating the plugin never leaves a second copy behind.
  *
  * @param bool $set_front_page Whether to point the site's front page at the
- *                             owned home page. True on activation; false when
- *                             an update merely adds a page.
+ *                             owned Welcome page. True on activation; false
+ *                             when an update merely adds a page.
  * @return void
  */
 function cansakhara_install_pages( $set_front_page = true ) {
@@ -105,10 +105,39 @@ function cansakhara_install_pages( $set_front_page = true ) {
 
 	update_option( 'cansakhara_page_ids', $ids );
 
-	if ( $set_front_page && isset( $ids['home'] ) && $ids['home'] > 0 ) {
-		update_option( 'show_on_front', 'page' );
-		update_option( 'page_on_front', (int) $ids['home'] );
+	if ( $set_front_page ) {
+		cansakhara_set_front_page();
 	}
+}
+
+/**
+ * Points the site's front page at the owned Welcome page.
+ *
+ * Welcome is the site's front door: the only public page, where guests sign
+ * in. The Home page keeps its own permalink (/home/) behind the sign-in.
+ *
+ * @return void
+ */
+function cansakhara_set_front_page() {
+	$ids = (array) get_option( 'cansakhara_page_ids', array() );
+
+	if ( isset( $ids['welcome'] ) && (int) $ids['welcome'] > 0 ) {
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', (int) $ids['welcome'] );
+	}
+}
+
+/**
+ * Whether the site's front page is currently the owned Home page.
+ *
+ * Earlier versions made Home the front page. An update moves it to Welcome
+ * only when that is still the case, so a site owner who has since chosen
+ * their own front page is left alone.
+ *
+ * @return bool
+ */
+function cansakhara_front_page_is_home() {
+	return 'page' === get_option( 'show_on_front' ) && 'home' === cansakhara_page_slug( (int) get_option( 'page_on_front' ) );
 }
 
 /**
@@ -139,7 +168,7 @@ function cansakhara_page_url( $slug ) {
 		}
 	}
 
-	return home_url( 'home' === $slug ? '/' : '/' . $slug . '/' );
+	return home_url( 'welcome' === $slug ? '/' : '/' . $slug . '/' );
 }
 
 /**
