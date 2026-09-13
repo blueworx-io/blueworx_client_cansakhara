@@ -4,7 +4,7 @@ Tags: marketing, landing page, villa, real estate, ibiza
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,22 @@ nothing is deleted. Uninstalling removes only the plugin's own settings, not
 the pages themselves.
 
 == Changelog ==
+
+= 0.2.0 =
+* A Welcome page (`/welcome/`): the red splash with the Can Sakhara mark and
+  two buttons, Login and Enquire.
+* A Login popup, available from the Welcome page and the menu on every page.
+  Guests sign in with the WordPress account they have been given and land on
+  a page you choose. Wrong details show one short message and never say
+  whether the address exists.
+* An Enquire popup, opened from the Welcome page and the header's Enquire
+  button (which no longer opens an email). It shows the SureForms form you
+  choose, restyled to the site; until one is chosen it shows an email link.
+* Settings → Can Sakhara: where guests go after signing in, and which
+  enquiry form to show. Built from the shared admin design system, which
+  the plugin now ships.
+* Sites already running the plugin get the Welcome page on their next
+  update without reactivating.
 
 = 0.1.0 =
 * First release: the Can Sakhara marketing site (Home, By Day, By Night) as a
