@@ -48,3 +48,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Subagent-driven-development scratch workspace
+.superpowers/
+
+# WordPress plugin build/test artifacts
+# Anchored to the repo root: an unanchored "vendor/" also matched
+# plugin-update-checker/vendor/, silently dropping that vendored library's
+# own dependencies from every commit.
+.wp-test/
+/vendor/
+test-results/
+playwright-report/
+dist/

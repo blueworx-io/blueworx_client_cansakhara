@@ -1,29 +1,26 @@
 {
-  "name": "can_sakhara",
-  "version": "0.1.0",
+  "name": "blueworx-client-cansakhara",
+  "version": "0.3.1",
   "private": true,
+  "description": "The Can Sakhara marketing site as a self-contained WordPress plugin.",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "build": "node scripts/build-assets.mjs",
+    "build:zip": "node scripts/build-zip.mjs",
+    "lint": "eslint assets/js/src",
+    "test": "playwright test --reporter=list,json"
   },
   "dependencies": {
-    "@gsap/react": "^2.1.2",
-    "gsap": "^3.15.0",
-    "next": "16.2.9",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "gsap": "^3.15.0"
   },
   "devDependencies": {
-    "@domscribe/next": "^0.5.2",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.61.1",
+    "@tailwindcss/cli": "^4",
+    "esbuild": "^0.25.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.9",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "globals": "^15.0.0",
+    "tailwindcss": "^4"
   }
 }
