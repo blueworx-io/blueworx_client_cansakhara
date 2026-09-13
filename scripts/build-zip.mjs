@@ -27,6 +27,7 @@ const ALLOW = [
 	'assets/css/public.css',
 	'assets/js/public.js',
 	'assets/img',
+	'assets/video',
 	'assets/fonts',
 	// The admin design system, shipped verbatim (CI compares each against the
 	// foundation), plus the one chrome-override stylesheet the settings

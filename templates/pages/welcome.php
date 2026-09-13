@@ -20,8 +20,24 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 	class="site-shell relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[#5b0a00] bg-cover bg-center text-white"
 	style="background-image: url('<?php echo esc_url( CANSAKHARA_URL . 'assets/img/welcome-bg.jpg' ); ?>')"
 >
+	<?php
+	// The looping background. The still above stays as the poster (and as the
+	// CSS background) so nothing flashes while the file loads, and a browser
+	// that refuses autoplay simply shows the still.
+	?>
+	<video
+		aria-hidden="true"
+		autoplay
+		loop
+		muted
+		playsinline
+		poster="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/welcome-bg.jpg' ); ?>"
+		class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+	>
+		<source src="<?php echo esc_url( CANSAKHARA_URL . 'assets/video/welcome-loop.webm' ); ?>" type="video/webm" />
+	</video>
 	<h1 class="sr-only">Can Sakhara</h1>
-	<div class="flex -translate-y-[40px] flex-col items-center gap-[24px] md:-translate-y-[60px] md:gap-[38px]">
+	<div class="relative flex -translate-y-[40px] flex-col items-center gap-[24px] md:-translate-y-[60px] md:gap-[38px]">
 		<img
 			src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/logo-white.svg' ); ?>"
 			alt=""

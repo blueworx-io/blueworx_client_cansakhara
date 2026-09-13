@@ -23,3 +23,21 @@ test('the welcome page is not the front page', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('body')).toHaveClass(/page-cansakhara-home/);
 });
+
+test('the welcome page plays the looping background video behind the content', async ({ page }) => {
+  await page.goto('/welcome/');
+  const video = page.locator('main video');
+  await expect(video).toHaveCount(1);
+  await expect(video).toHaveAttribute('autoplay', '');
+  await expect(video).toHaveAttribute('loop', '');
+  await expect(video).toHaveAttribute('muted', '');
+  await expect(video).toHaveAttribute('playsinline', '');
+  // The still stays as the poster so nothing flashes while the file loads.
+  await expect(video).toHaveAttribute('poster', /welcome-bg\.jpg/);
+  const status = await page.request.get(await video.locator('source').getAttribute('src'));
+  expect(status.status()).toBe(200);
+  expect(status.headers()['content-type']).toContain('video/webm');
+  // It sits behind the content: the LOGIN button is still clickable.
+  await page.getByRole('button', { name: 'Login' }).click();
+  await expect(page.locator('[data-cansakhara-popup="login"]')).toHaveAttribute('aria-hidden', 'false');
+});
