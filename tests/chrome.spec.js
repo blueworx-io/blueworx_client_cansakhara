@@ -58,9 +58,12 @@ test('the drawer opens, traps focus, closes on Escape and returns focus', async 
 test('the header hides on scroll down and returns on scroll up', async ({ page }) => {
   await page.goto('/home/');
   const header = page.locator('[data-cansakhara-header]');
-  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 800; });
+  // Instant, not the shell's smooth scroll: otherwise the second scroll can
+  // start while the first is still animating upward, and the header — which
+  // only compares consecutive positions — never sees a scroll up.
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTo({ top: 800, behavior: 'instant' }); });
   await expect(header).toHaveClass(/-translate-y-full/);
-  await page.evaluate(() => { document.querySelector('.site-shell').scrollTop = 400; });
+  await page.evaluate(() => { document.querySelector('.site-shell').scrollTo({ top: 400, behavior: 'instant' }); });
   await expect(header).toHaveClass(/translate-y-0/);
 });
 
