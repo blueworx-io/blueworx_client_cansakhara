@@ -94,7 +94,7 @@ cansakhara_part( 'header', array( 'theme' => 'day' ) );
 		<div class="flex w-full flex-col items-center gap-[25px] md:w-[1064px] md:gap-[50px]">
 			<div
 				data-anim="block-heading"
-				class="cs-h2 text-center text-home-1"
+				class="cs-h2 text-center text-home-1 indent-[calc(var(--cs-h2-ls)/2)]"
 			>
 				<p class="cs-hairline block">
 					Sun-Drenched

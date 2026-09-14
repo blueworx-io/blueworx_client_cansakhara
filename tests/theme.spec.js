@@ -99,6 +99,8 @@ for (const route of ['/by-day/', '/by-night/']) {
     expect(await fontOf(page, 'main h1')).toMatchObject({ family: 'neulis-sans', size: '56px', ls: '28px', weight: '300' });
     expect(await fontOf(page, 'main h2[data-anim="block-heading"]')).toMatchObject({ size: '34px', ls: '6.8px', weight: '300' });
     expect(await fontOf(page, 'div[data-anim="block-heading"]')).toMatchObject({ size: '48px', ls: '9.6px' });
+    // The lockup is recentred by half its tracking, read from the H2 token.
+    expect(await page.locator('div[data-anim="block-heading"]').evaluate((el) => getComputedStyle(el).textIndent)).toBe('4.8px');
     expect(await fontOf(page, '[data-anim="block-heading"] .cs-hairline')).toMatchObject({ family: 'neulis-sans-hairline', weight: '100' });
     expect(await fontOf(page, '[data-anim="block-subtitle"]')).toMatchObject({ family: 'source-serif-4-variable', size: '28px', ls: '2.8px' });
     expect(await fontOf(page, '[data-anim="block-copy"] p')).toMatchObject({ family: 'source-sans-3', size: '16px', weight: '300', ls: '0.8px' });
@@ -123,6 +125,8 @@ test('header MENU and popup links use the label role', async ({ page }) => {
   expect(await fontOf(page, '[data-cansakhara-header] [data-cansakhara-popup-open]')).toMatchObject({ family: 'neulis-sans', size: '14px', ls: '5.6px' });
   // Popup titles keep the Figma values (5:1217 / 5:1259), which fit no role.
   expect(await fontOf(page, '#cansakhara-popup-login-title')).toMatchObject({ family: 'neulis-sans', size: '32px', ls: '12.8px', weight: '100' });
+  // The intro keeps its Figma 14px serif italic (1:67 / 1:109), half the H4 role.
+  expect(await fontOf(page, '#cansakhara-popup-login-title + p')).toMatchObject({ family: 'source-serif-4-variable', size: '14px', ls: '1.4px', weight: '300' });
   await page.setViewportSize({ width: 402, height: 900 });
   await page.reload();
   await page.evaluate(() => document.fonts.ready);

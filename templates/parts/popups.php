@@ -46,9 +46,9 @@ $cansakhara_inner_class = 'flex min-h-full w-full flex-col items-center justify-
 // Figma 5:1217 / 5:1259: the titles are 32px thin with 12.8px tracking, which fits
 // no role; there is no mobile frame, so mobile keeps the port's 24px / 9.6px.
 $cansakhara_title_class = 'font-display text-[24px] font-thin uppercase leading-none tracking-[9.6px] indent-[9.6px] text-home-1 outline-none md:text-[32px] md:tracking-[12.8px] md:indent-[12.8px]';
-// The intro is the H4 family, italic and weight, but Figma 1:67 / 1:109 draw
-// it at 13px / 14px with 1.3px / 1.4px tracking, half the role, so those stay.
-$cansakhara_intro_class = 'cs-h4 mt-[30px] w-full max-w-[443px] text-center text-[13px] leading-[1.4] tracking-[1.3px] md:mt-[43px] md:text-[14px] md:tracking-[1.4px]';
+// Figma 1:67 / 1:109 (LOGIN 02 / 03): the intro is serif italic light at 13px /
+// 14px with 1.3px / 1.4px tracking, half the H4 role, so it keeps fixed values.
+$cansakhara_intro_class = 'mt-[30px] w-full max-w-[443px] text-center font-serif italic font-light text-[13px] leading-[1.4] tracking-[1.3px] md:mt-[43px] md:text-[14px] md:tracking-[1.4px]';
 // Field fill and size floor live on .cansakhara-popup-field in app.css.
 $cansakhara_field_class = 'cansakhara-popup-field cs-body w-full px-8 py-4 text-center text-home-1 placeholder:text-home-1 focus:outline focus:outline-2 focus:outline-home-1/60';
 $cansakhara_mark_class  = 'h-[50px] w-[150px]';

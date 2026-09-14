@@ -171,7 +171,7 @@
   /* SureForms fixes a 44px height (--srfm-input-height) and a 6px/6px
      margin-top/bottom on every input, which fights the 16px/32px padding
      the design wants — override both so the field's height comes from
-     padding + line-height alone (~54px) with no extra margin. */
+     padding + line-height alone (~58px) with no extra margin. */
   .cansakhara-popup .srfm-input-common {
     width: 100% !important;
     background: var(--cs-color-popup-field) !important;
@@ -439,10 +439,6 @@ html.motion-ready [data-anim="draw-icon"] path {
   }
 }
 
-/* The eyebrow is centre-aligned, but its letter-spacing adds a trailing gap
-   after the final letter. With text-align:center that gap is counted, nudging
-   the visible word left of the centred section line above it. Indenting by the
-   H3 role's letter-spacing recentres the glyphs over the line. */
 /* Footer legal row (Figma 1:835 desktop, 5:528 mobile). It takes the Label
    role at half the role's tracking; on mobile it drops to 8px, below the role.
    Un-layered so it beats the .cs-label components-layer rule. */
@@ -457,6 +453,10 @@ html.motion-ready [data-anim="draw-icon"] path {
   }
 }
 
+/* The eyebrow is centre-aligned, but its letter-spacing adds a trailing gap
+   after the final letter. With text-align:center that gap is counted, nudging
+   the visible word left of the centred section line above it. Indenting by the
+   H3 role's letter-spacing recentres the glyphs over the line. */
 .welcome-heading .section-eyebrow {
   text-indent: var(--cs-h3-ls);
 }
