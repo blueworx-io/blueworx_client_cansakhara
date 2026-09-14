@@ -843,32 +843,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     border-bottom: 2px solid white;
   }
 
-  /* The footer is already a flex column; flow the children with margins.
-     padding-top lands the parent logo at the Figma top of 164px. */
-  .site-footer {
-    height: 858px;
-    padding-top: 164px;
-    background: #422833;
-  }
-
-  /* Gap from logo bottom (250px) to the Figma brands top of 332px. */
-  .footer-brands {
-    width: 672px;
-    max-width: none;
-    margin-top: 82px;
-    grid-template-columns: 223px 223px;
-    justify-content: space-between;
-    gap: 0;
-  }
-
-  /* Gap from brands bottom (407px) to the Figma footer-bottom top of 710px. */
-  .footer-bottom {
-    width: 1280px;
-    margin-top: 303px;
-    margin-inline: auto;
-    padding-top: 43px;
-  }
-
   .site-footer a:hover {
     opacity: 0.65;
   }
