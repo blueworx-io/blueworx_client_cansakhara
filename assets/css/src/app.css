@@ -41,6 +41,45 @@
    one place; the raw media queries below are bumped to the same boundary. */
 @theme {
   --breakpoint-md: 796px;
+
+  /* Palette swatches read the Theme tab's variables (includes/theme.php), so
+     bg-home-2 / text-day-1 etc. follow whatever is saved. */
+  --color-home-1: var(--cs-color-home-1);
+  --color-home-2: var(--cs-color-home-2);
+  --color-home-3: var(--cs-color-home-3);
+  --color-home-4: var(--cs-color-home-4);
+  --color-home-5: var(--cs-color-home-5);
+  --color-home-6: var(--cs-color-home-6);
+  --color-day-1: var(--cs-color-day-1);
+  --color-day-2: var(--cs-color-day-2);
+  --color-day-3: var(--cs-color-day-3);
+  --color-night-1: var(--cs-color-night-1);
+  --color-night-2: var(--cs-color-night-2);
+  --color-night-3: var(--cs-color-night-3);
+}
+
+/* Typography roles. Values come from the CSS variables includes/theme.php
+   prints (Figma defaults, editable on the Theme tab). Templates use these
+   instead of per-element sizes so the client can change type in one place. */
+@layer components {
+  .cs-h1, .cs-h2, .cs-h3, .cs-label {
+    font-family: var(--font-display), sans-serif;
+    text-transform: uppercase;
+  }
+  .cs-h1 { font-size: var(--cs-h1-size); line-height: var(--cs-h1-lh); letter-spacing: var(--cs-h1-ls); font-weight: var(--cs-h1-weight); }
+  .cs-h2 { font-size: var(--cs-h2-size); line-height: var(--cs-h2-lh); letter-spacing: var(--cs-h2-ls); font-weight: var(--cs-h2-weight); }
+  .cs-h3 { font-size: var(--cs-h3-size); line-height: var(--cs-h3-lh); letter-spacing: var(--cs-h3-ls); font-weight: var(--cs-h3-weight); }
+  .cs-h4 {
+    font-family: var(--font-serif), serif;
+    font-style: italic;
+    font-size: var(--cs-h4-size); line-height: var(--cs-h4-lh); letter-spacing: var(--cs-h4-ls); font-weight: var(--cs-h4-weight);
+  }
+  .cs-body, .cs-small { font-family: var(--font-body), sans-serif; }
+  .cs-body { font-size: var(--cs-body-size); line-height: var(--cs-body-lh); letter-spacing: var(--cs-body-ls); font-weight: var(--cs-body-weight); }
+  .cs-small { font-size: var(--cs-small-size); line-height: var(--cs-small-lh); letter-spacing: var(--cs-small-ls); font-weight: var(--cs-small-weight); }
+  .cs-label { font-size: var(--cs-label-size); line-height: var(--cs-label-lh); letter-spacing: var(--cs-label-ls); font-weight: var(--cs-label-weight); }
+  /* The first line of a two-line lockup is the kit's hairline family. */
+  .cs-hairline { font-family: "neulis-sans-hairline", var(--font-display), sans-serif; font-weight: 100; }
 }
 
 /* WordPress's standard screen-reader-only class. A theme normally styles it,
@@ -71,10 +110,12 @@
     border: 1px solid #42071a;
     padding: 16px 32px;
     font-family: var(--font-display), sans-serif;
-    font-size: 14px;
-    line-height: 1.4;
-    letter-spacing: 5.6px;
-    text-indent: 5.6px;
+    font-size: var(--cs-label-size);
+    line-height: var(--cs-label-lh);
+    letter-spacing: var(--cs-label-ls);
+    font-weight: var(--cs-label-weight);
+    /* Recentre the label: letter-spacing adds a trailing gap. */
+    text-indent: var(--cs-label-ls);
     text-transform: uppercase;
     color: #fff;
     background: transparent;
@@ -366,13 +407,12 @@ html.motion-ready [data-anim="draw-icon"] path {
 }
 
 /* "Introducing / Can Sakhara" lockup. The two lines fill the exact Figma title
-   box width so they render at an identical width (272px @ 30px on mobile,
-   435px @ 48px from the tablet breakpoint up). letter-spacing is neutralised so
-   the even gaps come purely from the per-letter justify-between distribution. */
+   box width so they render at an identical width (272px on mobile, 435px from
+   the tablet breakpoint up). Size and leading are inherited from the heading's
+   H1 role class; letter-spacing is neutralised so the even gaps come purely
+   from the per-letter justify-between distribution. */
 .welcome-lockup {
   width: 272px;
-  font-size: 30px;
-  line-height: 1;
   letter-spacing: normal;
 }
 
@@ -383,17 +423,15 @@ html.motion-ready [data-anim="draw-icon"] path {
 @media (min-width: 796px) {
   .welcome-lockup {
     width: 435px;
-    font-size: 48px;
   }
 }
 
 /* The eyebrow is centre-aligned, but its letter-spacing adds a trailing gap
    after the final letter. With text-align:center that gap is counted, nudging
    the visible word left of the centred section line above it. Indenting by the
-   letter-spacing (em-based, so it tracks the 14px/21px sizes) recentres the
-   glyphs over the line. */
+   H3 role's letter-spacing recentres the glyphs over the line. */
 .welcome-heading .section-eyebrow {
-  text-indent: 0.34em;
+  text-indent: var(--cs-h3-ls);
 }
 
 .experience-viewport {
@@ -603,24 +641,9 @@ html.motion-ready [data-anim="draw-icon"] path {
     margin: 0;
   }
 
-  .section-heading .section-eyebrow {
-    font-size: 21px;
-    line-height: 1;
-    letter-spacing: 4.2px;
-  }
-
-  .section-heading .section-title {
-    font-size: 48px;
-    line-height: 1;
-    letter-spacing: 9.6px;
-  }
-
   .section-heading .section-subtitle {
     width: 1064px;
     max-width: none;
-    font-size: 28px;
-    line-height: 1.8;
-    letter-spacing: 2.8px;
   }
 
   .welcome-heading {
@@ -629,11 +652,6 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .welcome-heading .section-title {
     height: 96px;
-  }
-
-  /* Desktop swaps the eyebrow tracking to a fixed 4.2px, so match the indent. */
-  .welcome-heading .section-eyebrow {
-    text-indent: 4.2px;
   }
 
   /* Gap from heading bottom (≈421px) to the Figma content top of 431px. */
@@ -664,21 +682,12 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .welcome-copy {
     width: 346px;
-    font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: 0.8px;
   }
 
   /* Gap from content bottom (1031px) to the Figma features top of 1066px. */
   .features-block {
     width: 727px;
     margin-top: 35px;
-  }
-
-  .features-title {
-    font-size: 21px;
-    line-height: 1;
-    letter-spacing: 4.2px;
   }
 
   .features-grid {
@@ -696,9 +705,6 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .features-grid p {
     margin-top: 18px;
-    font-size: 15px;
-    line-height: 1;
-    letter-spacing: 1.5px;
     white-space: nowrap;
   }
 
@@ -754,11 +760,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     max-width: none;
   }
 
-  .experience-heading .section-eyebrow {
-    font-size: 22px;
-    letter-spacing: 4.4px;
-  }
-
   .experience-layout {
     width: 1046px;
     height: 500px;
@@ -773,9 +774,6 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .experience-copy {
     width: 304px;
-    font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: 0.8px;
   }
 
   .discover-section {
@@ -800,12 +798,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     padding-top: 70px;
   }
 
-  .discover-title {
-    font-size: 21px;
-    line-height: 1;
-    letter-spacing: 4.2px;
-  }
-
   /* Gap from title bottom (171px) to the Figma grid top of 252px. */
   .discover-grid {
     width: 1170px;
@@ -816,12 +808,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     width: 550px;
     height: 608px;
     aspect-ratio: auto;
-  }
-
-  .discover-card-title {
-    font-size: 48px;
-    line-height: 1;
-    letter-spacing: 19.2px;
   }
 
   .discover-card .outline-button {
@@ -892,7 +878,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     width: 113px;
     height: 35px;
     padding-inline: 0;
-    font-size: 10px;
   }
 
   .site-footer a:hover {

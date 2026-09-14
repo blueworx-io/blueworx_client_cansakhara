@@ -108,13 +108,13 @@ $cansakhara_index = 1;
 	data-cansakhara-carousel="experience"
 	aria-roledescription="carousel"
 	aria-label="Experience Can Sakhara"
-	class="experience-section relative overflow-hidden bg-[#f2ebe2] py-28 md:py-0"
+	class="experience-section relative overflow-hidden bg-home-4 py-28 md:py-0"
 >
 	<div
 		role="group"
 		tabindex="0"
 		aria-label="Experience 1 of <?php echo esc_attr( $cansakhara_n ); ?>"
-		class="experience-viewport md:cursor-grab focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#42081a]"
+		class="experience-viewport md:cursor-grab focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-2"
 	>
 		<div
 			class="experience-track"
@@ -129,10 +129,10 @@ $cansakhara_index = 1;
 				data-cansakhara-slide
 			>
 				<div class="experience-card-inner px-6 md:px-0">
-					<header class="section-heading experience-heading mx-auto w-full min-w-0 max-w-5xl text-center text-[#42081a]">
-						<p class="section-eyebrow font-display text-[12px] uppercase leading-none tracking-[2.4px] md:text-[22px] md:tracking-[4.4px]">Experience</p>
-						<h2 class="section-title mx-auto mt-[20px] max-w-full break-words font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] md:mt-[50px] md:text-5xl md:leading-none md:tracking-[0.2em]"><?php echo esc_html( $cansakhara_experience['title'] ); ?></h2>
-						<p class="section-subtitle mx-auto mt-[20px] max-w-[calc(100vw-3rem)] break-words font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] md:mt-[50px] md:max-w-4xl md:text-[28px] md:tracking-[2.8px]">
+					<header class="section-heading experience-heading mx-auto w-full min-w-0 max-w-5xl text-center text-home-2">
+						<p class="section-eyebrow cs-h3">Experience</p>
+						<h2 class="section-title cs-h2 mx-auto mt-[20px] max-w-full break-words md:mt-[50px]"><?php echo esc_html( $cansakhara_experience['title'] ); ?></h2>
+						<p class="section-subtitle cs-h4 mx-auto mt-[20px] max-w-[calc(100vw-3rem)] break-words md:mt-[50px] md:max-w-4xl">
 							<span class="block text-balance md:hidden"><?php echo esc_html( $cansakhara_experience['subtitle_mobile'] ); ?></span>
 							<span class="hidden md:inline"><?php echo esc_html( $cansakhara_experience['subtitle_desktop'][0] ); ?><br /><?php echo esc_html( $cansakhara_experience['subtitle_desktop'][1] ); ?></span>
 						</p>
@@ -146,7 +146,7 @@ $cansakhara_index = 1;
 								class="absolute inset-0 h-full w-full object-cover"
 							/>
 						</div>
-						<div class="experience-copy w-full min-w-0 max-w-[calc(100vw-3rem)] break-words text-center font-body text-[15px] font-light leading-[1.6] tracking-[0.05em] md:text-left min-[1440px]:max-w-none min-[1440px]:text-[16px]">
+						<div class="experience-copy cs-body w-full min-w-0 max-w-[calc(100vw-3rem)] break-words text-center md:text-left min-[1440px]:max-w-none">
 							<?php foreach ( $cansakhara_experience['paragraphs'] as $cansakhara_paragraph ) : ?>
 							<p class="mt-6 first:mt-0"><?php echo esc_html( $cansakhara_paragraph ); ?></p>
 							<?php endforeach; ?>

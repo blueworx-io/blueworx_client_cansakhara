@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function cansakhara_outline_button( $label, $href, $class = '', $anim = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
-	$classes = 'outline-button inline-flex h-[54px] items-center justify-center gap-4 whitespace-nowrap border border-current px-8 font-display text-[14px] uppercase tracking-[0.4em] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ' . $class;
+	$classes = 'outline-button cs-label inline-flex h-[54px] items-center justify-center gap-4 whitespace-nowrap border border-current px-8 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ' . $class;
 	?>
 	<a
 		href="<?php echo esc_url( $href ); ?>"
@@ -67,7 +67,7 @@ function cansakhara_outline_button( $label, $href, $class = '', $anim = '' ) { /
  * @return void
  */
 function cansakhara_secondary_button( $label, $href, $hover_class, $class = '', $anim = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
-	$classes = 'inline-flex items-center justify-center whitespace-nowrap border border-white px-4 py-[10px] font-display text-[10px] font-normal uppercase leading-[1.4] tracking-[4px] text-white transition-colors hover:bg-white ' . $hover_class . ' focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px] ' . $class;
+	$classes = 'cs-label inline-flex items-center justify-center whitespace-nowrap border border-white px-4 py-[10px] text-white transition-colors hover:bg-white ' . $hover_class . ' focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 ' . $class;
 	?>
 	<a
 		href="<?php echo esc_url( $href ); ?>"
@@ -87,7 +87,7 @@ function cansakhara_secondary_button( $label, $href, $hover_class, $class = '', 
  * @return void
  */
 function cansakhara_section_line( $class = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
-	$classes = 'section-line mx-auto block h-28 w-px bg-[#42071a] md:h-40 md:w-[2px] ' . $class;
+	$classes = 'section-line mx-auto block h-28 w-px bg-home-2 md:h-40 md:w-[2px] ' . $class;
 	?>
 	<span aria-hidden="true" class="<?php echo esc_attr( trim( $classes ) ); ?>"></span>
 	<?php
@@ -104,11 +104,16 @@ function cansakhara_section_line( $class = '' ) { // phpcs:ignore Universal.Nami
  * same as JSX does not re-escape a child element. `eyebrow` is typed as a
  * plain `string`, so it is escaped with esc_html().
  *
+ * Type comes from the theme roles (includes/theme.php): the eyebrow is H3,
+ * the title H2 (or H1 when 'title_role' => 'h1', for the page intro lockup),
+ * the subtitle H4. Colour is the home-2 swatch.
+ *
  * @param array $args Section heading arguments. 'eyebrow' => string (escaped
  *                     as text), 'title' => string (trusted markup, echoed
  *                     unescaped), 'subtitle' => string (trusted markup,
  *                     echoed unescaped), 'class' => string (extra classes
- *                     appended to the base string).
+ *                     appended to the base string), 'title_role' => 'h1'|'h2'
+ *                     (role class for the title; default 'h2').
  * @return void
  */
 function cansakhara_section_heading( $args ) {
@@ -116,13 +121,14 @@ function cansakhara_section_heading( $args ) {
 	$title    = isset( $args['title'] ) ? (string) $args['title'] : '';
 	$subtitle = isset( $args['subtitle'] ) ? (string) $args['subtitle'] : '';
 	$class    = isset( $args['class'] ) ? (string) $args['class'] : '';
+	$role     = ( isset( $args['title_role'] ) && 'h1' === $args['title_role'] ) ? 'cs-h1' : 'cs-h2';
 
-	$classes = 'section-heading mx-auto w-full min-w-0 max-w-5xl text-center text-[#42081a] ' . $class;
+	$classes = 'section-heading mx-auto w-full min-w-0 max-w-5xl text-center text-home-2 ' . $class;
 	?>
 	<header class="<?php echo esc_attr( trim( $classes ) ); ?>">
-		<p class="section-eyebrow font-display text-sm uppercase tracking-[0.34em] md:text-[21px]"><?php echo esc_html( $eyebrow ); ?></p>
-		<h2 class="section-title mx-auto mt-9 max-w-full break-words font-display text-[22px] font-light uppercase leading-[1.3] tracking-[0.1em] md:text-5xl md:leading-none md:tracking-[0.2em]"><?php echo $title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></h2>
-		<p class="section-subtitle mx-auto mt-8 max-w-[calc(100vw-3rem)] break-words font-serif text-[17px] font-light italic leading-[1.8] tracking-[0.02em] md:mt-10 md:max-w-4xl md:text-[28px] md:tracking-[0.1em]"><?php echo $subtitle; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></p>
+		<p class="section-eyebrow cs-h3"><?php echo esc_html( $eyebrow ); ?></p>
+		<h2 class="section-title <?php echo esc_attr( $role ); ?> mx-auto mt-9 max-w-full break-words"><?php echo $title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></h2>
+		<p class="section-subtitle cs-h4 mx-auto mt-8 max-w-[calc(100vw-3rem)] break-words md:mt-10 md:max-w-4xl"><?php echo $subtitle; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></p>
 	</header>
 	<?php
 }

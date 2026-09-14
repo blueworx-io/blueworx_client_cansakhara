@@ -34,3 +34,58 @@ test('the theme CSS is printed only on owned pages', async ({ page }) => {
   const inline = await page.locator('#cansakhara-public-inline-css').count();
   expect(inline).toBe(0);
 });
+
+// Computed type of the first element matching a selector, with the first
+// font-family stripped of quotes so it compares against the kit's names.
+const fontOf = (page, selector) =>
+  page.locator(selector).first().evaluate((el) => {
+    const c = getComputedStyle(el);
+    return {
+      family: c.fontFamily.split(',')[0].replace(/"/g, ''),
+      size: c.fontSize,
+      weight: c.fontWeight,
+      ls: c.letterSpacing,
+      lh: c.lineHeight,
+    };
+  });
+
+test('home page type follows the roles at desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/home/');
+  await page.evaluate(() => document.fonts.ready);
+  expect(await fontOf(page, '.section-eyebrow')).toMatchObject({ family: 'neulis-sans', size: '21px', weight: '400', ls: '4.2px' });
+  expect(await fontOf(page, '.section-title')).toMatchObject({ size: '48px', weight: '300', ls: '9.6px' });
+  expect(await fontOf(page, '.section-subtitle')).toMatchObject({ family: 'source-serif-4-variable', size: '28px', weight: '300', ls: '2.8px' });
+  expect(await fontOf(page, '.welcome-copy p')).toMatchObject({ family: 'source-sans-3', size: '16px', weight: '300', ls: '0.8px' });
+  expect(await fontOf(page, '.welcome-lockup-line.cs-hairline')).toMatchObject({ family: 'neulis-sans-hairline', weight: '100' });
+  expect(await fontOf(page, '.outline-button')).toMatchObject({ family: 'neulis-sans', size: '14px', weight: '400', ls: '5.6px' });
+});
+
+test('home page type follows the roles at mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 402, height: 900 });
+  await page.goto('/home/');
+  await page.evaluate(() => document.fonts.ready);
+  expect(await fontOf(page, '.section-eyebrow')).toMatchObject({ size: '12px', ls: '2.4px' });
+  expect(await fontOf(page, '.welcome-heading .section-title')).toMatchObject({ size: '30px', ls: '6px' });
+  expect(await fontOf(page, '.experience-heading .section-title')).toMatchObject({ size: '24px', ls: '4.8px' });
+  expect(await fontOf(page, '.section-subtitle')).toMatchObject({ size: '13px', ls: '1.3px' });
+  expect(await fontOf(page, '.welcome-copy p')).toMatchObject({ size: '11px', ls: '0.55px' });
+  expect(await fontOf(page, '.outline-button')).toMatchObject({ size: '10px', ls: '4px' });
+});
+
+test('colours come from the palette variables', async ({ page }) => {
+  await page.goto('/home/');
+  const color = await page.locator('.section-heading').first().evaluate((el) => getComputedStyle(el).color);
+  expect(color).toBe('rgb(66, 8, 26)');
+  const shell = await page.locator('main').evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(shell).toBe('rgb(255, 255, 255)');
+  // The By Day card paints with the day-1 swatch (#ac9a8c) through Tailwind's
+  // bg-day-1 utility, which reads the palette variable rather than a hex.
+  const card = await page.locator('.discover-card').first().evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(card).toBe('rgb(172, 154, 140)');
+  // Overriding the variable recolours the card, proving the utility reads the
+  // palette variable rather than carrying its own hex.
+  await page.evaluate(() => document.documentElement.style.setProperty('--cs-color-day-1', '#ff0000'));
+  const recoloured = await page.locator('.discover-card').first().evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(recoloured).toBe('rgb(255, 0, 0)');
+});
