@@ -33,6 +33,7 @@ require_once CANSAKHARA_DIR . 'includes/components.php';
 // the header comment in that file.
 require_once CANSAKHARA_DIR . 'assets/blueworx-admin-design.php';
 require_once CANSAKHARA_DIR . 'includes/settings.php';
+require_once CANSAKHARA_DIR . 'includes/theme.php';
 require_once CANSAKHARA_DIR . 'includes/login.php';
 require_once CANSAKHARA_DIR . 'includes/access.php';
 require_once CANSAKHARA_DIR . 'includes/enquiry.php';

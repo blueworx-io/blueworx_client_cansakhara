@@ -50,6 +50,9 @@ function cansakhara_enqueue_assets() {
 		CANSAKHARA_VERSION
 	);
 
+	// Theme tokens ride behind the stylesheet so its role classes can read them.
+	wp_add_inline_style( 'cansakhara-public', cansakhara_theme_css() );
+
 	wp_enqueue_script(
 		'cansakhara-public',
 		CANSAKHARA_URL . 'assets/js/public.js',
