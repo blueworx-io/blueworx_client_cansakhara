@@ -188,11 +188,26 @@ function cansakhara_theme_defaults() {
 /**
  * The effective theme: defaults overlaid with whatever has been saved.
  *
+ * Each saved value is re-validated with cansakhara_theme_clean_value() so a
+ * value edited directly in the database — bypassing the settings sanitiser —
+ * can never reach the printed <style>.
+ *
  * @return array<string, int|float|string>
  */
 function cansakhara_theme() {
-	$saved = get_option( CANSAKHARA_THEME_OPTION, array() );
-	return array_merge( cansakhara_theme_defaults(), is_array( $saved ) ? $saved : array() );
+	$defaults = cansakhara_theme_defaults();
+	$saved    = get_option( CANSAKHARA_THEME_OPTION, array() );
+	$theme    = $defaults;
+	foreach ( is_array( $saved ) ? $saved : array() as $key => $value ) {
+		if ( ! isset( $defaults[ $key ] ) ) {
+			continue;
+		}
+		$clean = cansakhara_theme_clean_value( $key, $value );
+		if ( null !== $clean ) {
+			$theme[ $key ] = $clean;
+		}
+	}
+	return $theme;
 }
 
 /**

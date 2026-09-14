@@ -853,7 +853,7 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .video-section {
     height: 902px;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid var(--cs-color-home-1);
   }
 
   .site-footer a:hover {

@@ -56,7 +56,7 @@ the pages themselves.
 * Mobile type sizes, labels and section spacing now match the Figma mobile
   frames; desktop body copy is the design's light weight.
 * The footer keeps its 50px bottom padding on desktop.
-* The old Next.js screenshot comparison; the Figma file is the reference.
+* Removed the old Next.js screenshot comparison; the Figma file is the reference.
 
 = 0.4.0 =
 * Fonts now come from the client's Adobe Fonts kit — Neulis Sans for headings

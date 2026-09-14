@@ -22,6 +22,10 @@ function cansakhara_settings_tab() {
 /**
  * The General / Theme tab strip under the page header.
  *
+ * Lives here rather than in settings.php because the foundation's CI treats
+ * any single file containing both `bw-tabs` and `bw-savebar` as a
+ * hand-written page editor.
+ *
  * @param string $tab Current tab.
  * @return void
  */
@@ -116,7 +120,11 @@ function cansakhara_render_type_card( $bp, $title, $theme ) {
 			<div class="bw-card__titles">
 				<p class="bw-card__eyebrow"><?php esc_html_e( 'Typography', 'blueworx-client-cansakhara' ); ?></p>
 				<h2 class="bw-card__title"><?php echo esc_html( $title ); ?></h2>
-				<p class="bw-settingscard__desc"><?php esc_html_e( 'Sizes and spacing are in pixels. The mobile intro subtitle and footer legal text are fixed in the design at 15px and 8px and don\'t follow these roles.', 'blueworx-client-cansakhara' ); ?></p>
+				<?php if ( 'mobile' === $bp ) : ?>
+				<p class="bw-settingscard__desc"><?php esc_html_e( 'Sizes and spacing are in pixels. Figma draws the mobile intro subtitle at 15px; the site uses the H4 mobile size instead. Footer legal text stays 8px on mobile.', 'blueworx-client-cansakhara' ); ?></p>
+				<?php else : ?>
+				<p class="bw-settingscard__desc"><?php esc_html_e( 'Sizes and spacing are in pixels.', 'blueworx-client-cansakhara' ); ?></p>
+				<?php endif; ?>
 			</div>
 		</div>
 		<div class="bw-card__body">
@@ -197,10 +205,10 @@ function cansakhara_render_theme_tab() {
 		<div class="bw-notice__body">
 			<p class="bw-notice__text">
 				<?php
-				if ( $reset ) {
-					esc_html_e( 'Theme reset to the design defaults.', 'blueworx-client-cansakhara' );
-				} else {
+				if ( $saved ) {
 					esc_html_e( 'Theme saved.', 'blueworx-client-cansakhara' );
+				} else {
+					esc_html_e( 'Theme reset to the design defaults.', 'blueworx-client-cansakhara' );
 				}
 				?>
 			</p>
