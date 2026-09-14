@@ -34,6 +34,7 @@ require_once CANSAKHARA_DIR . 'includes/components.php';
 require_once CANSAKHARA_DIR . 'assets/blueworx-admin-design.php';
 require_once CANSAKHARA_DIR . 'includes/settings.php';
 require_once CANSAKHARA_DIR . 'includes/theme.php';
+require_once CANSAKHARA_DIR . 'includes/theme-screen.php';
 require_once CANSAKHARA_DIR . 'includes/login.php';
 require_once CANSAKHARA_DIR . 'includes/access.php';
 require_once CANSAKHARA_DIR . 'includes/enquiry.php';

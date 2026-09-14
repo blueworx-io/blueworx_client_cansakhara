@@ -176,6 +176,62 @@ function cansakhara_render_settings_page() {
 		return;
 	}
 
+	$tab = cansakhara_settings_tab();
+	?>
+	<div class="wrap bw-wrap">
+		<?php // The form is the .bw-page itself, so the save bar is its last flex child and margin-top:auto pins it. ?>
+		<form method="post" action="options.php" class="bw-admin bw-page">
+			<?php settings_fields( 'theme' === $tab ? 'cansakhara_theme_group' : 'cansakhara_settings_group' ); ?>
+			<header class="bw-pagehead">
+				<div class="bw-pagehead__titles">
+					<p class="bw-pagehead__eyebrow"><?php esc_html_e( 'Can Sakhara', 'blueworx-client-cansakhara' ); ?></p>
+					<h1 class="bw-pagehead__h1"><?php esc_html_e( 'Settings', 'blueworx-client-cansakhara' ); ?></h1>
+					<p class="bw-pagehead__lede">
+						<?php
+						if ( 'theme' === $tab ) {
+							esc_html_e( 'Type sizes, spacing and colours the site is built from. Defaults are the Figma design.', 'blueworx-client-cansakhara' );
+						} else {
+							esc_html_e( 'Where guests go after they sign in, and which form the Enquire popup shows.', 'blueworx-client-cansakhara' );
+						}
+						?>
+					</p>
+				</div>
+			</header>
+			<?php cansakhara_render_settings_tabs( $tab ); ?>
+
+			<div class="bw-page__body bw-page__body--single">
+				<div class="bw-panels">
+					<?php
+					if ( 'theme' === $tab ) {
+						cansakhara_render_theme_tab();
+					} else {
+						cansakhara_render_general_tab();
+					}
+					?>
+				</div>
+			</div>
+
+			<div class="bw-savebar">
+				<p class="bw-savebar__hint">
+					<i class="bw-icon bw-icon--14" data-lucide="info"></i>
+					<?php esc_html_e( 'Changes apply as soon as you save.', 'blueworx-client-cansakhara' ); ?>
+				</p>
+				<?php if ( 'theme' === $tab ) : ?>
+				<button type="submit" class="bw-btn bw-btn--secondary" formaction="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" formmethod="post" formnovalidate name="action" value="cansakhara_reset_theme" onclick="return confirm('<?php echo esc_js( __( 'Put every type size and colour back to the Figma design?', 'blueworx-client-cansakhara' ) ); ?>');"><?php esc_html_e( 'Reset to design defaults', 'blueworx-client-cansakhara' ); ?></button>
+				<?php endif; ?>
+				<button type="submit" class="bw-btn bw-btn--primary"><?php esc_html_e( 'Save changes', 'blueworx-client-cansakhara' ); ?></button>
+			</div>
+		</form>
+	</div>
+	<?php
+}
+
+/**
+ * The General tab's content: the sign-in destination and the enquiry form.
+ *
+ * @return void
+ */
+function cansakhara_render_general_tab() {
 	$settings  = cansakhara_settings();
 	$sureforms = cansakhara_sureforms_active();
 	$forms     = $sureforms ? get_posts(
@@ -189,117 +245,91 @@ function cansakhara_render_settings_page() {
 	) : array();
 	$saved     = isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag set by options.php after a nonce-checked save.
 	?>
-	<div class="wrap bw-wrap">
-		<?php // The form is the .bw-page itself, so the save bar is its last flex child and margin-top:auto pins it. ?>
-		<form method="post" action="options.php" class="bw-admin bw-page">
-			<?php settings_fields( 'cansakhara_settings_group' ); ?>
-			<header class="bw-pagehead">
-				<div class="bw-pagehead__titles">
-					<p class="bw-pagehead__eyebrow"><?php esc_html_e( 'Can Sakhara', 'blueworx-client-cansakhara' ); ?></p>
-					<h1 class="bw-pagehead__h1"><?php esc_html_e( 'Settings', 'blueworx-client-cansakhara' ); ?></h1>
-					<p class="bw-pagehead__lede"><?php esc_html_e( 'Where guests go after they sign in, and which form the Enquire popup shows.', 'blueworx-client-cansakhara' ); ?></p>
-				</div>
-			</header>
-
-			<div class="bw-page__body bw-page__body--single">
-				<div class="bw-panels">
-					<?php if ( $saved ) : ?>
-					<div class="bw-notice bw-notice--success" role="status">
-						<i class="bw-icon bw-notice__icon" data-lucide="circle-check"></i>
-						<div class="bw-notice__body">
-							<p class="bw-notice__text"><?php esc_html_e( 'Settings saved.', 'blueworx-client-cansakhara' ); ?></p>
-						</div>
-					</div>
-					<?php endif; ?>
-
-					<section class="bw-card bw-settingscard">
-						<div class="bw-card__head">
-							<div class="bw-card__titles">
-								<p class="bw-card__eyebrow"><?php esc_html_e( 'Guests', 'blueworx-client-cansakhara' ); ?></p>
-								<h2 class="bw-card__title"><?php esc_html_e( 'Sign in', 'blueworx-client-cansakhara' ); ?></h2>
-								<p class="bw-settingscard__desc"><?php esc_html_e( 'Guests sign in from the Login popup with the WordPress account you have given them.', 'blueworx-client-cansakhara' ); ?></p>
-							</div>
-						</div>
-						<div class="bw-card__body bw-settingscard__body">
-							<div class="bw-formrow">
-								<label class="bw-formrow__label" for="cansakhara-login-redirect"><?php esc_html_e( 'After login, send guests to', 'blueworx-client-cansakhara' ); ?></label>
-								<div class="bw-formrow__control">
-									<span class="bw-select">
-										<?php
-										// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_dropdown_pages() escapes every attribute and label it prints.
-										wp_dropdown_pages(
-											array(
-												'name'     => CANSAKHARA_SETTINGS_OPTION . '[login_redirect]',
-												'id'       => 'cansakhara-login-redirect',
-												'class'    => 'bw-select__el',
-												'selected' => $settings['login_redirect'],
-												'show_option_none' => __( 'Home page', 'blueworx-client-cansakhara' ),
-												'option_none_value' => '0',
-											)
-										);
-										// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-										?>
-										<i class="bw-icon bw-icon--14 bw-select__arrow" data-lucide="chevron-down"></i>
-									</span>
-									<p class="bw-formrow__help"><?php esc_html_e( 'The page a guest lands on once their details are accepted.', 'blueworx-client-cansakhara' ); ?></p>
-								</div>
-							</div>
-						</div>
-					</section>
-
-					<section class="bw-card bw-settingscard">
-						<div class="bw-card__head">
-							<div class="bw-card__titles">
-								<p class="bw-card__eyebrow"><?php esc_html_e( 'Enquiries', 'blueworx-client-cansakhara' ); ?></p>
-								<h2 class="bw-card__title"><?php esc_html_e( 'Enquiry form', 'blueworx-client-cansakhara' ); ?></h2>
-								<p class="bw-settingscard__desc"><?php esc_html_e( 'The Enquire popup shows this SureForms form, restyled to match the site.', 'blueworx-client-cansakhara' ); ?></p>
-							</div>
-						</div>
-						<div class="bw-card__body bw-settingscard__body">
-							<div class="bw-formrow">
-								<label class="bw-formrow__label" for="cansakhara-enquiry-form"><?php esc_html_e( 'Enquiry form', 'blueworx-client-cansakhara' ); ?></label>
-								<div class="bw-formrow__control">
-									<span class="bw-select">
-										<select
-											name="<?php echo esc_attr( CANSAKHARA_SETTINGS_OPTION ); ?>[enquiry_form]"
-											id="cansakhara-enquiry-form"
-											class="bw-select__el"
-											aria-describedby="cansakhara-enquiry-form-help"
-											<?php disabled( ! $sureforms ); ?>
-										>
-											<option value="0"><?php esc_html_e( 'None', 'blueworx-client-cansakhara' ); ?></option>
-											<?php foreach ( $forms as $form ) : ?>
-											<option value="<?php echo esc_attr( (string) $form->ID ); ?>" <?php selected( $settings['enquiry_form'], $form->ID ); ?>>
-												<?php echo esc_html( get_the_title( $form ) ); ?>
-											</option>
-											<?php endforeach; ?>
-										</select>
-										<i class="bw-icon bw-icon--14 bw-select__arrow" data-lucide="chevron-down"></i>
-									</span>
-									<p class="bw-formrow__help" id="cansakhara-enquiry-form-help">
-										<?php
-										if ( $sureforms ) {
-											esc_html_e( 'Until a form is chosen, the popup shows an email link instead.', 'blueworx-client-cansakhara' );
-										} else {
-											esc_html_e( 'Install and activate SureForms to choose a form. Until then the popup shows an email link instead.', 'blueworx-client-cansakhara' );
-										}
-										?>
-									</p>
-								</div>
-							</div>
-						</div>
-					</section>
-				</div>
-			</div>
-
-			<div class="bw-savebar">
-				<p class="bw-savebar__hint">
-					<i class="bw-icon bw-icon--14" data-lucide="info"></i>
-					<?php esc_html_e( 'Changes apply as soon as you save.', 'blueworx-client-cansakhara' ); ?>
-				</p>
-				<button type="submit" class="bw-btn bw-btn--primary"><?php esc_html_e( 'Save changes', 'blueworx-client-cansakhara' ); ?></button>
-			</div>
-		</form>
+	<?php if ( $saved ) : ?>
+	<div class="bw-notice bw-notice--success" role="status">
+		<i class="bw-icon bw-notice__icon" data-lucide="circle-check"></i>
+		<div class="bw-notice__body">
+			<p class="bw-notice__text"><?php esc_html_e( 'Settings saved.', 'blueworx-client-cansakhara' ); ?></p>
+		</div>
 	</div>
+	<?php endif; ?>
+
+	<section class="bw-card bw-settingscard">
+		<div class="bw-card__head">
+			<div class="bw-card__titles">
+				<p class="bw-card__eyebrow"><?php esc_html_e( 'Guests', 'blueworx-client-cansakhara' ); ?></p>
+				<h2 class="bw-card__title"><?php esc_html_e( 'Sign in', 'blueworx-client-cansakhara' ); ?></h2>
+				<p class="bw-settingscard__desc"><?php esc_html_e( 'Guests sign in from the Login popup with the WordPress account you have given them.', 'blueworx-client-cansakhara' ); ?></p>
+			</div>
+		</div>
+		<div class="bw-card__body bw-settingscard__body">
+			<div class="bw-formrow">
+				<label class="bw-formrow__label" for="cansakhara-login-redirect"><?php esc_html_e( 'After login, send guests to', 'blueworx-client-cansakhara' ); ?></label>
+				<div class="bw-formrow__control">
+					<span class="bw-select">
+						<?php
+						// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_dropdown_pages() escapes every attribute and label it prints.
+						wp_dropdown_pages(
+							array(
+								'name'              => CANSAKHARA_SETTINGS_OPTION . '[login_redirect]',
+								'id'                => 'cansakhara-login-redirect',
+								'class'             => 'bw-select__el',
+								'selected'          => $settings['login_redirect'],
+								'show_option_none'  => __( 'Home page', 'blueworx-client-cansakhara' ),
+								'option_none_value' => '0',
+							)
+						);
+						// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+						?>
+						<i class="bw-icon bw-icon--14 bw-select__arrow" data-lucide="chevron-down"></i>
+					</span>
+					<p class="bw-formrow__help"><?php esc_html_e( 'The page a guest lands on once their details are accepted.', 'blueworx-client-cansakhara' ); ?></p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="bw-card bw-settingscard">
+		<div class="bw-card__head">
+			<div class="bw-card__titles">
+				<p class="bw-card__eyebrow"><?php esc_html_e( 'Enquiries', 'blueworx-client-cansakhara' ); ?></p>
+				<h2 class="bw-card__title"><?php esc_html_e( 'Enquiry form', 'blueworx-client-cansakhara' ); ?></h2>
+				<p class="bw-settingscard__desc"><?php esc_html_e( 'The Enquire popup shows this SureForms form, restyled to match the site.', 'blueworx-client-cansakhara' ); ?></p>
+			</div>
+		</div>
+		<div class="bw-card__body bw-settingscard__body">
+			<div class="bw-formrow">
+				<label class="bw-formrow__label" for="cansakhara-enquiry-form"><?php esc_html_e( 'Enquiry form', 'blueworx-client-cansakhara' ); ?></label>
+				<div class="bw-formrow__control">
+					<span class="bw-select">
+						<select
+							name="<?php echo esc_attr( CANSAKHARA_SETTINGS_OPTION ); ?>[enquiry_form]"
+							id="cansakhara-enquiry-form"
+							class="bw-select__el"
+							aria-describedby="cansakhara-enquiry-form-help"
+							<?php disabled( ! $sureforms ); ?>
+						>
+							<option value="0"><?php esc_html_e( 'None', 'blueworx-client-cansakhara' ); ?></option>
+							<?php foreach ( $forms as $form ) : ?>
+							<option value="<?php echo esc_attr( (string) $form->ID ); ?>" <?php selected( $settings['enquiry_form'], $form->ID ); ?>>
+								<?php echo esc_html( get_the_title( $form ) ); ?>
+							</option>
+							<?php endforeach; ?>
+						</select>
+						<i class="bw-icon bw-icon--14 bw-select__arrow" data-lucide="chevron-down"></i>
+					</span>
+					<p class="bw-formrow__help" id="cansakhara-enquiry-form-help">
+						<?php
+						if ( $sureforms ) {
+							esc_html_e( 'Until a form is chosen, the popup shows an email link instead.', 'blueworx-client-cansakhara' );
+						} else {
+							esc_html_e( 'Install and activate SureForms to choose a form. Until then the popup shows an email link instead.', 'blueworx-client-cansakhara' );
+						}
+						?>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
 	<?php
 }
