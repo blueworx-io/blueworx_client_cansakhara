@@ -205,17 +205,17 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 				Discover
 			</h2>
 			<div class="discover-grid mx-auto mt-[38px] grid max-w-[1170px] justify-items-center gap-8 md:mt-20 md:justify-items-stretch min-[1440px]:grid-cols-[550px_550px] min-[1440px]:gap-[70px]">
-				<?php // Card titles take the H2 role. Figma draws them 44px/22px tracking (5:1029) and 16px/8px on mobile (5:492); the role is 48/9.6 and 24/4.8. ?>
+				<?php // Card titles fit no type role, so they carry the Figma values: 44px light, tracking 22px, leading 1.4 on desktop (5:1029); 16px, tracking 8px on mobile (5:492). ?>
 				<article class="discover-card flex aspect-square flex-col items-center justify-center bg-day-1 px-6 text-center text-home-1">
 					<?php cansakhara_sun_icon( 'size-20 md:size-[180px]' ); ?>
-					<h3 class="discover-card-title cs-h2 mt-10 md:mt-[50px]">
+					<h3 class="discover-card-title mt-10 font-display text-base font-light uppercase leading-[1.4] tracking-[8px] md:mt-[50px] md:text-[44px] md:tracking-[22px]">
 						By day
 					</h3>
 					<?php cansakhara_outline_button( 'Explore', cansakhara_page_url( 'by-day' ), 'mt-10 border-home-1 bg-day-2 hover:bg-home-1 hover:text-day-1 md:mt-[50px]' ); ?>
 				</article>
 				<article class="discover-card flex aspect-square flex-col items-center justify-center bg-night-1 px-6 text-center text-home-1">
 					<?php cansakhara_moon_icon( 'size-20 md:size-[180px]' ); ?>
-					<h3 class="discover-card-title cs-h2 mt-10 md:mt-[50px]">
+					<h3 class="discover-card-title mt-10 font-display text-base font-light uppercase leading-[1.4] tracking-[8px] md:mt-[50px] md:text-[44px] md:tracking-[22px]">
 						By night
 					</h3>
 					<?php cansakhara_outline_button( 'Explore', cansakhara_page_url( 'by-night' ), 'mt-10 border-home-1 bg-night-3 hover:bg-home-1 hover:text-night-1 md:mt-[50px]' ); ?>
