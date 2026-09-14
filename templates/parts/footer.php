@@ -26,13 +26,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Figma desktop 1:835 / mobile 1:352. Home is the Figma footer colour (which
+// Figma desktop 1:835 / mobile 1:352. Home is the Figma footer swatch (which
 // matches the home drawer mark in SiteHeader); day/night take each page's
-// deep section colour.
+// deep section swatch. Utilities are written out in full so Tailwind finds
+// them when it scans this file.
 $cansakhara_footer_colors = array(
-	'home'  => '#422833',
-	'day'   => '#918074',
-	'night' => '#000e16',
+	'home'  => 'bg-home-3',
+	'day'   => 'bg-day-2',
+	'night' => 'bg-night-2',
 );
 
 $cansakhara_theme = isset( $args['theme'] ) ? (string) $args['theme'] : 'home';
@@ -44,11 +45,10 @@ if ( ! isset( $cansakhara_footer_colors[ $cansakhara_theme ] ) ) {
 $cansakhara_footer_color = $cansakhara_footer_colors[ $cansakhara_theme ];
 $cansakhara_class        = isset( $args['class'] ) ? (string) $args['class'] : ''; // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
 
-$cansakhara_footer_classes = 'site-footer w-full px-5 pb-[calc(50px+env(safe-area-inset-bottom))] pt-[80px] text-white md:px-20 md:pb-[50px] md:pt-[144px] ' . $cansakhara_class;
+$cansakhara_footer_classes = 'site-footer w-full px-5 pb-[calc(50px+env(safe-area-inset-bottom))] pt-[80px] text-home-1 md:px-20 md:pb-[50px] md:pt-[144px] ' . $cansakhara_footer_color . ' ' . $cansakhara_class;
 ?>
 <footer
 	id="contact"
-	style="background-color: <?php echo esc_attr( $cansakhara_footer_color ); ?>"
 	class="<?php echo esc_attr( trim( $cansakhara_footer_classes ) ); ?>"
 >
 	<div class="mx-auto flex w-full flex-col gap-[30px] md:w-[1280px] md:gap-20">
@@ -101,11 +101,11 @@ $cansakhara_footer_classes = 'site-footer w-full px-5 pb-[calc(50px+env(safe-are
 			</div>
 		</div>
 
-		<span aria-hidden="true" class="h-px w-full bg-white"></span>
+		<span aria-hidden="true" class="h-px w-full bg-home-1"></span>
 
 		<div
 			data-anim="footer-item"
-			class="flex flex-col-reverse items-center gap-5 font-display text-[8px] font-light uppercase leading-[1.2] tracking-[1.6px] md:flex-row md:items-center md:gap-0 md:text-[14px] md:tracking-[2.8px]"
+			class="footer-legal cs-label flex flex-col-reverse items-center gap-5 md:flex-row md:items-center md:gap-0"
 		>
 			<p class="text-center md:flex-1 md:text-left">
 				© 2026 Mel de Magranetes SL

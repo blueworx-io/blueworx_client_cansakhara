@@ -56,7 +56,7 @@ for ( $cansakhara_copy = 0; $cansakhara_copy < 3; $cansakhara_copy++ ) {
 
 $cansakhara_index = $cansakhara_n;
 ?>
-<div class="bg-white py-[20px] md:py-[30px]">
+<div class="bg-home-1 py-[20px] md:py-[30px]">
 <div class="flex justify-center">
 	<div
 		role="group"

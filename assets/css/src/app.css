@@ -20,11 +20,16 @@
   --font-display: "neulis-sans";
   --font-body: "source-sans-3";
   --font-serif: "source-serif-4-variable";
+
+  /* Popup field fill (Figma 1:67 / 1:109 draw it #490500): the popup panel's
+     home-5 swatch darkened a fifth, so it follows the swatch when it changes. */
+  --cs-color-popup-field: color-mix(in srgb, var(--cs-color-home-5) 80%, black);
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #500d20;
+  /* Page ground and fallback text colour follow the home swatches. */
+  --background: var(--cs-color-home-1);
+  --foreground: var(--cs-color-home-2);
 }
 
 @theme inline {
@@ -41,6 +46,45 @@
    one place; the raw media queries below are bumped to the same boundary. */
 @theme {
   --breakpoint-md: 796px;
+
+  /* Palette swatches read the Theme tab's variables (includes/theme.php), so
+     bg-home-2 / text-day-1 etc. follow whatever is saved. */
+  --color-home-1: var(--cs-color-home-1);
+  --color-home-2: var(--cs-color-home-2);
+  --color-home-3: var(--cs-color-home-3);
+  --color-home-4: var(--cs-color-home-4);
+  --color-home-5: var(--cs-color-home-5);
+  --color-home-6: var(--cs-color-home-6);
+  --color-day-1: var(--cs-color-day-1);
+  --color-day-2: var(--cs-color-day-2);
+  --color-day-3: var(--cs-color-day-3);
+  --color-night-1: var(--cs-color-night-1);
+  --color-night-2: var(--cs-color-night-2);
+  --color-night-3: var(--cs-color-night-3);
+}
+
+/* Typography roles. Values come from the CSS variables includes/theme.php
+   prints (Figma defaults, editable on the Theme tab). Templates use these
+   instead of per-element sizes so the client can change type in one place. */
+@layer components {
+  .cs-h1, .cs-h2, .cs-h3, .cs-label {
+    font-family: var(--font-display), sans-serif;
+    text-transform: uppercase;
+  }
+  .cs-h1 { font-size: var(--cs-h1-size); line-height: var(--cs-h1-lh); letter-spacing: var(--cs-h1-ls); font-weight: var(--cs-h1-weight); }
+  .cs-h2 { font-size: var(--cs-h2-size); line-height: var(--cs-h2-lh); letter-spacing: var(--cs-h2-ls); font-weight: var(--cs-h2-weight); }
+  .cs-h3 { font-size: var(--cs-h3-size); line-height: var(--cs-h3-lh); letter-spacing: var(--cs-h3-ls); font-weight: var(--cs-h3-weight); }
+  .cs-h4 {
+    font-family: var(--font-serif), serif;
+    font-style: italic;
+    font-size: var(--cs-h4-size); line-height: var(--cs-h4-lh); letter-spacing: var(--cs-h4-ls); font-weight: var(--cs-h4-weight);
+  }
+  .cs-body, .cs-small { font-family: var(--font-body), sans-serif; }
+  .cs-body { font-size: var(--cs-body-size); line-height: var(--cs-body-lh); letter-spacing: var(--cs-body-ls); font-weight: var(--cs-body-weight); }
+  .cs-small { font-size: var(--cs-small-size); line-height: var(--cs-small-lh); letter-spacing: var(--cs-small-ls); font-weight: var(--cs-small-weight); }
+  .cs-label { font-size: var(--cs-label-size); line-height: var(--cs-label-lh); letter-spacing: var(--cs-label-ls); font-weight: var(--cs-label-weight); }
+  /* The first line of a two-line lockup is the kit's hairline family. */
+  .cs-hairline { font-family: "neulis-sans-hairline", var(--font-display), sans-serif; font-weight: 100; }
 }
 
 /* WordPress's standard screen-reader-only class. A theme normally styles it,
@@ -68,22 +112,31 @@
     width: 100%;
     align-items: center;
     justify-content: center;
-    border: 1px solid #42071a;
+    border: 1px solid var(--cs-color-home-2);
     padding: 16px 32px;
     font-family: var(--font-display), sans-serif;
-    font-size: 14px;
-    line-height: 1.4;
-    letter-spacing: 5.6px;
-    text-indent: 5.6px;
+    font-size: var(--cs-label-size);
+    line-height: var(--cs-label-lh);
+    letter-spacing: var(--cs-label-ls);
+    font-weight: var(--cs-label-weight);
+    /* Recentre the label: letter-spacing adds a trailing gap. */
+    text-indent: var(--cs-label-ls);
     text-transform: uppercase;
-    color: #fff;
+    color: var(--cs-color-home-1);
     background: transparent;
     cursor: pointer;
     transition: background-color 200ms ease-out;
   }
-  .cansakhara-popup-submit:hover { background-color: #490500; }
-  .cansakhara-popup-submit:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+  .cansakhara-popup-submit:hover { background-color: var(--cs-color-popup-field); }
+  .cansakhara-popup-submit:focus-visible { outline: 2px solid var(--cs-color-home-1); outline-offset: 4px; }
   .cansakhara-popup-submit:disabled { opacity: .5; cursor: wait; }
+
+  /* Popup inputs (Figma 1:67 / 1:109). Type is the Body role, but never below
+     16px: iOS Safari zooms the page when a focused input is smaller. */
+  .cansakhara-popup-field {
+    background: var(--cs-color-popup-field);
+    font-size: max(16px, var(--cs-body-size));
+  }
 
   /* SureForms inside the Enquire popup, restyled to Figma 1:109. Verified
      against the installed 2.12.7 markup (its "Text"/"Email"/"Phone Number"
@@ -118,11 +171,11 @@
   /* SureForms fixes a 44px height (--srfm-input-height) and a 6px/6px
      margin-top/bottom on every input, which fights the 16px/32px padding
      the design wants — override both so the field's height comes from
-     padding + line-height alone (~54px) with no extra margin. */
+     padding + line-height alone (~58px) with no extra margin. */
   .cansakhara-popup .srfm-input-common {
     width: 100% !important;
-    background: #490500 !important;
-    color: #fff !important;
+    background: var(--cs-color-popup-field) !important;
+    color: var(--cs-color-home-1) !important;
     border: 0 !important;
     border-radius: 0 !important;
     padding: 16px 32px !important;
@@ -130,12 +183,12 @@
     height: auto !important;
     text-align: center !important;
     font-family: var(--font-body), sans-serif !important;
-    font-weight: 300 !important;
-    font-size: 16px !important;
-    line-height: 1.4 !important;
-    letter-spacing: .8px !important;
+    font-weight: var(--cs-body-weight) !important;
+    font-size: max(16px, var(--cs-body-size)) !important;
+    line-height: var(--cs-body-lh) !important;
+    letter-spacing: var(--cs-body-ls) !important;
   }
-  .cansakhara-popup .srfm-input-common::placeholder { color: #fff !important; opacity: 1 !important; }
+  .cansakhara-popup .srfm-input-common::placeholder { color: var(--cs-color-home-1) !important; opacity: 1 !important; }
   /* SureForms reserves a fixed 16px (--srfm-error-line-height) under every
      field for its error message even while that message is display:none —
      collapse it to the message's own content height so it only takes space
@@ -151,26 +204,26 @@
     height: auto !important;
     overflow: visible !important;
     clip: auto !important;
-    color: #fff !important;
+    color: var(--cs-color-home-1) !important;
     font-family: var(--font-body), sans-serif !important;
-    font-weight: 200 !important;
-    font-size: 12px !important;
-    letter-spacing: .6px !important;
+    font-weight: var(--cs-small-weight) !important;
+    font-size: var(--cs-small-size) !important;
+    letter-spacing: var(--cs-small-ls) !important;
   }
   .cansakhara-popup .srfm-gdpr-block .srfm-cbx .srfm-span-wrap:first-child {
     width: 18px !important;
     height: 18px !important;
-    border: 1px solid #fff !important;
+    border: 1px solid var(--cs-color-home-1) !important;
     border-radius: 0 !important;
     background: transparent !important;
     margin-right: 12px !important;
   }
   .cansakhara-popup .srfm-gdpr-block .srfm-input-gdpr:checked + .srfm-cbx > .srfm-span-wrap:first-child {
-    background: #fff !important;
-    border-color: #fff !important;
+    background: var(--cs-color-home-1) !important;
+    border-color: var(--cs-color-home-1) !important;
   }
   .cansakhara-popup .srfm-gdpr-block .srfm-input-gdpr:checked + .srfm-cbx > .srfm-span-wrap:first-child svg {
-    stroke: #490500 !important;
+    stroke: var(--cs-color-popup-field) !important;
   }
   .cansakhara-popup .srfm-btn-frontend,
   .cansakhara-popup .srfm-button {
@@ -180,21 +233,22 @@
     box-sizing: border-box !important;
     align-items: center !important;
     justify-content: center !important;
-    border: 1px solid #42071a !important;
+    border: 1px solid var(--cs-color-home-2) !important;
     padding: 16px 32px !important;
     cursor: pointer !important;
     font-family: var(--font-display), sans-serif !important;
-    font-size: 14px !important;
-    line-height: 1.4 !important;
-    letter-spacing: 5.6px !important;
-    text-indent: 5.6px !important;
+    font-size: var(--cs-label-size) !important;
+    line-height: var(--cs-label-lh) !important;
+    letter-spacing: var(--cs-label-ls) !important;
+    font-weight: var(--cs-label-weight) !important;
+    text-indent: var(--cs-label-ls) !important;
     text-transform: uppercase !important;
-    color: #fff !important;
+    color: var(--cs-color-home-1) !important;
     transition: background-color 200ms ease-out !important;
   }
   .cansakhara-popup .srfm-btn-frontend:hover,
-  .cansakhara-popup .srfm-button:hover { background-color: #490500 !important; }
-  .cansakhara-popup .srfm-error-message { color: #fff !important; font-size: 12px !important; text-align: center !important; }
+  .cansakhara-popup .srfm-button:hover { background-color: var(--cs-color-popup-field) !important; }
+  .cansakhara-popup .srfm-error-message { color: var(--cs-color-home-1) !important; font-size: var(--cs-small-size) !important; text-align: center !important; }
 }
 
 * {
@@ -310,8 +364,8 @@ button:active {
 }
 
 ::selection {
-  background: #42081a;
-  color: white;
+  background: var(--cs-color-home-2);
+  color: var(--cs-color-home-1);
 }
 
 /* No-FOUC guard for above-the-fold hero entrance elements. The `.motion-ready`
@@ -366,13 +420,12 @@ html.motion-ready [data-anim="draw-icon"] path {
 }
 
 /* "Introducing / Can Sakhara" lockup. The two lines fill the exact Figma title
-   box width so they render at an identical width (272px @ 30px on mobile,
-   435px @ 48px from the tablet breakpoint up). letter-spacing is neutralised so
-   the even gaps come purely from the per-letter justify-between distribution. */
+   box width so they render at an identical width (272px on mobile, 435px from
+   the tablet breakpoint up). Size and leading are inherited from the heading's
+   H1 role class; letter-spacing is neutralised so the even gaps come purely
+   from the per-letter justify-between distribution. */
 .welcome-lockup {
   width: 272px;
-  font-size: 30px;
-  line-height: 1;
   letter-spacing: normal;
 }
 
@@ -383,17 +436,29 @@ html.motion-ready [data-anim="draw-icon"] path {
 @media (min-width: 796px) {
   .welcome-lockup {
     width: 435px;
-    font-size: 48px;
+  }
+}
+
+/* Footer legal row (Figma 1:835 desktop, 5:528 mobile). It takes the Label
+   role at half the role's tracking; on mobile it drops to 8px, below the role.
+   Un-layered so it beats the .cs-label components-layer rule. */
+.footer-legal {
+  letter-spacing: calc(var(--cs-label-ls) / 2);
+}
+
+@media (max-width: 795px) {
+  .footer-legal {
+    font-size: 8px;
+    letter-spacing: 1.6px;
   }
 }
 
 /* The eyebrow is centre-aligned, but its letter-spacing adds a trailing gap
    after the final letter. With text-align:center that gap is counted, nudging
    the visible word left of the centred section line above it. Indenting by the
-   letter-spacing (em-based, so it tracks the 14px/21px sizes) recentres the
-   glyphs over the line. */
+   H3 role's letter-spacing recentres the glyphs over the line. */
 .welcome-heading .section-eyebrow {
-  text-indent: 0.34em;
+  text-indent: var(--cs-h3-ls);
 }
 
 .experience-viewport {
@@ -603,24 +668,9 @@ html.motion-ready [data-anim="draw-icon"] path {
     margin: 0;
   }
 
-  .section-heading .section-eyebrow {
-    font-size: 21px;
-    line-height: 1;
-    letter-spacing: 4.2px;
-  }
-
-  .section-heading .section-title {
-    font-size: 48px;
-    line-height: 1;
-    letter-spacing: 9.6px;
-  }
-
   .section-heading .section-subtitle {
     width: 1064px;
     max-width: none;
-    font-size: 28px;
-    line-height: 1.8;
-    letter-spacing: 2.8px;
   }
 
   .welcome-heading {
@@ -629,11 +679,6 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .welcome-heading .section-title {
     height: 96px;
-  }
-
-  /* Desktop swaps the eyebrow tracking to a fixed 4.2px, so match the indent. */
-  .welcome-heading .section-eyebrow {
-    text-indent: 4.2px;
   }
 
   /* Gap from heading bottom (≈421px) to the Figma content top of 431px. */
@@ -664,21 +709,12 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .welcome-copy {
     width: 346px;
-    font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: 0.8px;
   }
 
   /* Gap from content bottom (1031px) to the Figma features top of 1066px. */
   .features-block {
     width: 727px;
     margin-top: 35px;
-  }
-
-  .features-title {
-    font-size: 21px;
-    line-height: 1;
-    letter-spacing: 4.2px;
   }
 
   .features-grid {
@@ -696,9 +732,6 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .features-grid p {
     margin-top: 18px;
-    font-size: 15px;
-    line-height: 1;
-    letter-spacing: 1.5px;
     white-space: nowrap;
   }
 
@@ -754,11 +787,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     max-width: none;
   }
 
-  .experience-heading .section-eyebrow {
-    font-size: 22px;
-    letter-spacing: 4.4px;
-  }
-
   .experience-layout {
     width: 1046px;
     height: 500px;
@@ -773,9 +801,6 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .experience-copy {
     width: 304px;
-    font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: 0.8px;
   }
 
   .discover-section {
@@ -800,12 +825,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     padding-top: 70px;
   }
 
-  .discover-title {
-    font-size: 21px;
-    line-height: 1;
-    letter-spacing: 4.2px;
-  }
-
   /* Gap from title bottom (171px) to the Figma grid top of 252px. */
   .discover-grid {
     width: 1170px;
@@ -816,12 +835,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     width: 550px;
     height: 608px;
     aspect-ratio: auto;
-  }
-
-  .discover-card-title {
-    font-size: 48px;
-    line-height: 1;
-    letter-spacing: 19.2px;
   }
 
   .discover-card .outline-button {
@@ -840,33 +853,7 @@ html.motion-ready [data-anim="draw-icon"] path {
 
   .video-section {
     height: 902px;
-    border-bottom: 2px solid white;
-  }
-
-  /* The footer is already a flex column; flow the children with margins.
-     padding-top lands the parent logo at the Figma top of 164px. */
-  .site-footer {
-    height: 858px;
-    padding-top: 164px;
-    background: #422833;
-  }
-
-  /* Gap from logo bottom (250px) to the Figma brands top of 332px. */
-  .footer-brands {
-    width: 672px;
-    max-width: none;
-    margin-top: 82px;
-    grid-template-columns: 223px 223px;
-    justify-content: space-between;
-    gap: 0;
-  }
-
-  /* Gap from brands bottom (407px) to the Figma footer-bottom top of 710px. */
-  .footer-bottom {
-    width: 1280px;
-    margin-top: 303px;
-    margin-inline: auto;
-    padding-top: 43px;
+    border-bottom: 2px solid var(--cs-color-home-1);
   }
 
   .site-footer a:hover {
@@ -880,32 +867,67 @@ html.motion-ready [data-anim="draw-icon"] path {
     backdrop-filter: blur(2px);
   }
 
+  /* Home mobile frame (Figma 5:386): every section's content sits in a 352px
+     column at x=25. Vertical values below are the frame's own gaps; the type
+     inside keeps the role tokens. */
   .welcome-inner,
   .experience-card-inner,
   .discover-inner {
-    width: 340px;
+    width: 352px;
     margin-inline: auto;
     padding-inline: 0;
   }
 
-  .map-frame {
-    width: 340px;
-    height: 275px;
+  /* Map 181×146 (5:423), 30px below the heading; copy 30px below the map. */
+  .welcome-content {
+    margin-top: 30px;
+    gap: 30px;
   }
 
-  .experience-image {
-    width: 340px;
-    height: 262px;
+  .map-frame {
+    width: 181px;
+    height: 146px;
+  }
+
+  /* Intro copy is a 300px column with one blank line (11px × 1.6) between
+     paragraphs; the Enquire button is 97×35, 50px below the copy (5:426). */
+  .welcome-copy,
+  .experience-copy {
+    width: 300px;
     margin-inline: auto;
   }
 
-  .experience-copy {
-    width: 340px;
+  .welcome-copy p:not(:first-child),
+  .experience-copy p:not(:first-child) {
+    margin-top: 18px;
+  }
+
+  .welcome-copy .outline-button {
+    width: 97px;
+    height: 35px;
+    margin-top: 50px;
+    padding-inline: 0;
+  }
+
+  /* Stats block 52px below the Enquire button (5:430). */
+  .features-block {
+    margin-top: 52px;
+  }
+
+  /* Experience image 352×244, 37px below the heading; copy 38px below (5:466). */
+  .experience-layout {
+    margin-top: 37px;
+    gap: 38px;
+  }
+
+  .experience-image {
+    width: 352px;
+    height: 244px;
     margin-inline: auto;
   }
 
   .discover-grid {
-    width: 340px;
+    width: 352px;
     gap: 30px;
   }
 
@@ -918,7 +940,6 @@ html.motion-ready [data-anim="draw-icon"] path {
     width: 113px;
     height: 35px;
     padding-inline: 0;
-    font-size: 10px;
   }
 
   .site-footer a:hover {
@@ -930,9 +951,7 @@ html.motion-ready [data-anim="draw-icon"] path {
   .welcome-inner,
   .experience-card-inner,
   .discover-inner,
-  .map-frame,
   .experience-image,
-  .experience-copy,
   .discover-grid {
     width: 320px;
   }

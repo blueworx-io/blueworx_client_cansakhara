@@ -21,7 +21,7 @@ test('the drawer is present and closed on load', async ({ page }) => {
 test('the by-day header takes the day panel colour', async ({ page }) => {
   await page.goto('/by-day/');
   await expect(page.locator('[data-cansakhara-header]')).toHaveAttribute(
-    'data-cansakhara-solid-color', '#ac9a8c'
+    'data-cansakhara-solid-color', 'var(--cs-color-day-1)'
   );
 });
 
@@ -122,4 +122,22 @@ test('the side nav builds one dot per section and rings the one in view', async 
   await expect(page.locator('[data-cansakhara-side-nav] [data-cansakhara-dot][data-active="true"]')).toHaveCount(1);
   const scrolledIndex = await activeDotIndex();
   expect(scrolledIndex).toBeGreaterThan(topIndex);
+});
+
+test('the footer keeps 50px below the copyright row on desktop', async ({ page }) => {
+  // The footer row this measures carries a scroll-triggered reveal
+  // (data-anim="footer-item", gated to prefers-reduced-motion: no-preference
+  // in assets/js/src/choreography.js) that sits 28px off its resting spot
+  // until the footer scrolls into view. Reduced motion skips that gate
+  // entirely, so the row renders straight at its final CSS position — this
+  // test is about padding, not the reveal animation.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/home/');
+  const gap = await page.evaluate(() => {
+    const footer = document.querySelector('footer');
+    const copy = [...footer.querySelectorAll('p')].find((p) => /2026/.test(p.textContent));
+    return Math.round(footer.getBoundingClientRect().bottom - copy.getBoundingClientRect().bottom);
+  });
+  expect(gap).toBe(50);
 });

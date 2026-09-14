@@ -17,7 +17,7 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 ?>
 <main
 	id="content"
-	class="site-shell relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[#5b0a00] bg-cover bg-center text-white"
+	class="site-shell relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-home-5 bg-cover bg-center text-home-1"
 	style="background-image: url('<?php echo esc_url( CANSAKHARA_URL . 'assets/img/welcome-bg.jpg' ); ?>')"
 >
 	<?php
@@ -52,11 +52,13 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 			height="29"
 			class="h-auto w-[240px] md:w-[379px]"
 		/>
-		<p class="font-display text-[14px] uppercase leading-none tracking-[16px] indent-[16px] text-[#bf2c08] md:text-[22px] md:tracking-[33px] md:indent-[33px]">
+		<?php // Figma 5:1184: IBIZA is 22px regular with 33px tracking, which fits no role; there is no mobile frame, so mobile keeps the port's 14px / 16px. ?>
+		<p class="font-display text-[14px] uppercase leading-none tracking-[16px] indent-[16px] text-home-6 md:text-[22px] md:tracking-[33px] md:indent-[33px]">
 			Ibiza
 		</p>
 	</div>
 
+	<?php // Figma 5:1186 / 5:1187: LOGIN is 18px light and ENQUIRE 18px thin, both 8.1px tracking, above the Label role; no mobile frame, so mobile keeps the port's 14px / 6px. ?>
 	<div class="absolute inset-x-0 bottom-[60px] flex items-center justify-center gap-[64px] md:bottom-[95px] md:gap-[200px]">
 		<button
 			type="button"
@@ -64,7 +66,7 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 			aria-haspopup="dialog"
 			aria-expanded="false"
 			aria-controls="cansakhara-popup-login"
-			class="font-display text-[14px] font-light uppercase leading-none tracking-[6px] indent-[6px] text-white transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:text-[18px] md:tracking-[8.1px] md:indent-[8.1px]"
+			class="font-display text-[14px] font-light uppercase leading-none tracking-[6px] indent-[6px] text-home-1 transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:text-[18px] md:tracking-[8.1px] md:indent-[8.1px]"
 		>
 			Login
 		</button>
@@ -74,7 +76,7 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 			aria-haspopup="dialog"
 			aria-expanded="false"
 			aria-controls="cansakhara-popup-enquire"
-			class="font-display text-[14px] font-thin uppercase leading-none tracking-[6px] indent-[6px] text-white transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:text-[18px] md:tracking-[8.1px] md:indent-[8.1px]"
+			class="font-display text-[14px] font-thin uppercase leading-none tracking-[6px] indent-[6px] text-home-1 transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:text-[18px] md:tracking-[8.1px] md:indent-[8.1px]"
 		>
 			Enquire
 		</button>

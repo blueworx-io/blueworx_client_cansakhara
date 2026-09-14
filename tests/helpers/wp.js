@@ -54,3 +54,19 @@ export async function loginAsGuest(page) {
   await page.click('#wp-submit');
   await page.waitForURL((url) => !url.pathname.endsWith('/wp-login.php'));
 }
+
+// Saves one Theme tab field, e.g. setThemeToken(page, 'cs-body-desktop-size', '18').
+export async function setThemeToken(page, fieldId, value) {
+  await page.goto('/wp-admin/options-general.php?page=cansakhara&tab=theme');
+  await page.fill(`#${fieldId}`, String(value));
+  await page.click('button[type="submit"]:has-text("Save changes")');
+  await page.waitForURL(/settings-updated=true/);
+}
+
+// Puts every token back to the Figma default.
+export async function resetTheme(page) {
+  await page.goto('/wp-admin/options-general.php?page=cansakhara&tab=theme');
+  page.once('dialog', (d) => d.accept());
+  await page.click('button:has-text("Reset to design defaults")');
+  await page.waitForURL(/theme-reset=true/);
+}

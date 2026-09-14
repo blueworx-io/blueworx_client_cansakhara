@@ -4,7 +4,7 @@ Tags: marketing, landing page, villa, real estate, ibiza
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,15 @@ nothing is deleted. Uninstalling removes only the plugin's own settings, not
 the pages themselves.
 
 == Changelog ==
+
+= 0.5.0 =
+* A Theme tab under Settings → Can Sakhara: edit every text style's size, line
+  height, letter-spacing and weight (desktop and mobile) and the twelve palette
+  colours, with a reset to the Figma design.
+* Mobile type sizes, labels and section spacing now match the Figma mobile
+  frames; desktop body copy is the design's light weight.
+* The footer keeps its 50px bottom padding on desktop.
+* Removed the old Next.js screenshot comparison; the Figma file is the reference.
 
 = 0.4.0 =
 * Fonts now come from the client's Adobe Fonts kit — Neulis Sans for headings

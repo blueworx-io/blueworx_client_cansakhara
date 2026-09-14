@@ -5,6 +5,24 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-09-14
+
+### Added
+
+- A Theme tab under Settings → Can Sakhara: edit every text style's size, line
+  height, letter-spacing and weight (desktop and mobile) and the twelve palette
+  colours, with a reset to the Figma design.
+
+### Fixed
+
+- Mobile type sizes, labels and section spacing now match the Figma mobile
+  frames; desktop body copy is the design's light weight.
+- The footer keeps its 50px bottom padding on desktop.
+
+### Removed
+
+- The old Next.js screenshot comparison; the Figma file is the reference.
+
 ## [0.4.0] - 2026-09-14
 
 ### Added
