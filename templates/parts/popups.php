@@ -43,7 +43,9 @@ $cansakhara_close_class = 'absolute right-[20px] top-[19px] grid size-[33px] pla
 // a fixed distance below the form rather than pinning to the bottom, so a
 // tall viewport never splits the content top and bottom.
 $cansakhara_inner_class = 'flex min-h-full w-full flex-col items-center justify-center px-5 py-[80px] md:py-[110px]';
-$cansakhara_title_class = 'cs-h1 text-home-1 indent-[var(--cs-h1-ls)] outline-none';
+// Figma 5:1217 / 5:1259: the titles are 32px thin with 12.8px tracking, which fits
+// no role; there is no mobile frame, so mobile keeps the port's 24px / 9.6px.
+$cansakhara_title_class = 'font-display text-[24px] font-thin uppercase leading-none tracking-[9.6px] indent-[9.6px] text-home-1 outline-none md:text-[32px] md:tracking-[12.8px] md:indent-[12.8px]';
 // The intro is the H4 family, italic and weight, but Figma 1:67 / 1:109 draw
 // it at 13px / 14px with 1.3px / 1.4px tracking, half the role, so those stay.
 $cansakhara_intro_class = 'cs-h4 mt-[30px] w-full max-w-[443px] text-center text-[13px] leading-[1.4] tracking-[1.3px] md:mt-[43px] md:text-[14px] md:tracking-[1.4px]';

@@ -52,10 +52,11 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 
 		<div class="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[60px]">
 			<?php cansakhara_moon_icon( 'size-20 md:size-[110px]' ); ?>
+			<?php // Figma 5:1341 / 5:1498 (desktop 56px light, 28px tracking, lh 1.4) and 5:619 / 5:745 (mobile 34px, 17px): the page title fits no role, so it keeps the Figma values. ?>
 			<h1
 				data-anim="hero-title"
 				data-hero-hide
-				class="cs-h1 text-home-1 indent-[var(--cs-h1-ls)]"
+				class="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-home-1 indent-[17px] md:text-[56px] md:tracking-[28px] md:indent-[28px]"
 			>
 				By Night
 			</h1>
@@ -169,9 +170,10 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 	<?php // Solace of slumber. ?>
 	<section class="flex h-[332px] w-full flex-col items-center bg-night-1 px-5 pt-[60px] md:h-[580px] md:px-0 md:pt-[115px]">
 		<div class="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[50px]">
+			<?php // Figma 5:1372 / 5:1529 (desktop 34px light, 6.8px tracking, lh 1.4) and 5:653 / 5:779 (mobile 24px, 4.8px): fits no role, so it keeps the Figma values. ?>
 			<h2
 				data-anim="block-heading"
-				class="cs-h2 text-center text-home-1"
+				class="text-center font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] text-home-1 indent-[2.4px] md:text-[34px] md:leading-[1.4] md:tracking-[6.8px] md:indent-[3.4px]"
 			>
 				Solace of Slumber
 			</h2>
