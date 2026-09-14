@@ -102,3 +102,11 @@ test('popup content stays vertically centred on a tall viewport', async ({ page 
   // Centred: the space above the heading matches the space below the mark.
   expect(Math.abs(gaps.top - gaps.bottom)).toBeLessThan(4);
 });
+
+test('the enquire popup intro names what the team can help with', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Enquire' }).click();
+  await expect(enquire(page).locator('p').first()).toHaveText(
+    'Our team will assist you with availability and pricing for rentals, weddings, brand events and film/photoshoots'
+  );
+});

@@ -32,10 +32,21 @@ function cansakhara_enqueue_assets() {
 		return;
 	}
 
+	// The client's Adobe Fonts kit: Neulis Sans, Source Sans 3 and Source
+	// Serif 4. Adobe licenses these for web use only through its own host, so
+	// they are not shipped with the plugin. Version is null on purpose — the
+	// kit URL is Adobe's, and a ?ver= suffix breaks its caching.
+	wp_enqueue_style(
+		'cansakhara-fonts',
+		'https://use.typekit.net/' . CANSAKHARA_ADOBE_FONTS_KIT . '.css',
+		array(),
+		null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+	);
+
 	wp_enqueue_style(
 		'cansakhara-public',
 		CANSAKHARA_URL . 'assets/css/public.css',
-		array(),
+		array( 'cansakhara-fonts' ),
 		CANSAKHARA_VERSION
 	);
 
@@ -90,7 +101,7 @@ function cansakhara_sweep_foreign_assets() {
 	 */
 	$keep = (array) apply_filters(
 		'cansakhara_keep_styles',
-		array( 'cansakhara-public', 'admin-bar', 'dashicons' )
+		array( 'cansakhara-fonts', 'cansakhara-public', 'admin-bar', 'dashicons' )
 	);
 
 	foreach ( wp_styles()->queue as $handle ) {

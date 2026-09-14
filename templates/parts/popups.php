@@ -143,7 +143,7 @@ $cansakhara_mark_class  = 'h-[50px] w-[150px]';
 
 	<div class="<?php echo esc_attr( $cansakhara_inner_class ); ?>">
 		<h2 id="cansakhara-popup-enquire-title" tabindex="-1" class="<?php echo esc_attr( $cansakhara_title_class ); ?>">Enquire</h2>
-		<p class="<?php echo esc_attr( $cansakhara_intro_class ); ?>">Let us know a few details and our team will personally assist you with availability, pricing, tailored recommendations and Private Web Access Password</p>
+		<p class="<?php echo esc_attr( $cansakhara_intro_class ); ?>">Our team will assist you with availability and pricing for rentals, weddings, brand events and film/photoshoots</p>
 
 		<div class="mt-[40px] flex w-full max-w-[443px] flex-col gap-[20px] md:mt-[60px]">
 			<?php cansakhara_enquiry_form(); ?>
