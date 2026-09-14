@@ -217,7 +217,8 @@ function cansakhara_render_settings_page() {
 					<?php esc_html_e( 'Changes apply as soon as you save.', 'blueworx-client-cansakhara' ); ?>
 				</p>
 				<?php if ( 'theme' === $tab ) : ?>
-				<button type="submit" class="bw-btn bw-btn--secondary" formaction="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" formmethod="post" formnovalidate name="action" value="cansakhara_reset_theme" onclick="return confirm('<?php echo esc_js( __( 'Put every type size and colour back to the Figma design?', 'blueworx-client-cansakhara' ) ); ?>');"><?php esc_html_e( 'Reset to design defaults', 'blueworx-client-cansakhara' ); ?></button>
+					<?php // Not a submit button: it sits before Save, and the first submit button is what Enter in a field triggers. The Theme tab's script posts the form to admin-post.php when it is clicked. ?>
+				<button type="button" class="bw-btn bw-btn--secondary" data-cs-reset-theme="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-cs-confirm="<?php esc_attr_e( 'Put every type size and colour back to the Figma design?', 'blueworx-client-cansakhara' ); ?>"><?php esc_html_e( 'Reset to design defaults', 'blueworx-client-cansakhara' ); ?></button>
 				<?php endif; ?>
 				<button type="submit" class="bw-btn bw-btn--primary"><?php esc_html_e( 'Save changes', 'blueworx-client-cansakhara' ); ?></button>
 			</div>

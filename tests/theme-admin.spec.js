@@ -40,7 +40,22 @@ test.describe('the Theme tab', () => {
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--cs-color-home-2').trim())).toBe('#42081a');
   });
 
-  test('the General tab still saves', async ({ page }) => {
+  test('Enter in a field saves rather than resetting', async ({ page }) => {
+    await page.goto('/wp-admin/options-general.php?page=cansakhara&tab=theme');
+    let dialogs = 0;
+    const onDialog = (d) => { dialogs += 1; d.dismiss(); };
+    page.on('dialog', onDialog);
+    await page.fill('#cs-body-desktop-size', '17');
+    await page.press('#cs-body-desktop-size', 'Enter');
+    await page.waitForURL(/settings-updated=true/);
+    await expect(page).toHaveURL(/tab=theme/);
+    expect(dialogs).toBe(0);
+    await expect(page.locator('#cs-body-desktop-size')).toHaveValue('17');
+    // Hand the dialog back to afterEach's resetTheme(), which accepts its confirm.
+    page.off('dialog', onDialog);
+  });
+
+  test('the General tab is the default and still renders its fields', async ({ page }) => {
     await page.goto('/wp-admin/options-general.php?page=cansakhara');
     await expect(page.locator('#cansakhara-login-redirect')).toBeVisible();
     await expect(page.locator('.bw-tab.is-active')).toHaveText(/General/);

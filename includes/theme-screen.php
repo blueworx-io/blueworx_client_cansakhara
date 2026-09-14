@@ -35,21 +35,6 @@ function cansakhara_render_settings_tabs( $tab ) {
 }
 
 /**
- * Sends a Theme save back to the Theme tab. options.php redirects to the
- * bare settings URL, which would land on General.
- *
- * @param string $location Redirect target.
- * @return string
- */
-function cansakhara_keep_theme_tab_after_save( $location ) {
-	if ( false !== strpos( $location, 'page=cansakhara' ) && isset( $_POST['option_page'] ) && 'cansakhara_theme_group' === $_POST['option_page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- options.php has already verified the nonce.
-		$location = add_query_arg( 'tab', 'theme', $location );
-	}
-	return $location;
-}
-add_filter( 'wp_redirect', 'cansakhara_keep_theme_tab_after_save' );
-
-/**
  * One typography table for a breakpoint.
  *
  * @param string $bp    'desktop' or 'mobile'.
@@ -232,14 +217,34 @@ function cansakhara_render_theme_tab() {
 	?>
 
 	<?php
-	// The reset button in the save bar posts this same form to admin-post.php
-	// via formaction, and carries `action=cansakhara_reset_theme` itself as its
-	// submit value — a hidden `action` field here would also reach options.php
-	// on an ordinary Save and stop it saving. Only the nonce travels from here.
+	// The reset button in the save bar posts this same form to admin-post.php;
+	// the script below adds `action=cansakhara_reset_theme` only at that moment.
+	// A hidden `action` field here would also reach options.php on an ordinary
+	// Save and stop it saving. Only the nonce travels from here.
 	wp_nonce_field( 'cansakhara_reset_theme', 'cansakhara_reset_nonce' );
 	?>
 	<script>
-	( function () {
+	// Runs once the page is parsed: the reset button sits in the save bar, after this script.
+	document.addEventListener( 'DOMContentLoaded', function () {
+		var reset = document.querySelector( '[data-cs-reset-theme]' );
+		if ( reset ) {
+			reset.addEventListener( 'click', function () {
+				if ( ! window.confirm( reset.getAttribute( 'data-cs-confirm' ) ) ) {
+					return;
+				}
+				var form   = reset.form;
+				var action = document.createElement( 'input' );
+				action.type  = 'hidden';
+				action.name  = 'action';
+				action.value = 'cansakhara_reset_theme';
+				// Appended last, so PHP reads this `action`, not settings_fields()' `update`.
+				form.appendChild( action );
+				// The form has a field named `action`, which shadows form.action.
+				form.setAttribute( 'action', reset.getAttribute( 'data-cs-reset-theme' ) );
+				form.noValidate = true;
+				HTMLFormElement.prototype.submit.call( form );
+			} );
+		}
 		document.querySelectorAll( '.bw-colorfield' ).forEach( function ( field ) {
 			var swatch = field.querySelector( '.bw-colorfield__swatch' );
 			var hex    = field.querySelector( '.bw-colorfield__hex input' );
@@ -267,7 +272,7 @@ function cansakhara_render_theme_tab() {
 				} );
 			} );
 		} );
-	}() );
+	} );
 	</script>
 	<?php
 }
