@@ -132,8 +132,9 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 	</section>
 
 	<section id="welcome" class="welcome-section relative bg-home-1">
-		<?php cansakhara_section_line( 'welcome-line-top relative z-10 -mt-14 md:-mt-20' ); ?>
-		<div class="welcome-inner px-6 pb-24 pt-16 md:px-16 md:pb-40">
+		<?php cansakhara_section_line( 'welcome-line-top relative z-10 -mt-[53px] md:-mt-20' ); ?>
+		<?php // Mobile: 40px from the divider to the heading, 40px from the stats to the next divider (Figma 5:386). ?>
+		<div class="welcome-inner px-6 pb-10 pt-10 md:px-16 md:pb-40 md:pt-16">
 			<?php
 			cansakhara_section_heading(
 				array(
@@ -193,13 +194,13 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 				</div>
 			</div>
 		</div>
-		<?php cansakhara_section_line( 'welcome-line-bottom relative z-10 -mb-14 md:-mb-20' ); ?>
+		<?php cansakhara_section_line( 'welcome-line-bottom relative z-10 -mb-[53px] md:-mb-20' ); ?>
 	</section>
 
 	<?php cansakhara_part( 'experience-carousel' ); ?>
 
 	<section id="discover" class="discover-section relative bg-home-1">
-		<?php cansakhara_section_line( 'discover-line-top relative z-10 -mt-14 md:-mt-20' ); ?>
+		<?php cansakhara_section_line( 'discover-line-top relative z-10 -mt-[53px] md:-mt-20' ); ?>
 		<div class="discover-inner px-6 pb-[49px] pt-10 md:px-16 md:pb-0 md:pt-24">
 			<h2 class="discover-title cs-h3 text-center">
 				Discover
@@ -222,10 +223,11 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 				</article>
 			</div>
 		</div>
-		<?php cansakhara_section_line( 'discover-line-bottom relative z-10 -mb-14 md:-mb-20' ); ?>
+		<?php cansakhara_section_line( 'discover-line-bottom relative z-10 -mb-[53px] md:-mb-20' ); ?>
 	</section>
 
-	<section class="video-section relative flex h-[430px] items-center justify-center md:h-[600px]">
+	<?php // Mobile video band is 300px tall with an 80px play button (Figma 5:387 / 5:535). ?>
+	<section class="video-section relative flex h-[300px] items-center justify-center md:h-[600px]">
 		<img
 			src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/video-cover.png' ); ?>"
 			alt="Panoramic view from Can Sakhara over Ibiza"
@@ -236,7 +238,7 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 		<button
 			type="button"
 			aria-label="Play Can Sakhara film"
-			class="relative size-24 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:size-[170px]"
+			class="relative size-20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:size-[170px]"
 		>
 			<img
 				src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/play.svg' ); ?>"

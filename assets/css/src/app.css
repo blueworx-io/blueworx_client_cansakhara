@@ -867,32 +867,67 @@ html.motion-ready [data-anim="draw-icon"] path {
     backdrop-filter: blur(2px);
   }
 
+  /* Home mobile frame (Figma 5:386): every section's content sits in a 352px
+     column at x=25. Vertical values below are the frame's own gaps; the type
+     inside keeps the role tokens. */
   .welcome-inner,
   .experience-card-inner,
   .discover-inner {
-    width: 340px;
+    width: 352px;
     margin-inline: auto;
     padding-inline: 0;
   }
 
-  .map-frame {
-    width: 340px;
-    height: 275px;
+  /* Map 181×146 (5:423), 30px below the heading; copy 30px below the map. */
+  .welcome-content {
+    margin-top: 30px;
+    gap: 30px;
   }
 
-  .experience-image {
-    width: 340px;
-    height: 262px;
+  .map-frame {
+    width: 181px;
+    height: 146px;
+  }
+
+  /* Intro copy is a 300px column with one blank line (11px × 1.6) between
+     paragraphs; the Enquire button is 97×35, 50px below the copy (5:426). */
+  .welcome-copy,
+  .experience-copy {
+    width: 300px;
     margin-inline: auto;
   }
 
-  .experience-copy {
-    width: 340px;
+  .welcome-copy p:not(:first-child),
+  .experience-copy p:not(:first-child) {
+    margin-top: 18px;
+  }
+
+  .welcome-copy .outline-button {
+    width: 97px;
+    height: 35px;
+    margin-top: 50px;
+    padding-inline: 0;
+  }
+
+  /* Stats block 52px below the Enquire button (5:430). */
+  .features-block {
+    margin-top: 52px;
+  }
+
+  /* Experience image 352×244, 37px below the heading; copy 38px below (5:466). */
+  .experience-layout {
+    margin-top: 37px;
+    gap: 38px;
+  }
+
+  .experience-image {
+    width: 352px;
+    height: 244px;
     margin-inline: auto;
   }
 
   .discover-grid {
-    width: 340px;
+    width: 352px;
     gap: 30px;
   }
 
@@ -916,9 +951,7 @@ html.motion-ready [data-anim="draw-icon"] path {
   .welcome-inner,
   .experience-card-inner,
   .discover-inner,
-  .map-frame,
   .experience-image,
-  .experience-copy,
   .discover-grid {
     width: 320px;
   }

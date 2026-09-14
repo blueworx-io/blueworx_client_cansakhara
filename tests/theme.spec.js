@@ -147,3 +147,19 @@ test('the footer and popups paint with palette swatches', async ({ page }) => {
   await page.evaluate(() => document.documentElement.style.setProperty('--cs-color-day-2', '#00ff00'));
   expect(await footer.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(0, 255, 0)');
 });
+
+// Full-page heights at 402px must match the Figma mobile frames (5:386 /
+// 5:583 / 5:717). The frames are 874px tall at the hero, status bar included,
+// so at an 874px viewport the 100svh hero equals the frame hero by construction.
+const FIGMA_MOBILE_HEIGHTS = { '/home/': 4554, '/by-day/': 3308, '/by-night/': 3332 };
+
+for (const [route, height] of Object.entries(FIGMA_MOBILE_HEIGHTS)) {
+  test(`${route} lays out to the Figma mobile height`, async ({ page }) => {
+    await page.setViewportSize({ width: 402, height: 874 });
+    await page.goto(route, { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+    await page.addStyleTag({ content: 'html, body, .site-shell { height: auto !important; max-height: none !important; overflow: visible !important; }' });
+    const total = await page.evaluate(() => document.documentElement.scrollHeight);
+    expect(Math.abs(total - height)).toBeLessThanOrEqual(8);
+  });
+}

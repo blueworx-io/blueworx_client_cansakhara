@@ -108,7 +108,7 @@ $cansakhara_index = 1;
 	data-cansakhara-carousel="experience"
 	aria-roledescription="carousel"
 	aria-label="Experience Can Sakhara"
-	class="experience-section relative overflow-hidden bg-home-4 py-28 md:py-0"
+	class="experience-section relative overflow-hidden bg-home-4 pb-[92px] pt-[83px] md:py-0"
 >
 	<div
 		role="group"

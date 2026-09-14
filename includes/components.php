@@ -87,7 +87,8 @@ function cansakhara_secondary_button( $label, $href, $hover_class, $class = '', 
  * @return void
  */
 function cansakhara_section_line( $class = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
-	$classes = 'section-line mx-auto block h-28 w-px bg-home-2 md:h-40 md:w-[2px] ' . $class;
+	// Mobile: 106px tall (Figma 5:418), straddling the section edge 53/53 through the caller's -mt-[53px] / -mb-[53px].
+	$classes = 'section-line mx-auto block h-[106px] w-px bg-home-2 md:h-40 md:w-[2px] ' . $class;
 	?>
 	<span aria-hidden="true" class="<?php echo esc_attr( trim( $classes ) ); ?>"></span>
 	<?php
@@ -127,8 +128,8 @@ function cansakhara_section_heading( $args ) {
 	?>
 	<header class="<?php echo esc_attr( trim( $classes ) ); ?>">
 		<p class="section-eyebrow cs-h3"><?php echo esc_html( $eyebrow ); ?></p>
-		<h2 class="section-title <?php echo esc_attr( $role ); ?> mx-auto mt-9 max-w-full break-words"><?php echo $title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></h2>
-		<p class="section-subtitle cs-h4 mx-auto mt-8 max-w-[calc(100vw-3rem)] break-words md:mt-10 md:max-w-4xl"><?php echo $subtitle; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></p>
+		<h2 class="section-title <?php echo esc_attr( $role ); ?> mx-auto mt-[25px] max-w-full break-words md:mt-9"><?php echo $title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></h2>
+		<p class="section-subtitle cs-h4 mx-auto mt-[25px] max-w-[calc(100vw-3rem)] break-words md:mt-10 md:max-w-4xl"><?php echo $subtitle; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted markup, see docblock. ?></p>
 	</header>
 	<?php
 }
