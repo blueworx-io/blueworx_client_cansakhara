@@ -5,6 +5,23 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-09-14
+
+### Added
+
+- The site's fonts now come from the client's Adobe Fonts kit: Neulis Sans
+  for headings, the wordmark and buttons, with Source Sans 3 and Source
+  Serif 4 for text. The bundled Montserrat and Source font files are gone.
+
+### Changed
+
+- The enquiry popup now reads "Our team will assist you with availability and
+  pricing for rentals, weddings, brand events and film/photoshoots".
+
+### Fixed
+
+- A theme's own "Skip to the content" link no longer shows above the page.
+
 ## [0.3.2] - 2026-09-14
 
 ### Changed

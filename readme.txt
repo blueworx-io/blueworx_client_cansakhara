@@ -4,7 +4,7 @@ Tags: marketing, landing page, villa, real estate, ibiza
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.3.2
+Stable tag: 0.4.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,12 @@ nothing is deleted. Uninstalling removes only the plugin's own settings, not
 the pages themselves.
 
 == Changelog ==
+
+= 0.4.0 =
+* Fonts now come from the client's Adobe Fonts kit — Neulis Sans for headings
+  and buttons, Source Sans 3 and Source Serif 4 for text.
+* New enquiry popup wording.
+* A theme's own "Skip to the content" link no longer shows above the page.
 
 = 0.3.2 =
 * The plugin is listed as "BlueWorx Clients | Can Sakhara" on the Plugins
