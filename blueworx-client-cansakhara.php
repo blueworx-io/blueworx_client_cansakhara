@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BlueWorx Clients | Can Sakhara
  * Description: The Can Sakhara marketing site, as a self-contained WordPress plugin.
- * Version: 0.4.0
+ * Version: 0.5.0
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author: BlueWorx
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CANSAKHARA_VERSION', '0.4.0' );
+define( 'CANSAKHARA_VERSION', '0.5.0' );
 define( 'CANSAKHARA_SLUG', 'blueworx-client-cansakhara' );
 // The client's Adobe Fonts project — see cansakhara_enqueue_assets().
 define( 'CANSAKHARA_ADOBE_FONTS_KIT', 'qij3qvf' );
