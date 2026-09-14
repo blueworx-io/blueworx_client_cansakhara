@@ -27,20 +27,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Per-page drawer panel colour (Figma: home 1:979, day 1:1273, night 1:1373).
-$cansakhara_panel_colors = array(
-	'home'  => '#422833',
-	'day'   => '#ac9a8c',
-	'night' => '#031927',
+// Per-page panel swatch (Figma: home 1:979, day 1:1273, night 1:1373). The
+// header paints it as a CSS variable so the scroll script can set it inline;
+// the drawer takes the matching utilities. Class names are spelled out in
+// full so Tailwind finds them when it scans this file.
+$cansakhara_panels = array(
+	'home'  => array(
+		'color' => 'var(--cs-color-home-3)',
+		'bg'    => 'bg-home-3',
+		'hover' => 'hover:text-home-3',
+	),
+	'day'   => array(
+		'color' => 'var(--cs-color-day-1)',
+		'bg'    => 'bg-day-1',
+		'hover' => 'hover:text-day-1',
+	),
+	'night' => array(
+		'color' => 'var(--cs-color-night-1)',
+		'bg'    => 'bg-night-1',
+		'hover' => 'hover:text-night-1',
+	),
 );
 
 $cansakhara_theme = isset( $args['theme'] ) ? (string) $args['theme'] : 'home';
 
-if ( ! isset( $cansakhara_panel_colors[ $cansakhara_theme ] ) ) {
+if ( ! isset( $cansakhara_panels[ $cansakhara_theme ] ) ) {
 	$cansakhara_theme = 'home';
 }
 
-$cansakhara_panel_color = $cansakhara_panel_colors[ $cansakhara_theme ];
+$cansakhara_panel       = $cansakhara_panels[ $cansakhara_theme ];
+$cansakhara_panel_color = $cansakhara_panel['color'];
 
 // solid = scrolled || theme !== "home"; scrolled starts false server-side.
 $cansakhara_solid = ( 'home' !== $cansakhara_theme );
@@ -48,7 +64,7 @@ $cansakhara_solid = ( 'home' !== $cansakhara_theme );
 $cansakhara_solid_class  = $cansakhara_solid ? '' : 'bg-white/5 backdrop-blur-[3px]';
 $cansakhara_hidden_class = 'translate-y-0';
 
-$cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center px-5 text-white transition-[translate,background-color] duration-500 ease-out md:h-[120px] md:px-20 {$cansakhara_solid_class} {$cansakhara_hidden_class}";
+$cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center px-5 text-home-1 transition-[translate,background-color] duration-500 ease-out md:h-[120px] md:px-20 {$cansakhara_solid_class} {$cansakhara_hidden_class}";
 ?>
 <nav
 	<?php if ( $cansakhara_solid ) : ?>
@@ -65,7 +81,7 @@ $cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center
 			aria-haspopup="dialog"
 			aria-expanded="false"
 			aria-controls="site-menu"
-			class="flex items-center gap-6 justify-self-start font-display text-[10px] uppercase tracking-[4px] md:text-[14px] md:tracking-[5.6px]"
+			class="cs-label flex items-center gap-6 justify-self-start"
 		>
 			<span aria-hidden="true" class="flex w-7 flex-col gap-2 md:w-12">
 				<span class="h-[2px] w-full bg-current"></span>
@@ -104,7 +120,7 @@ $cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center
 				aria-haspopup="dialog"
 				aria-expanded="false"
 				aria-controls="cansakhara-popup-enquire"
-				class="inline-flex items-center justify-center whitespace-nowrap border border-current px-4 py-[10px] font-display text-[10px] uppercase tracking-[4px] transition-colors duration-200 hover:bg-white hover:text-[#42081a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 md:text-[14px] md:tracking-[5.6px]"
+				class="cs-label inline-flex items-center justify-center whitespace-nowrap border border-current px-4 py-[10px] transition-colors duration-200 hover:bg-home-1 hover:text-home-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4"
 			>
 				Enquire
 			</button>
@@ -112,5 +128,5 @@ $cansakhara_nav_classes = "fixed inset-x-0 top-0 z-30 flex h-[90px] items-center
 	</div>
 </nav>
 <?php
-cansakhara_part( 'menu-drawer', array( 'panel_color' => $cansakhara_panel_color ) );
+cansakhara_part( 'menu-drawer', array( 'panel' => $cansakhara_panel ) );
 cansakhara_part( 'popups' );

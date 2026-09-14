@@ -5,7 +5,7 @@
  * No `next/image` in the source is marked `priority`, so every image on this
  * page — including the above-the-fold hero wordmark — gets `loading="lazy"`,
  * matching next/image's own default (the source's `SecondaryButton`'s hover
- * colour, `hover:text-[#031927]`, is passed as `cansakhara_secondary_button()`'s
+ * colour, `hover:text-night-1`, is passed as `cansakhara_secondary_button()`'s
  * required `$hover_class` argument).
  *
  * Gallery: the source's `GalleryCarousel` wrapper duplicates the 3 designed
@@ -40,14 +40,14 @@ $cansakhara_gallery_alts   = array_merge( $cansakhara_gallery_alts, $cansakhara_
 cansakhara_document_open( array( 'theme' => 'night' ) );
 cansakhara_part( 'header', array( 'theme' => 'night' ) );
 ?>
-<main id="content" class="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-[#000e16] text-white">
+<main id="content" class="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-night-2 text-home-1">
 	<?php // Hero — flat By Night navy, transparent navbar over it. ?>
-	<section class="relative flex h-[100svh] w-full flex-col items-center justify-center bg-[#031927]">
+	<section class="relative flex h-[100svh] w-full flex-col items-center justify-center bg-night-1">
 		<span
 			aria-hidden="true"
 			data-anim="hero-rule"
 			data-hero-rule
-			class="absolute inset-x-0 top-[118px] mx-auto h-px w-[362px] bg-white md:top-[131px] md:w-[1280px]"
+			class="absolute inset-x-0 top-[118px] mx-auto h-px w-[362px] bg-home-1 md:top-[131px] md:w-[1280px]"
 		></span>
 
 		<div class="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[60px]">
@@ -55,7 +55,7 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 			<h1
 				data-anim="hero-title"
 				data-hero-hide
-				class="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[17px] md:text-[56px] md:tracking-[28px] md:indent-[28px]"
+				class="cs-h1 text-home-1 indent-[var(--cs-h1-ls)]"
 			>
 				By Night
 			</h1>
@@ -78,7 +78,7 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 	?>
 	<section
 		data-anim="clip-image"
-		class="relative mt-[2px] h-[300px] w-full border-y-2 border-white md:mt-0 md:h-[531px]"
+		class="relative mt-[2px] h-[300px] w-full border-y-2 border-home-1 md:mt-0 md:h-[531px]"
 	>
 		<img
 			src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/bynight-1.png' ); ?>"
@@ -89,22 +89,22 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 	</section>
 
 	<?php // Glorious afterhours. ?>
-	<section class="flex h-[588px] w-full flex-col items-center bg-[#000e16] px-5 pt-[60px] md:h-[736px] md:px-0 md:pt-[116px]">
+	<section class="flex h-[588px] w-full flex-col items-center bg-night-2 px-5 pt-[60px] md:h-[736px] md:px-0 md:pt-[116px]">
 		<div class="flex w-full flex-col items-center gap-[25px] md:w-[1064px] md:gap-[50px]">
 			<div
 				data-anim="block-heading"
-				class="text-center font-display text-[30px] uppercase leading-none text-white md:text-[48px]"
+				class="cs-h2 text-center text-home-1"
 			>
-				<p class="font-thin tracking-[6px] indent-[3px] md:tracking-[3.2px] md:indent-[1.6px]">
+				<p class="cs-hairline block">
 					Glorious
 				</p>
-				<p class="font-light tracking-[6px] indent-[3px] md:tracking-[9.6px] md:indent-[4.8px]">
+				<p class="block">
 					Afterhours
 				</p>
 			</div>
 			<p
 				data-anim="block-subtitle"
-				class="w-[322px] text-center font-serif text-[15px] font-light italic leading-[1.8] tracking-[1.5px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+				class="cs-h4 w-[322px] text-center text-home-1 md:w-[1064px]"
 			>
 				As the sun sets over the island,
 				<br />
@@ -112,7 +112,7 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 			</p>
 			<div
 				data-anim="block-copy"
-				class="flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center font-body text-[11px] font-light leading-[1.6] tracking-[0.55px] text-white md:w-auto md:max-w-none md:flex-row md:items-start md:justify-center md:gap-[19.5px] md:text-left md:text-[16px] md:tracking-[0.8px]"
+				class="cs-body flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center text-home-1 md:w-auto md:max-w-none md:flex-row md:items-start md:justify-center md:gap-[19.5px] md:text-left"
 			>
 				<p class="md:w-[380px] md:text-right">
 					The golden hour takes hold and Ibiza puts on a show. As daylight
@@ -167,23 +167,23 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 	</section>
 
 	<?php // Solace of slumber. ?>
-	<section class="flex h-[332px] w-full flex-col items-center bg-[#031927] px-5 pt-[60px] md:h-[580px] md:px-0 md:pt-[115px]">
+	<section class="flex h-[332px] w-full flex-col items-center bg-night-1 px-5 pt-[60px] md:h-[580px] md:px-0 md:pt-[115px]">
 		<div class="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[50px]">
 			<h2
 				data-anim="block-heading"
-				class="text-center font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] text-white indent-[2.4px] md:text-[34px] md:leading-[1.4] md:tracking-[6.8px] md:indent-[3.4px]"
+				class="cs-h2 text-center text-home-1"
 			>
 				Solace of Slumber
 			</h2>
 			<p
 				data-anim="block-subtitle"
-				class="w-[312px] text-center font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+				class="cs-h4 w-[312px] text-center text-home-1 md:w-[1064px]"
 			>
 				Whether retreating to the Primary Suite or one of seven individually
 				designed guest rooms, each offers a private sanctuary where the day
 				dissolves into deep, restorative rest.
 			</p>
-			<?php cansakhara_secondary_button( 'Enquire', 'mailto:reservations@cansakhara.com', 'hover:text-[#031927]', '', 'block-button' ); ?>
+			<?php cansakhara_secondary_button( 'Enquire', 'mailto:reservations@cansakhara.com', 'hover:text-night-1', '', 'block-button' ); ?>
 		</div>
 	</section>
 
@@ -193,7 +193,7 @@ cansakhara_part( 'header', array( 'theme' => 'night' ) );
 	?>
 	<section
 		data-anim="clip-image"
-		class="relative mt-[2px] h-[266px] w-full border-y-2 border-white md:h-[663px]"
+		class="relative mt-[2px] h-[266px] w-full border-y-2 border-home-1 md:h-[663px]"
 	>
 		<img
 			src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/bynight-2.png' ); ?>"

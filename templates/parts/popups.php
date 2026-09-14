@@ -34,18 +34,21 @@ $cansakhara_logged_in   = is_user_logged_in();
 // synchronously on open, so popups.js can focus and Tab-trap into the panel
 // immediately, but only flip to `hidden` after the fade-out finishes on
 // close), which a single `transition-*` utility can't express.
-$cansakhara_panel_base  = 'cansakhara-popup fixed inset-0 z-[60] overflow-y-auto bg-[#5b0a00] text-white';
+$cansakhara_panel_base  = 'cansakhara-popup fixed inset-0 z-[60] overflow-y-auto bg-home-5 text-home-1';
 $cansakhara_panel_class = $cansakhara_panel_base . ' opacity-0 invisible pointer-events-none';
 $cansakhara_login_class = $cansakhara_login_open ? $cansakhara_panel_base . ' opacity-100 visible' : $cansakhara_panel_class;
-$cansakhara_close_class = 'absolute right-[20px] top-[19px] grid size-[33px] place-items-center border border-white transition-colors duration-200 hover:bg-white hover:text-[#5b0a00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:right-[50px] md:top-[46px] md:size-[52px]';
+$cansakhara_close_class = 'absolute right-[20px] top-[19px] grid size-[33px] place-items-center border border-home-1 transition-colors duration-200 hover:bg-home-1 hover:text-home-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:right-[50px] md:top-[46px] md:size-[52px]';
 // Vertically centred as one block (symmetric padding, so the centre is the
 // true centre), with the padding clearing the close button. The mark keeps
 // a fixed distance below the form rather than pinning to the bottom, so a
 // tall viewport never splits the content top and bottom.
 $cansakhara_inner_class = 'flex min-h-full w-full flex-col items-center justify-center px-5 py-[80px] md:py-[110px]';
-$cansakhara_title_class = 'font-display text-[24px] font-thin uppercase leading-none tracking-[9.6px] indent-[9.6px] outline-none md:text-[32px] md:tracking-[12.8px] md:indent-[12.8px]';
-$cansakhara_intro_class = 'mt-[30px] w-full max-w-[443px] text-center font-serif text-[13px] font-light italic leading-[1.4] tracking-[1.3px] md:mt-[43px] md:text-[14px] md:tracking-[1.4px]';
-$cansakhara_field_class = 'cansakhara-popup-field w-full bg-[#490500] px-8 py-4 text-center font-body text-[16px] font-light leading-[1.4] tracking-[0.8px] text-white placeholder:text-white focus:outline focus:outline-2 focus:outline-white/60';
+$cansakhara_title_class = 'cs-h1 text-home-1 indent-[var(--cs-h1-ls)] outline-none';
+// The intro is the H4 family, italic and weight, but Figma 1:67 / 1:109 draw
+// it at 13px / 14px with 1.3px / 1.4px tracking, half the role, so those stay.
+$cansakhara_intro_class = 'cs-h4 mt-[30px] w-full max-w-[443px] text-center text-[13px] leading-[1.4] tracking-[1.3px] md:mt-[43px] md:text-[14px] md:tracking-[1.4px]';
+// Field fill and size floor live on .cansakhara-popup-field in app.css.
+$cansakhara_field_class = 'cansakhara-popup-field cs-body w-full px-8 py-4 text-center text-home-1 placeholder:text-home-1 focus:outline focus:outline-2 focus:outline-home-1/60';
 $cansakhara_mark_class  = 'h-[50px] w-[150px]';
 ?>
 <div
@@ -105,13 +108,13 @@ $cansakhara_mark_class  = 'h-[50px] w-[150px]';
 				data-cansakhara-login-error
 				role="alert"
 				<?php echo '' === $cansakhara_login_error ? 'hidden' : ''; ?>
-				class="text-center font-body text-[12px] tracking-[0.6px] text-white"
+				class="cs-small text-center text-home-1"
 			><?php echo esc_html( $cansakhara_login_error ); ?></p>
 
 			<button
 				type="button"
 				data-cansakhara-popup-open="enquire"
-				class="mx-auto mt-[20px] font-display text-[12px] uppercase tracking-[1.2px] indent-[1.2px] underline underline-offset-4 transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+				class="cs-label mx-auto mt-[20px] underline underline-offset-4 transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
 			>
 				Request private access password
 			</button>

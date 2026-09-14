@@ -43,7 +43,7 @@ function cansakhara_enquiry_form() {
 		<?php esc_html_e( 'Email us', 'blueworx-client-cansakhara' ); ?>
 	</a>
 	<?php if ( current_user_can( 'manage_options' ) ) : ?>
-	<p data-cansakhara-enquiry-hint class="mt-[20px] text-center font-body text-[12px] tracking-[0.6px] text-white/80">
+	<p data-cansakhara-enquiry-hint class="cs-small mt-[20px] text-center text-home-1/80">
 		<?php
 		printf(
 			/* translators: %s: link to the settings screen. */

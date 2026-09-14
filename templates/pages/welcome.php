@@ -17,7 +17,7 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 ?>
 <main
 	id="content"
-	class="site-shell relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[#5b0a00] bg-cover bg-center text-white"
+	class="site-shell relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-home-5 bg-cover bg-center text-home-1"
 	style="background-image: url('<?php echo esc_url( CANSAKHARA_URL . 'assets/img/welcome-bg.jpg' ); ?>')"
 >
 	<?php
@@ -52,7 +52,8 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 			height="29"
 			class="h-auto w-[240px] md:w-[379px]"
 		/>
-		<p class="font-display text-[14px] uppercase leading-none tracking-[16px] indent-[16px] text-[#bf2c08] md:text-[22px] md:tracking-[33px] md:indent-[33px]">
+		<?php // IBIZA takes the H3 role but keeps its own wide tracking: Figma 1:30 sets 16px on mobile and 33px on desktop, far beyond the role. ?>
+		<p class="cs-h3 text-home-6 tracking-[16px] indent-[16px] md:tracking-[33px] md:indent-[33px]">
 			Ibiza
 		</p>
 	</div>
@@ -64,7 +65,7 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 			aria-haspopup="dialog"
 			aria-expanded="false"
 			aria-controls="cansakhara-popup-login"
-			class="font-display text-[14px] font-light uppercase leading-none tracking-[6px] indent-[6px] text-white transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:text-[18px] md:tracking-[8.1px] md:indent-[8.1px]"
+			class="cs-label text-home-1 transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
 		>
 			Login
 		</button>
@@ -74,7 +75,7 @@ cansakhara_document_open( array( 'theme' => 'welcome' ) );
 			aria-haspopup="dialog"
 			aria-expanded="false"
 			aria-controls="cansakhara-popup-enquire"
-			class="font-display text-[14px] font-thin uppercase leading-none tracking-[6px] indent-[6px] text-white transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:text-[18px] md:tracking-[8.1px] md:indent-[8.1px]"
+			class="cs-label text-home-1 transition-opacity duration-200 hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
 		>
 			Enquire
 		</button>

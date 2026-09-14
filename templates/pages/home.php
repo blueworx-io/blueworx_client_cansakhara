@@ -101,7 +101,7 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 		/>
 		<div class="absolute inset-0 bg-black/20"></div>
 
-		<div class="hero-content relative z-10 flex flex-col items-center px-5 text-center text-white max-[795px]:h-full max-[795px]:w-full max-[795px]:justify-center">
+		<div class="hero-content relative z-10 flex flex-col items-center px-5 text-center text-home-1 max-[795px]:h-full max-[795px]:w-full max-[795px]:justify-center">
 			<h1 class="sr-only">Can Sakhara</h1>
 			<img
 				src="<?php echo esc_url( CANSAKHARA_URL . 'assets/img/hero-wordmark.svg' ); ?>"
@@ -116,14 +116,14 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 				<a
 					href="<?php echo esc_url( cansakhara_page_url( 'by-day' ) ); ?>"
 					data-hero-hide
-					class="hero-choice cs-label flex h-[54px] w-40 items-center justify-center border border-white bg-day-1 px-5 transition-colors hover:bg-white hover:text-home-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+					class="hero-choice cs-label flex h-[54px] w-40 items-center justify-center border border-home-1 bg-day-1 px-5 transition-colors hover:bg-home-1 hover:text-home-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
 				>
 					By day
 				</a>
 				<a
 					href="<?php echo esc_url( cansakhara_page_url( 'by-night' ) ); ?>"
 					data-hero-hide
-					class="hero-choice cs-label flex h-[54px] w-40 items-center justify-center border border-white bg-night-1 px-5 transition-colors hover:bg-white hover:text-night-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+					class="hero-choice cs-label flex h-[54px] w-40 items-center justify-center border border-home-1 bg-night-1 px-5 transition-colors hover:bg-home-1 hover:text-night-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
 				>
 					By night
 				</a>
@@ -184,7 +184,7 @@ cansakhara_part( 'header', array( 'theme' => 'home' ) );
 							<span class="font-body text-[13px] font-normal leading-none tracking-[0.05em] md:text-[22px]"><?php echo esc_html( $cansakhara_feature['value'] ); ?></span>
 							<?php // The unit fits no role either: Figma 5:986 (desktop, 11px light) / 5:462 (mobile, 6.5px light). ?>
 							<?php if ( ! empty( $cansakhara_feature['unit'] ) ) : ?>
-							<span class="mt-0.5 font-body text-[6.5px] font-light leading-none tracking-[0.05em] md:mt-1 md:text-[11px]"><?php echo esc_html( $cansakhara_feature['unit'] ); ?></span>
+							<span class="mt-0.5 font-body text-[6.5px] font-light leading-none tracking-[0.05em] md:mt-1 md:text-[11px] md:tracking-[1.1px]"><?php echo esc_html( $cansakhara_feature['unit'] ); ?></span>
 							<?php endif; ?>
 						</div>
 						<p class="cs-small mt-[14px] uppercase md:mt-[18px]"><?php echo esc_html( $cansakhara_feature['label'] ); ?></p>

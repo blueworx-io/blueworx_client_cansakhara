@@ -89,3 +89,51 @@ test('colours come from the palette variables', async ({ page }) => {
   const recoloured = await page.locator('.discover-card').first().evaluate((el) => getComputedStyle(el).backgroundColor);
   expect(recoloured).toBe('rgb(255, 0, 0)');
 });
+
+for (const route of ['/by-day/', '/by-night/']) {
+  test(`${route} type follows the roles at both sizes`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(route);
+    await page.evaluate(() => document.fonts.ready);
+    expect(await fontOf(page, 'main h1')).toMatchObject({ family: 'neulis-sans', size: '48px', ls: '9.6px', weight: '300' });
+    expect(await fontOf(page, '[data-anim="block-heading"] .cs-hairline')).toMatchObject({ family: 'neulis-sans-hairline', weight: '100' });
+    expect(await fontOf(page, '[data-anim="block-subtitle"]')).toMatchObject({ family: 'source-serif-4-variable', size: '28px', ls: '2.8px' });
+    expect(await fontOf(page, '[data-anim="block-copy"] p')).toMatchObject({ family: 'source-sans-3', size: '16px', weight: '300', ls: '0.8px' });
+    expect(await fontOf(page, 'footer p')).toMatchObject({ family: 'neulis-sans', size: '14px', ls: '2.8px' });
+    await page.setViewportSize({ width: 402, height: 900 });
+    await page.reload();
+    await page.evaluate(() => document.fonts.ready);
+    expect(await fontOf(page, 'main h1')).toMatchObject({ size: '30px', ls: '6px' });
+    expect(await fontOf(page, '[data-anim="block-subtitle"]')).toMatchObject({ size: '13px', ls: '1.3px' });
+    expect(await fontOf(page, '[data-anim="block-copy"] p')).toMatchObject({ size: '11px', ls: '0.55px' });
+    expect(await fontOf(page, 'footer p')).toMatchObject({ size: '8px', ls: '1.6px' });
+  });
+}
+
+test('header MENU and popup links use the label role', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/home/');
+  await page.evaluate(() => document.fonts.ready);
+  expect(await fontOf(page, '[data-cansakhara-menu-open]')).toMatchObject({ family: 'neulis-sans', size: '14px', ls: '5.6px' });
+  expect(await fontOf(page, '[data-cansakhara-header] [data-cansakhara-popup-open]')).toMatchObject({ family: 'neulis-sans', size: '14px', ls: '5.6px' });
+  expect(await fontOf(page, '#cansakhara-popup-login-title')).toMatchObject({ family: 'neulis-sans', size: '48px', ls: '9.6px', weight: '300' });
+  await page.setViewportSize({ width: 402, height: 900 });
+  await page.reload();
+  await page.evaluate(() => document.fonts.ready);
+  expect(await fontOf(page, '[data-cansakhara-menu-open]')).toMatchObject({ size: '10px', ls: '4px' });
+  expect(await fontOf(page, '#cansakhara-popup-login-title')).toMatchObject({ size: '30px', ls: '6px' });
+});
+
+test('the footer and popups paint with palette swatches', async ({ page }) => {
+  await page.goto('/by-day/');
+  // day-2 (#918074) via bg-day-2, no inline style.
+  const footer = page.locator('footer');
+  expect(await footer.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(145, 128, 116)');
+  expect(await footer.getAttribute('style')).toBeNull();
+  // home-5 (#5b0a00) on the popup panel.
+  const popup = await page.locator('[data-cansakhara-popup="login"]').evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(popup).toBe('rgb(91, 10, 0)');
+  // Overriding the swatch recolours the footer.
+  await page.evaluate(() => document.documentElement.style.setProperty('--cs-color-day-2', '#00ff00'));
+  expect(await footer.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(0, 255, 0)');
+});

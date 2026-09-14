@@ -5,7 +5,7 @@
  * No `next/image` in the source is marked `priority`, so every image on this
  * page — including the above-the-fold hero wordmark — gets `loading="lazy"`,
  * matching next/image's own default (the source's `SecondaryButton`'s hover
- * colour, `hover:text-[#ac9a8c]`, is passed as `cansakhara_secondary_button()`'s
+ * colour, `hover:text-day-1`, is passed as `cansakhara_secondary_button()`'s
  * required `$hover_class` argument).
  *
  * Gallery: the source's `GalleryCarousel` wrapper duplicates the 3 designed
@@ -40,14 +40,14 @@ $cansakhara_gallery_alts   = array_merge( $cansakhara_gallery_alts, $cansakhara_
 cansakhara_document_open( array( 'theme' => 'day' ) );
 cansakhara_part( 'header', array( 'theme' => 'day' ) );
 ?>
-<main id="content" class="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-white text-white">
+<main id="content" class="site-shell h-[100dvh] overflow-x-hidden overflow-y-auto bg-home-1 text-home-1">
 	<?php // Hero — flat By Day taupe, transparent navbar over it. ?>
-	<section class="relative flex h-[100svh] w-full flex-col items-center justify-center bg-[#ac9a8c]">
+	<section class="relative flex h-[100svh] w-full flex-col items-center justify-center bg-day-1">
 		<span
 			aria-hidden="true"
 			data-anim="hero-rule"
 			data-hero-rule
-			class="absolute inset-x-0 top-[118px] mx-auto h-px w-[362px] bg-white md:top-[131px] md:w-[1280px]"
+			class="absolute inset-x-0 top-[118px] mx-auto h-px w-[362px] bg-home-1 md:top-[131px] md:w-[1280px]"
 		></span>
 
 		<div class="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[60px]">
@@ -55,7 +55,7 @@ cansakhara_part( 'header', array( 'theme' => 'day' ) );
 			<h1
 				data-anim="hero-title"
 				data-hero-hide
-				class="font-display text-[34px] font-light uppercase leading-[1.4] tracking-[17px] text-white indent-[17px] md:text-[56px] md:tracking-[28px] md:indent-[28px]"
+				class="cs-h1 text-home-1 indent-[var(--cs-h1-ls)]"
 			>
 				By Day
 			</h1>
@@ -89,22 +89,22 @@ cansakhara_part( 'header', array( 'theme' => 'day' ) );
 	// Sun-drenched serenity — desktop is framed top and bottom by a 2px
 	// white divider; mobile keeps the original layout, unchanged.
 	?>
-	<section class="flex h-[588px] w-full flex-col items-center bg-[#918074] px-5 pt-[60px] md:h-[736px] md:border-y-2 md:border-white md:px-0 md:pt-[116px]">
+	<section class="flex h-[588px] w-full flex-col items-center bg-day-2 px-5 pt-[60px] md:h-[736px] md:border-y-2 md:border-home-1 md:px-0 md:pt-[116px]">
 		<div class="flex w-full flex-col items-center gap-[25px] md:w-[1064px] md:gap-[50px]">
 			<div
 				data-anim="block-heading"
-				class="text-center font-display text-[30px] uppercase leading-none text-white md:text-[48px]"
+				class="cs-h2 text-center text-home-1"
 			>
-				<p class="font-thin tracking-[6px] indent-[3px] md:tracking-[3.2px] md:indent-[1.6px]">
+				<p class="cs-hairline block">
 					Sun-Drenched
 				</p>
-				<p class="font-light tracking-[6px] indent-[3px] md:tracking-[9.6px] md:indent-[4.8px]">
+				<p class="block">
 					Serenity
 				</p>
 			</div>
 			<p
 				data-anim="block-subtitle"
-				class="w-[322px] text-center font-serif text-[15px] font-light italic leading-[1.8] tracking-[1.5px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+				class="cs-h4 w-[322px] text-center text-home-1 md:w-[1064px]"
 			>
 				A myriad of spaces, both inside and out,
 				<br />
@@ -112,7 +112,7 @@ cansakhara_part( 'header', array( 'theme' => 'day' ) );
 			</p>
 			<div
 				data-anim="block-copy"
-				class="flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center font-body text-[11px] font-light leading-[1.6] tracking-[0.55px] text-white md:w-[760px] md:max-w-none md:flex-row md:items-start md:gap-5 md:text-left md:text-[16px] md:tracking-[0.8px]"
+				class="cs-body flex w-full max-w-[312px] flex-col items-center gap-[18px] text-center text-home-1 md:w-[760px] md:max-w-none md:flex-row md:items-start md:gap-5 md:text-left"
 			>
 				<p class="md:w-[370px] md:text-right">
 					As morning light pours across the terraces, Can Sakhara reveals its
@@ -166,22 +166,22 @@ cansakhara_part( 'header', array( 'theme' => 'day' ) );
 	</section>
 
 	<?php // Balearic bliss. ?>
-	<section class="flex h-[308px] w-full flex-col items-center bg-[#ac9a8c] px-5 pt-[60px] md:h-[529px] md:px-0 md:pt-[115px]">
+	<section class="flex h-[308px] w-full flex-col items-center bg-day-1 px-5 pt-[60px] md:h-[529px] md:px-0 md:pt-[115px]">
 		<div class="flex w-full flex-col items-center gap-[30px] md:w-[1064px] md:gap-[50px]">
 			<h2
 				data-anim="block-heading"
-				class="text-center font-display text-[24px] font-light uppercase leading-none tracking-[4.8px] text-white indent-[2.4px] md:text-[34px] md:leading-[1.4] md:tracking-[6.8px] md:indent-[3.4px]"
+				class="cs-h2 text-center text-home-1"
 			>
 				Balearic Bliss
 			</h2>
 			<p
 				data-anim="block-subtitle"
-				class="w-[312px] text-center font-serif text-[13px] font-light italic leading-[1.8] tracking-[1.3px] text-white md:w-[1064px] md:text-[28px] md:tracking-[2.8px]"
+				class="cs-h4 w-[312px] text-center text-home-1 md:w-[1064px]"
 			>
 				Whether seeking quiet restoration or vibrant island living, every
 				moment unfolds with effortless ease beneath the Balearic sun.
 			</p>
-			<?php cansakhara_secondary_button( 'Enquire', 'mailto:reservations@cansakhara.com', 'hover:text-[#ac9a8c]', '', 'block-button' ); ?>
+			<?php cansakhara_secondary_button( 'Enquire', 'mailto:reservations@cansakhara.com', 'hover:text-day-1', '', 'block-button' ); ?>
 		</div>
 	</section>
 

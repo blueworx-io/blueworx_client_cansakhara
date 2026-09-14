@@ -46,7 +46,7 @@ function cansakhara_outline_button( $label, $href, $class = '', $anim = '' ) { /
  * src/app/by-day/page.tsx and src/app/by-night/page.tsx.
  *
  * The two source copies are identical except for the hover text colour:
- * by-day uses `hover:text-[#ac9a8c]`, by-night uses `hover:text-[#031927]`.
+ * by-day uses `hover:text-day-1`, by-night uses `hover:text-night-1`.
  * That single token is exposed here as a required `$hover_class` parameter
  * rather than folded into one hard-coded default, per the instruction to
  * keep any per-page difference as a parameter. This parameter is not in the
@@ -60,14 +60,14 @@ function cansakhara_outline_button( $label, $href, $class = '', $anim = '' ) { /
  * @param string $label       Button text.
  * @param string $href        Destination.
  * @param string $hover_class Required. Hover text-colour utility —
- *                             'hover:text-[#ac9a8c]' on by-day,
- *                             'hover:text-[#031927]' on by-night.
+ *                             'hover:text-day-1' on by-day,
+ *                             'hover:text-night-1' on by-night.
  * @param string $class       Extra classes appended to the base string.
  * @param string $anim        Optional data-anim value used by the motion layer.
  * @return void
  */
 function cansakhara_secondary_button( $label, $href, $hover_class, $class = '', $anim = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound -- $class is the exact parameter name required by the plugin's cross-task helper contract.
-	$classes = 'cs-label inline-flex items-center justify-center whitespace-nowrap border border-white px-4 py-[10px] text-white transition-colors hover:bg-white ' . $hover_class . ' focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 ' . $class;
+	$classes = 'cs-label inline-flex items-center justify-center whitespace-nowrap border border-home-1 px-4 py-[10px] text-home-1 transition-colors hover:bg-home-1 ' . $hover_class . ' focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:px-8 md:py-4 ' . $class;
 	?>
 	<a
 		href="<?php echo esc_url( $href ); ?>"

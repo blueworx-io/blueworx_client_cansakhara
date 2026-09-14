@@ -11,7 +11,8 @@
  * @package CanSakhara
  *
  * @var array $args {
- *     @type string $panel_color Drawer background colour for the current page theme.
+ *     @type array $panel Page-theme panel from header.php: 'bg' (background utility)
+ *                        and 'hover' (close-button hover text utility).
  * }
  */
 
@@ -19,7 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$cansakhara_panel_color = isset( $args['panel_color'] ) ? (string) $args['panel_color'] : '#422833';
+$cansakhara_panel_bg    = isset( $args['panel']['bg'] ) ? (string) $args['panel']['bg'] : 'bg-home-3';
+$cansakhara_panel_hover = isset( $args['panel']['hover'] ) ? (string) $args['panel']['hover'] : 'hover:text-home-3';
 
 // Drawer links — exact Figma order/labels. WordPress permalinks use trailing
 // slashes; the Next.js source did not.
@@ -50,8 +52,7 @@ $cansakhara_menu_links = array(
 	aria-modal="true"
 	aria-label="Menu"
 	aria-hidden="true"
-	style="background-color: <?php echo esc_attr( $cansakhara_panel_color ); ?>"
-	class="fixed inset-y-0 left-0 z-50 w-full text-white transition-[translate] duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] md:w-[450px] -translate-x-full"
+	class="<?php echo esc_attr( $cansakhara_panel_bg ); ?> fixed inset-y-0 left-0 z-50 w-full text-home-1 transition-[translate] duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] md:w-[450px] -translate-x-full"
 >
 	<button
 		type="button"
@@ -59,7 +60,7 @@ $cansakhara_menu_links = array(
 		aria-label="Close menu"
 		tabindex="-1"
 		style="transition-delay: 0ms"
-		class="absolute right-[20px] top-[19px] grid size-[33px] place-items-center border border-white transition-[opacity,translate,background-color,color] duration-500 ease-out hover:bg-white hover:text-[#422833] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:right-[50px] md:top-[46px] md:size-[52px] -translate-y-1 opacity-0"
+		class="<?php echo esc_attr( $cansakhara_panel_hover ); ?> absolute right-[20px] top-[19px] grid size-[33px] place-items-center border border-home-1 transition-[opacity,translate,background-color,color] duration-500 ease-out hover:bg-home-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:right-[50px] md:top-[46px] md:size-[52px] -translate-y-1 opacity-0"
 	>
 		<svg aria-hidden="true" viewBox="0 0 17 17" class="size-[17px] stroke-current" fill="none" stroke-width="1.3">
 			<path d="M1 1 16 16M16 1 1 16" />
@@ -67,8 +68,9 @@ $cansakhara_menu_links = array(
 	</button>
 
 	<div class="flex h-full flex-col items-center pt-[64px] pb-[64px] md:items-start md:pl-[50px] md:pt-[131px] md:pb-[131px]">
-		<span aria-hidden="true" class="h-px w-[362px] bg-white md:w-[350px]"></span>
+		<span aria-hidden="true" class="h-px w-[362px] bg-home-1 md:w-[350px]"></span>
 
+		<?php // Figma 5:1090 / 5:1376 / 5:1533: menu links are 16px light with 3.2px tracking and fit no role, so they keep fixed type; only their colours are swatches. ?>
 		<ul class="mt-[51px] flex w-[200px] flex-col items-end gap-[34.6px] text-right md:mt-[70px] md:w-auto md:items-start md:gap-[37.6px] md:text-left">
 			<?php foreach ( $cansakhara_menu_links as $cansakhara_link ) : ?>
 			<li>
@@ -76,7 +78,7 @@ $cansakhara_menu_links = array(
 					href="<?php echo esc_url( $cansakhara_link['href'] ); ?>"
 					tabindex="-1"
 					style="transition-delay: 0ms"
-					class="block font-display text-[16px] font-light uppercase leading-[1.4] tracking-[3.2px] text-white transition-[opacity,translate,color] duration-500 ease-out hover:text-white/70 md:text-[21px] md:tracking-[4.2px] translate-y-3 opacity-0"
+					class="block font-display text-[16px] font-light uppercase leading-[1.4] tracking-[3.2px] text-home-1 transition-[opacity,translate,color] duration-500 ease-out hover:text-home-1/70 md:text-[21px] md:tracking-[4.2px] translate-y-3 opacity-0"
 				>
 					<?php echo esc_html( $cansakhara_link['label'] ); ?>
 				</a>
@@ -88,13 +90,13 @@ $cansakhara_menu_links = array(
 					href="<?php echo esc_url( wp_logout_url( cansakhara_page_url( 'welcome' ) ) ); ?>"
 					tabindex="-1"
 					style="transition-delay: 0ms"
-					class="block font-display text-[16px] font-light uppercase leading-[1.4] tracking-[3.2px] text-white transition-[opacity,translate,color] duration-500 ease-out hover:text-white/70 md:text-[21px] md:tracking-[4.2px] translate-y-3 opacity-0"
+					class="block font-display text-[16px] font-light uppercase leading-[1.4] tracking-[3.2px] text-home-1 transition-[opacity,translate,color] duration-500 ease-out hover:text-home-1/70 md:text-[21px] md:tracking-[4.2px] translate-y-3 opacity-0"
 				>
 					Log out
 				</a>
 			</li>
 		</ul>
 
-		<span aria-hidden="true" class="mt-auto h-px w-[362px] bg-white md:w-[350px]"></span>
+		<span aria-hidden="true" class="mt-auto h-px w-[362px] bg-home-1 md:w-[350px]"></span>
 	</div>
 </aside>

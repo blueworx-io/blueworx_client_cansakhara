@@ -20,11 +20,16 @@
   --font-display: "neulis-sans";
   --font-body: "source-sans-3";
   --font-serif: "source-serif-4-variable";
+
+  /* Popup field fill (Figma 1:67 / 1:109 draw it #490500): the popup panel's
+     home-5 swatch darkened a fifth, so it follows the swatch when it changes. */
+  --cs-color-popup-field: color-mix(in srgb, var(--cs-color-home-5) 80%, black);
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #500d20;
+  /* Page ground and fallback text colour follow the home swatches. */
+  --background: var(--cs-color-home-1);
+  --foreground: var(--cs-color-home-2);
 }
 
 @theme inline {
@@ -107,7 +112,7 @@
     width: 100%;
     align-items: center;
     justify-content: center;
-    border: 1px solid #42071a;
+    border: 1px solid var(--cs-color-home-2);
     padding: 16px 32px;
     font-family: var(--font-display), sans-serif;
     font-size: var(--cs-label-size);
@@ -117,14 +122,21 @@
     /* Recentre the label: letter-spacing adds a trailing gap. */
     text-indent: var(--cs-label-ls);
     text-transform: uppercase;
-    color: #fff;
+    color: var(--cs-color-home-1);
     background: transparent;
     cursor: pointer;
     transition: background-color 200ms ease-out;
   }
-  .cansakhara-popup-submit:hover { background-color: #490500; }
-  .cansakhara-popup-submit:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+  .cansakhara-popup-submit:hover { background-color: var(--cs-color-popup-field); }
+  .cansakhara-popup-submit:focus-visible { outline: 2px solid var(--cs-color-home-1); outline-offset: 4px; }
   .cansakhara-popup-submit:disabled { opacity: .5; cursor: wait; }
+
+  /* Popup inputs (Figma 1:67 / 1:109). Type is the Body role, but never below
+     16px: iOS Safari zooms the page when a focused input is smaller. */
+  .cansakhara-popup-field {
+    background: var(--cs-color-popup-field);
+    font-size: max(16px, var(--cs-body-size));
+  }
 
   /* SureForms inside the Enquire popup, restyled to Figma 1:109. Verified
      against the installed 2.12.7 markup (its "Text"/"Email"/"Phone Number"
@@ -162,8 +174,8 @@
      padding + line-height alone (~54px) with no extra margin. */
   .cansakhara-popup .srfm-input-common {
     width: 100% !important;
-    background: #490500 !important;
-    color: #fff !important;
+    background: var(--cs-color-popup-field) !important;
+    color: var(--cs-color-home-1) !important;
     border: 0 !important;
     border-radius: 0 !important;
     padding: 16px 32px !important;
@@ -171,12 +183,12 @@
     height: auto !important;
     text-align: center !important;
     font-family: var(--font-body), sans-serif !important;
-    font-weight: 300 !important;
-    font-size: 16px !important;
-    line-height: 1.4 !important;
-    letter-spacing: .8px !important;
+    font-weight: var(--cs-body-weight) !important;
+    font-size: max(16px, var(--cs-body-size)) !important;
+    line-height: var(--cs-body-lh) !important;
+    letter-spacing: var(--cs-body-ls) !important;
   }
-  .cansakhara-popup .srfm-input-common::placeholder { color: #fff !important; opacity: 1 !important; }
+  .cansakhara-popup .srfm-input-common::placeholder { color: var(--cs-color-home-1) !important; opacity: 1 !important; }
   /* SureForms reserves a fixed 16px (--srfm-error-line-height) under every
      field for its error message even while that message is display:none —
      collapse it to the message's own content height so it only takes space
@@ -192,26 +204,26 @@
     height: auto !important;
     overflow: visible !important;
     clip: auto !important;
-    color: #fff !important;
+    color: var(--cs-color-home-1) !important;
     font-family: var(--font-body), sans-serif !important;
-    font-weight: 200 !important;
-    font-size: 12px !important;
-    letter-spacing: .6px !important;
+    font-weight: var(--cs-small-weight) !important;
+    font-size: var(--cs-small-size) !important;
+    letter-spacing: var(--cs-small-ls) !important;
   }
   .cansakhara-popup .srfm-gdpr-block .srfm-cbx .srfm-span-wrap:first-child {
     width: 18px !important;
     height: 18px !important;
-    border: 1px solid #fff !important;
+    border: 1px solid var(--cs-color-home-1) !important;
     border-radius: 0 !important;
     background: transparent !important;
     margin-right: 12px !important;
   }
   .cansakhara-popup .srfm-gdpr-block .srfm-input-gdpr:checked + .srfm-cbx > .srfm-span-wrap:first-child {
-    background: #fff !important;
-    border-color: #fff !important;
+    background: var(--cs-color-home-1) !important;
+    border-color: var(--cs-color-home-1) !important;
   }
   .cansakhara-popup .srfm-gdpr-block .srfm-input-gdpr:checked + .srfm-cbx > .srfm-span-wrap:first-child svg {
-    stroke: #490500 !important;
+    stroke: var(--cs-color-popup-field) !important;
   }
   .cansakhara-popup .srfm-btn-frontend,
   .cansakhara-popup .srfm-button {
@@ -221,21 +233,22 @@
     box-sizing: border-box !important;
     align-items: center !important;
     justify-content: center !important;
-    border: 1px solid #42071a !important;
+    border: 1px solid var(--cs-color-home-2) !important;
     padding: 16px 32px !important;
     cursor: pointer !important;
     font-family: var(--font-display), sans-serif !important;
-    font-size: 14px !important;
-    line-height: 1.4 !important;
-    letter-spacing: 5.6px !important;
-    text-indent: 5.6px !important;
+    font-size: var(--cs-label-size) !important;
+    line-height: var(--cs-label-lh) !important;
+    letter-spacing: var(--cs-label-ls) !important;
+    font-weight: var(--cs-label-weight) !important;
+    text-indent: var(--cs-label-ls) !important;
     text-transform: uppercase !important;
-    color: #fff !important;
+    color: var(--cs-color-home-1) !important;
     transition: background-color 200ms ease-out !important;
   }
   .cansakhara-popup .srfm-btn-frontend:hover,
-  .cansakhara-popup .srfm-button:hover { background-color: #490500 !important; }
-  .cansakhara-popup .srfm-error-message { color: #fff !important; font-size: 12px !important; text-align: center !important; }
+  .cansakhara-popup .srfm-button:hover { background-color: var(--cs-color-popup-field) !important; }
+  .cansakhara-popup .srfm-error-message { color: var(--cs-color-home-1) !important; font-size: var(--cs-small-size) !important; text-align: center !important; }
 }
 
 * {
@@ -351,8 +364,8 @@ button:active {
 }
 
 ::selection {
-  background: #42081a;
-  color: white;
+  background: var(--cs-color-home-2);
+  color: var(--cs-color-home-1);
 }
 
 /* No-FOUC guard for above-the-fold hero entrance elements. The `.motion-ready`
@@ -430,6 +443,20 @@ html.motion-ready [data-anim="draw-icon"] path {
    after the final letter. With text-align:center that gap is counted, nudging
    the visible word left of the centred section line above it. Indenting by the
    H3 role's letter-spacing recentres the glyphs over the line. */
+/* Footer legal row (Figma 1:835 desktop, 5:528 mobile). It takes the Label
+   role at half the role's tracking; on mobile it drops to 8px, below the role.
+   Un-layered so it beats the .cs-label components-layer rule. */
+.footer-legal {
+  letter-spacing: calc(var(--cs-label-ls) / 2);
+}
+
+@media (max-width: 795px) {
+  .footer-legal {
+    font-size: 8px;
+    letter-spacing: 1.6px;
+  }
+}
+
 .welcome-heading .section-eyebrow {
   text-indent: var(--cs-h3-ls);
 }

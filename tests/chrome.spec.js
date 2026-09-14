@@ -21,7 +21,7 @@ test('the drawer is present and closed on load', async ({ page }) => {
 test('the by-day header takes the day panel colour', async ({ page }) => {
   await page.goto('/by-day/');
   await expect(page.locator('[data-cansakhara-header]')).toHaveAttribute(
-    'data-cansakhara-solid-color', '#ac9a8c'
+    'data-cansakhara-solid-color', 'var(--cs-color-day-1)'
   );
 });
 

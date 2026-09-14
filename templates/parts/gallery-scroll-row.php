@@ -44,7 +44,7 @@ $cansakhara_images = isset( $args['images'] ) && is_array( $args['images'] ) ? a
 $cansakhara_alts   = isset( $args['alt'] ) && is_array( $args['alt'] ) ? array_values( $args['alt'] ) : array();
 ?>
 <div class="relative">
-	<div class="sticky top-0 bg-white py-[20px] md:py-[30px]">
+	<div class="sticky top-0 bg-home-1 py-[20px] md:py-[30px]">
 		<div class="flex justify-center">
 			<div
 				role="group"
